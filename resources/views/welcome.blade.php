@@ -914,27 +914,27 @@
         ══════════════════════════════════════════════════ -->
         <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-4 mobile-only">
             <!-- Row 1: Core Services -->
-            <button @click="tab = 'flights'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
+            <button type="button" @click="tab = 'flights'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
                 <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
                 <div class="svc-label" :class="tab === 'flights' ? 'text-orange-400' : ''">Flights</div>
             </button>
-            <button @click="tab = 'hotels'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'hotels' ? 'border-emerald-400/60 bg-emerald-500/10' : ''">
+            <button type="button" @click="tab = 'hotels'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'hotels' ? 'border-emerald-400/60 bg-emerald-500/10' : ''">
                 <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
                 <div class="svc-label" :class="tab === 'hotels' ? 'text-emerald-400' : ''">Hotels</div>
             </button>
-            <button @click="tab = 'visas'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'visas' ? 'border-blue-400/60 bg-blue-500/10' : ''">
+            <button type="button" @click="tab = 'visas'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'visas' ? 'border-blue-400/60 bg-blue-500/10' : ''">
                 <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
                 <div class="svc-label" :class="tab === 'visas' ? 'text-blue-400' : ''">Visas</div>
             </button>
-            <button @click="tab = 'insurance'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'insurance' ? 'border-pink-400/60 bg-pink-500/10' : ''">
+            <button type="button" @click="tab = 'insurance'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'insurance' ? 'border-pink-400/60 bg-pink-500/10' : ''">
                 <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
                 <div class="svc-label" :class="tab === 'insurance' ? 'text-pink-400' : ''">Insurance</div>
             </button>
-            <button @click="tab = 'tours'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'tours' ? 'border-yellow-400/60 bg-yellow-500/10' : ''">
+            <button type="button" @click="tab = 'tours'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'tours' ? 'border-yellow-400/60 bg-yellow-500/10' : ''">
                 <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
                 <div class="svc-label" :class="tab === 'tours' ? 'text-yellow-400' : ''">Tours</div>
             </button>
-            <button @click="tab = 'transfers'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'transfers' ? 'border-purple-400/60 bg-purple-500/10' : ''">
+            <button type="button" @click="tab = 'transfers'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'transfers' ? 'border-purple-400/60 bg-purple-500/10' : ''">
                 <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
                 <div class="svc-label" :class="tab === 'transfers' ? 'text-purple-400' : ''">Pickups</div>
             </button>
@@ -948,38 +948,9 @@
             </button>
         </div>
 
-        <!-- MIND BLOWING SEARCH ENGINE (Pill Layout) -->
+        <!-- MIND BLOWING SEARCH ENGINE (Grid Architecture) -->
         <div id="search-engine" class="w-full max-w-6xl glass-widget p-3 md:p-6 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
-            
-            <!-- Category Switcher (Desktop only — hidden on mobile, replaced by icon grid above) -->
-            <div id="desktop-tab-strip" class="hidden lg:flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6 no-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
-                <style>.no-scrollbar::-webkit-scrollbar { display: none; }</style>
-                
-                <button @click="tab = 'flights'" :class="tab === 'flights' ? 'text-white border-brand-orange bg-brand-orange/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
-                    <i class="fa-solid fa-plane"></i> Flights
-                </button>
-
-                <button @click="tab = 'hotels'" :class="tab === 'hotels' ? 'text-white border-brand-emerald bg-brand-emerald/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
-                    <i class="fa-solid fa-bed"></i> Hotels
-                </button>
-
-                <button @click="tab = 'visas'" :class="tab === 'visas' ? 'text-white border-blue-500 bg-blue-500/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
-                    <i class="fa-solid fa-passport"></i> Visas
-                </button>
-                
-                <button @click="tab = 'tours'" :class="tab === 'tours' ? 'text-white border-yellow-500 bg-yellow-500/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
-                    <i class="fa-solid fa-umbrella-beach"></i> Tours
-                </button>
-
-                <button @click="tab = 'transfers'" :class="tab === 'transfers' ? 'text-white border-purple-500 bg-purple-500/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
-                    <i class="fa-solid fa-car"></i> Pickups
-                </button>
-
-                <button @click="tab = 'insurance'" :class="tab === 'insurance' ? 'text-white border-pink-500 bg-pink-500/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
-                    <i class="fa-solid fa-shield-heart"></i> Insurance
-                </button>
-
-            </div>
+            <!-- category-tab-strip completely removed per request -->
 
              <!-- ENGINE FORMS & DYNAMIC CONTENT -->
             <div class="px-2 md:px-6 relative min-h-[400px]">
