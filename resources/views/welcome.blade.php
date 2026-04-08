@@ -267,8 +267,8 @@
             
             <!-- Desktop Menu -->
             <div class="hidden lg:flex items-center bg-white/5 border border-white/10 rounded-full px-2 py-1.5 backdrop-blur-md">
-                <a href="#search-engine" class="px-5 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Booking Engine</a>
-                <a href="#features" class="px-5 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">The Vault</a>
+                <a href="#search-engine" class="px-5 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Search Engine</a>
+                <a href="#features" class="px-5 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Inside the Vault</a>
                 
                 <!-- Consultations Dropdown -->
                 <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
@@ -277,21 +277,21 @@
                     </button>
                     <!-- Dropdown -->
                     <div x-show="open" x-transition.opacity class="absolute top-full right-0 mt-3 w-64 glass-widget p-3 z-50 rounded-2xl border border-white/10 shadow-2xl">
-                        <a href="#" class="flex gap-4 items-start p-3 hover:bg-white/5 rounded-xl transition-colors">
+                        <a @click="showLeadModal = true; leadContext = 'Educational Placement'; leadMessage = 'I am interested in the Study Abroad program and university admissions support.'" class="flex gap-4 items-start p-3 hover:bg-white/5 rounded-xl transition-colors cursor-pointer">
                             <div class="text-brand-orange mt-0.5"><i class="fa-solid fa-graduation-cap"></i></div>
                             <div>
                                 <h4 class="text-sm font-bold text-white">Study Abroad</h4>
                                 <p class="text-[11px] text-slate-400 mt-1">Visas & Admissions</p>
                             </div>
                         </a>
-                        <a href="#" class="flex gap-4 items-start p-3 hover:bg-white/5 rounded-xl transition-colors">
+                        <a @click="showLeadModal = true; leadContext = 'Migration Expert'; leadMessage = 'I need professional support for a Work & Migrate relocation package.'" class="flex gap-4 items-start p-3 hover:bg-white/5 rounded-xl transition-colors cursor-pointer">
                             <div class="text-brand-emerald mt-0.5"><i class="fa-solid fa-briefcase"></i></div>
                             <div>
                                 <h4 class="text-sm font-bold text-white">Work & Migrate</h4>
                                 <p class="text-[11px] text-slate-400 mt-1">Immigration support</p>
                             </div>
                         </a>
-                        <a href="#" class="flex gap-4 items-start p-3 hover:bg-white/5 rounded-xl transition-colors">
+                        <a @click="showLeadModal = true; leadContext = 'Corporate Concierge'; leadMessage = 'I want to discuss a Corporate Relocation or offshore business setup.'" class="flex gap-4 items-start p-3 hover:bg-white/5 rounded-xl transition-colors cursor-pointer">
                             <div class="text-blue-400 mt-0.5"><i class="fa-solid fa-building"></i></div>
                             <div>
                                 <h4 class="text-sm font-bold text-white">Business Setup</h4>
@@ -1748,11 +1748,11 @@
             <div>
                 <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-plane-up text-slate-500"></i> Trending Flights</h4>
                 <ul class="space-y-4 text-sm text-slate-400 font-medium">
-                    <li><a href="#" class="hover:text-brand-orange transition-colors flex justify-between items-center group">Lagos to London <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$750</span></a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors flex justify-between items-center group">New York to Paris <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$620</span></a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors flex justify-between items-center group">Dubai to Tokyo <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$890</span></a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors flex justify-between items-center group">Toronto to Miami <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$310</span></a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors flex justify-between items-center group">Accra to Joburg <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$480</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from Lagos to London.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">Lagos to London <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$750</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from New York to Paris.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">New York to Paris <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$620</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from Dubai to Tokyo.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">Dubai to Tokyo <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$890</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from Toronto to Miami.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">Toronto to Miami <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$310</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from Accra to Joburg.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">Accra to Joburg <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$480</span></a></li>
                 </ul>
             </div>
 
@@ -1760,11 +1760,11 @@
             <div>
                 <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-hotel text-slate-500"></i> Amazing Hotels</h4>
                 <ul class="space-y-4 text-sm text-slate-400 font-medium">
-                    <li><a href="#" class="hover:text-brand-emerald transition-colors flex justify-between items-center group">Soneva Jani <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$2,400</span></a></li>
-                    <li><a href="#" class="hover:text-brand-emerald transition-colors flex justify-between items-center group">Burj Al Arab <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,850</span></a></li>
-                    <li><a href="#" class="hover:text-brand-emerald transition-colors flex justify-between items-center group">Aman Tokyo <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,200</span></a></li>
-                    <li><a href="#" class="hover:text-brand-emerald transition-colors flex justify-between items-center group">The Plaza NY <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$950</span></a></li>
-                    <li><a href="#" class="hover:text-brand-emerald transition-colors flex justify-between items-center group">Ritz Paris <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,100</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Soneva Jani.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Soneva Jani <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$2,400</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Burj Al Arab.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Burj Al Arab <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,850</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Aman Tokyo.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Aman Tokyo <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,200</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at The Plaza NY.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">The Plaza NY <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$950</span></a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Ritz Paris.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Ritz Paris <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,100</span></a></li>
                 </ul>
             </div>
 
@@ -1772,10 +1772,10 @@
             <div>
                 <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-user-tie text-slate-500"></i> Consultations</h4>
                 <ul class="space-y-4 text-sm text-slate-400 font-medium">
-                    <li><a href="#" class="hover:text-white transition-colors">Study Abroad Experts</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Immigration Support</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Business & Corp Setup</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">The Visa Vault</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Educational Placement'; leadMessage = 'I am interested in university placements and study abroad support.'" class="hover:text-white transition-colors cursor-pointer">Study Abroad Experts</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Migration Expert'; leadMessage = 'I need professional immigration support for my relocation.'" class="hover:text-white transition-colors cursor-pointer">Immigration Support</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Corporate Concierge'; leadMessage = 'I want to discuss a Corporate Relocation or offshore business setup.'" class="hover:text-white transition-colors cursor-pointer">Business & Corp Setup</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Visa & Immigration'; leadMessage = 'I need help managing my documents and visa applications in the Vault.'" class="hover:text-white transition-colors cursor-pointer">The Visa Vault</a></li>
                     <li><a href="/user/login" class="hover:text-white transition-colors mt-4 inline-block font-semibold border-b border-slate-700 pb-1">Client Login <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></a></li>
                 </ul>
             </div>
@@ -1785,9 +1785,9 @@
                 <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-handshake text-slate-500"></i> Partnerships</h4>
                 <ul class="space-y-4 text-sm text-slate-400 font-medium">
                     <li><a href="/agent" class="hover:text-brand-orange transition-colors">B2B Agent Portal</a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors">Affiliate Network</a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors">Corporate Accounts</a></li>
-                    <li><a href="#" class="hover:text-brand-orange transition-colors">API Documentation</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Partnership Team'; leadMessage = 'I am interested in joining the iSwitch Affiliate Network.'" class="hover:text-brand-orange transition-colors cursor-pointer">Affiliate Network</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Corporate Sales'; leadMessage = 'I want to open a Corporate Account for my company employees.'" class="hover:text-brand-orange transition-colors cursor-pointer">Corporate Accounts</a></li>
+                    <li><a @click="showLeadModal = true; leadContext = 'Technical Team'; leadMessage = 'I am interested in API integration and technical documentation.'" class="hover:text-brand-orange transition-colors cursor-pointer">API Documentation</a></li>
                     <li><a href="/admin/god-mode" class="text-brand-orange hover:text-white transition-colors mt-4 inline-block font-semibold border-b border-brand-orange/30 pb-1"><i class="fa-solid fa-crown mr-2"></i> God Mode Control</a></li>
                 </ul>
             </div>
@@ -1797,9 +1797,9 @@
         <div class="max-w-[90rem] mx-auto px-6 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 font-medium">
             <p>&copy; {{ date('Y') }} iSwitch Mobility Line. All rights reserved.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
-                <a href="#" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5">Privacy Policy</a>
-                <a href="#" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5">Terms of Service</a>
-                <a href="#" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5">Cookie Preferences</a>
+                <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Privacy Policy</a>
+                <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Terms of Service</a>
+                <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Cookie Preferences</a>
             </div>
         </div>
     </footer>
