@@ -947,7 +947,7 @@
         <div id="search-engine" class="w-full max-w-6xl glass-widget p-3 md:p-6 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
             
             <!-- Category Switcher (Desktop only — hidden on mobile, replaced by icon grid above) -->
-            <div id="desktop-tab-strip" class="flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6 no-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
+            <div id="desktop-tab-strip" class="hidden lg:flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6 no-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
                 <style>.no-scrollbar::-webkit-scrollbar { display: none; }</style>
                 
                 <button @click="tab = 'flights'" :class="tab === 'flights' ? 'text-white border-brand-orange bg-brand-orange/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
@@ -2382,16 +2382,14 @@
         <div class="nav-items">
 
             <!-- HOME: Scroll to top of page -->
-            <button id="nav-home" class="nav-item active"
-                    onclick="window.scrollTo({top:0,behavior:'smooth'}); document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); this.classList.add('active')">
+            <button id="nav-home" class="nav-item active" onclick="handleBottomNav('home', this)">
                 <div class="nav-icon"><i class="fa-solid fa-house"></i></div>
                 <div class="nav-label">Home</div>
                 <div class="nav-dot"></div>
             </button>
 
             <!-- EXPLORE: Scroll to Destinations/Routes section -->
-            <button id="nav-explore" class="nav-item"
-                    onclick="document.querySelector('.destination-card')?.closest('div[class*=mt-16]')?.scrollIntoView({behavior:'smooth',block:'start'}) || document.getElementById('search-engine').scrollIntoView({behavior:'smooth'}); document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); this.classList.add('active')">
+            <button id="nav-explore" class="nav-item" onclick="handleBottomNav('explore', this)">
                 <div class="nav-icon"><i class="fa-solid fa-compass"></i></div>
                 <div class="nav-label">Explore</div>
                 <div class="nav-dot"></div>
@@ -2407,8 +2405,7 @@
             </div>
 
             <!-- DEALS: Scroll to Promotions / Tours section -->
-            <button id="nav-deals" class="nav-item"
-                    onclick="document.querySelector('[x-show=\"tab === \'tours\'\"]')?.scrollIntoView({behavior:'smooth'}) || document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'}); document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); this.classList.add('active')">
+            <button id="nav-deals" class="nav-item" onclick="handleBottomNav('deals', this)">
                 <div class="nav-icon"><i class="fa-solid fa-tag"></i></div>
                 <div class="nav-label">Deals</div>
                 <div class="nav-dot"></div>
@@ -2425,6 +2422,22 @@
     </nav>
 
     <script>
+        /* Bottom Nav Navigation Logic to prevent inline JS spills */
+        window.handleBottomNav = function(target, btn) {
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            if (target === 'home') {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else if (target === 'explore') {
+                let dest = document.querySelector('.destination-card')?.closest('div[class*="mt-16"]');
+                if(dest) dest.scrollIntoView({behavior:'smooth', block:'start'});
+                else document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'});
+            } else if (target === 'deals') {
+                document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'});
+            }
+        };
+
         /* Mobile nav active state on scroll */
         (function() {
             if (window.innerWidth >= 1024) return;
