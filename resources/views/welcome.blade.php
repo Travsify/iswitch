@@ -770,8 +770,7 @@
             
             <!-- Brand Logo (High Fidelity) -->
             <a href="/" class="flex items-center gap-2 group relative z-50">
-                <img src="/iswitch_brand_logo.png" class="h-8 sm:h-10 w-auto transform group-hover:scale-105 transition-transform duration-500" alt="iSwitch Logo">
-                <span class="text-xl sm:text-2xl font-black tracking-tighter text-white group-hover:text-brand-orange transition-colors">iSwitch</span>
+                <img src="/iswitch_brand_logo.png" class="h-10 sm:h-12 w-auto shadow-[0_0_15px_rgba(255,255,255,0.05)] transform group-hover:scale-105 rounded-xl sm:rounded-2xl transition-all duration-500" alt="iSwitch Logo">
             </a>
             
             <!-- Desktop Menu -->
