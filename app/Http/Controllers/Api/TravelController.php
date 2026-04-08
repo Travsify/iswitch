@@ -53,4 +53,22 @@ class TravelController extends Controller
         $results = $this->hub->getInsuranceQuote($request->input('region', 'worldwide'));
         return response()->json($results);
     }
+
+    /**
+     * Live Tours Search
+     */
+    public function searchTours(Request $request)
+    {
+        $results = $this->hub->searchExperiences($request->input('q', ''));
+        return response()->json($results);
+    }
+
+    /**
+     * Live Transfer Quote
+     */
+    public function getTransfers(Request $request)
+    {
+        $results = $this->hub->searchTransfers($request->all());
+        return response()->json($results);
+    }
 }

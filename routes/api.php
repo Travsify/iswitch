@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v1/hotels/search', [TravelController::class, 'searchHotels']);
     Route::get('/v1/visa/check', [TravelController::class, 'checkVisa']);
     Route::get('/v1/insurance/quote', [TravelController::class, 'getInsurance']);
+    Route::get('/v1/tours/search', [TravelController::class, 'searchTours']);
+    Route::get('/v1/logistics/quote', [TravelController::class, 'getTransfers']);
 
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);

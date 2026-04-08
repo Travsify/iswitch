@@ -72,6 +72,30 @@ class IntegrationHub
     }
 
     /**
+     * VIATOR (Experiences & Tours)
+     */
+    public function searchExperiences(string $query)
+    {
+        $apiKey = config('services.viator.key');
+        if (!$apiKey) return $this->mockTours();
+
+        // Viator logic...
+        return $this->mockTours();
+    }
+
+    /**
+     * MOZIO (Logistics & Chauffeur)
+     */
+    public function searchTransfers(array $params)
+    {
+        $apiKey = config('services.mozio.key');
+        if (!$apiKey) return $this->mockTransfers();
+
+        // Mozio logic...
+        return $this->mockTransfers();
+    }
+
+    /**
      * SAFETYWING (Nomad Insurance & Shield)
      */
     public function getInsuranceQuote(string $region = 'worldwide')
@@ -123,6 +147,20 @@ class IntegrationHub
             'price' => 56.40,
             'coverage' => '$1M Crisis Support + Medical',
             'compliance' => 'Worldwide (Excl. USA)'
+        ];
+    }
+
+    private function mockTours() {
+        return [
+            ['id' => 'tr_1', 'name' => 'Private Amalfi Yacht Charter', 'price' => 1375],
+            ['id' => 'tr_2', 'name' => 'Maasai Mara Private Safari', 'price' => 3200]
+        ];
+    }
+
+    private function mockTransfers() {
+        return [
+            ['id' => 'gr_1', 'vehicle' => 'Maybach S-Class', 'price' => 250],
+            ['id' => 'gr_2', 'vehicle' => 'Tesla Model X Limo', 'price' => 180]
         ];
     }
 }

@@ -244,6 +244,32 @@
             } finally {
                 this.searching = false;
             }
+        },
+        async fetchTours() {
+            this.searching = true;
+            try {
+                const response = await fetch(`/api/v1/tours/search?q=${this.searchDest}`);
+                const data = await response.json();
+                alert(`iSwitch Discovery: Found ${data.length} curated experiences in ${this.searchDest}.`);
+                this.showLeadModal = true;
+                this.leadContext = 'Experience Specialist';
+                this.leadMessage = `I want to explore the ${data[0].name} in ${this.searchDest}.`;
+            } finally {
+                this.searching = false;
+            }
+        },
+        async fetchTransfers() {
+            this.searching = true;
+            try {
+                const response = await fetch(`/api/v1/logistics/quote`);
+                const data = await response.json();
+                alert(`iSwitch Logistics: ${data[0].vehicle} identified for arrival. Pricing is $${data[0].price}.`);
+                this.showLeadModal = true;
+                this.leadContext = 'Logistics Specialist';
+                this.leadMessage = `I want to secure the ${data[0].vehicle} meet-and-greet service.`;
+            } finally {
+                this.searching = false;
+            }
         }
       }">
 
@@ -1081,7 +1107,10 @@
                                     <i class="fa-solid fa-magnifying-glass text-slate-500 mr-3"></i>
                                     <input type="text" placeholder="Where do you want to explore?" class="bg-transparent flex-1 outline-none text-white text-sm placeholder-slate-600 font-semibold py-2">
                                 </div>
-                                <button type="button" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-black text-xs uppercase tracking-widest p-4 rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-[0_10px_20px_rgba(234,179,8,0.2)]">Reveal Secret Experiences</button>
+                                <button type="button" @click="fetchTours()" :disabled="searching" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-black text-xs uppercase tracking-widest p-4 rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-[0_10px_20px_rgba(234,179,8,0.2)]">
+                                    <span x-show="!searching">Reveal Secret Experiences</span>
+                                    <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Inventory Scan...</span>
+                                </button>
                             </form>
                         </div>
 
@@ -1461,9 +1490,11 @@
                                     </div>
                                 </div>
 
-                                <button @click="showLeadModal = true; leadContext = 'Mobility Concierge'; leadMessage = 'I am interested in securing a Maybach/Tesla ground transfer with refreshments.'" 
+                                <button @click="fetchTransfers()" 
+                                        :disabled="searching"
                                         class="w-full bg-white text-black font-black uppercase tracking-widest py-5 rounded-2xl shadow-2xl hover:bg-indigo-600 hover:text-white transition-all transform hover:scale-[1.01] active:scale-95 text-xs flex items-center justify-center gap-3 mt-4">
-                                    Secure My Meet-and-Greet <i class="fa-solid fa-arrow-right"></i>
+                                    <span x-show="!searching">Secure My Meet-and-Greet <i class="fa-solid fa-arrow-right"></i></span>
+                                    <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Logistics Sync...</span>
                                 </button>
                             </div>
                         </div>
