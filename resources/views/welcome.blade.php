@@ -192,11 +192,119 @@
     </style>
 </head>
 <style>
+    /* ═══════════ SYSTEM: GLOBAL CLAMPS ═══════════ */
     [x-cloak] { display: none !important; }
-    html, body { 
-        max-width: 100%; 
-        overflow-x: hidden !important;
-        position: relative;
+    html, body { max-width: 100%; overflow-x: hidden !important; position: relative; }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+    /* iOS notch safe areas */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        .mobile-bottom-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important; }
+    }
+
+    /* ═══════════ FIXED BOTTOM NAV (Native App) ═══════════ */
+    .mobile-bottom-nav {
+        display: none;
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: rgba(5,8,22,0.97);
+        backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+        border-top: 1px solid rgba(255,255,255,0.06);
+        z-index: 9999; padding: 6px 0 12px;
+    }
+    .mobile-bottom-nav .nav-items {
+        display: flex; justify-content: space-around; align-items: flex-end; padding: 0 6px;
+    }
+    .mobile-bottom-nav .nav-item {
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        padding: 6px 10px; border-radius: 14px; cursor: pointer;
+        text-decoration: none; min-width: 52px; color: #4b5563;
+        transition: color 0.2s; border: none; background: none;
+    }
+    .mobile-bottom-nav .nav-item.active { color: #FF7D00; }
+    .mobile-bottom-nav .nav-item .nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
+    .mobile-bottom-nav .nav-item.active .nav-icon { transform: translateY(-2px); }
+    .mobile-bottom-nav .nav-item .nav-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+    .mobile-bottom-nav .nav-item .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: #FF7D00; margin-top: 1px; opacity: 0; transition: opacity 0.2s; }
+    .mobile-bottom-nav .nav-item.active .nav-dot { opacity: 1; }
+
+    /* Center CTA */
+    .mobile-bottom-nav .nav-center {
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        margin-top: -22px; cursor: pointer;
+    }
+    .mobile-bottom-nav .nav-center .center-btn {
+        width: 58px; height: 58px;
+        background: linear-gradient(135deg, #FF7D00, #E65C00);
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 22px; color: white;
+        box-shadow: 0 4px 20px rgba(255,125,0,0.6), 0 0 0 4px #050816;
+        transition: transform 0.15s; border: none;
+    }
+    .mobile-bottom-nav .nav-center .center-btn:active { transform: scale(0.9); }
+    .mobile-bottom-nav .nav-center .nav-label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: #FF7D00; letter-spacing: 0.05em; }
+
+    /* ═══════════ MOBILE SERVICE ICON GRID ═══════════ */
+    .mobile-service-grid { display: none; }
+
+    /* ═══════════ MOBILE OVERRIDES ═══════════ */
+    @media (max-width: 1023px) {
+        .mobile-bottom-nav { display: block; }
+        body { padding-bottom: 84px; }
+        .mobile-only { display: block !important; }
+        .desktop-only { display: none !important; }
+
+        /* Prevent iOS zoom on form inputs */
+        input, select, textarea { font-size: 16px !important; }
+
+        /* Touch targets */
+        button { min-height: 44px; }
+
+        /* Active states */
+        button:active { opacity: 0.75; transform: scale(0.96); }
+        a:active { opacity: 0.75; }
+
+        /* Hero: Compact */
+        .hero-compact-pt { padding-top: 76px !important; }
+        .hero-subtext { font-size: 14px !important; }
+        .hero-badge { margin-bottom: 10px !important; }
+
+        /* Glass cards */
+        .glass-widget { border-radius: 1.25rem !important; }
+
+        /* Mobile Service Grid */
+        .mobile-service-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .mobile-service-grid .svc-tile {
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            padding: 14px 6px 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px; cursor: pointer; text-decoration: none;
+            transition: all 0.15s; text-align: center;
+        }
+        .mobile-service-grid .svc-tile:active {
+            transform: scale(0.93);
+            background: rgba(255,125,0,0.12);
+            border-color: rgba(255,125,0,0.35);
+        }
+        .mobile-service-grid .svc-tile .svc-icon {
+            width: 44px; height: 44px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+        }
+        .mobile-service-grid .svc-tile .svc-label {
+            font-size: 9.5px; font-weight: 700; color: #94a3b8; line-height: 1.2;
+        }
+
+        /* Smooth destination cards */
+        .destination-card:hover { transform: none; }
+        .destination-card:active { transform: scale(0.97); }
+    }
+
+    @media (min-width: 1024px) {
+        .mobile-only { display: none !important; }
     }
 </style>
 
@@ -666,6 +774,43 @@
                              </button>
                         </div>
                     </form>
+
+                    <!-- ══ MOBILE SERVICE ICON GRID (App Home-Screen Style) ══ -->
+                    <!-- Only visible on mobile, hidden on desktop -->
+                    <div class="mobile-service-grid mt-6 mobile-only">
+                        <button @click="tab = 'flights'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
+                            <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
+                            <div class="svc-label">Flights</div>
+                        </button>
+                        <button @click="tab = 'hotels'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
+                            <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
+                            <div class="svc-label">Hotels</div>
+                        </button>
+                        <button @click="tab = 'visas'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
+                            <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
+                            <div class="svc-label">Visas</div>
+                        </button>
+                        <button @click="tab = 'insurance'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
+                            <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
+                            <div class="svc-label">Insurance</div>
+                        </button>
+                        <button @click="tab = 'tours'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
+                            <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
+                            <div class="svc-label">Tours</div>
+                        </button>
+                        <button @click="tab = 'transfers'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
+                            <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
+                            <div class="svc-label">Transfers</div>
+                        </button>
+                        <a href="/user/login" class="svc-tile">
+                            <div class="svc-icon bg-indigo-500/15 text-indigo-400"><i class="fa-solid fa-vault"></i></div>
+                            <div class="svc-label">The Vault</div>
+                        </a>
+                        <button @click="showLeadModal = true; leadContext = 'Expert Advisor'; leadMessage = 'I need to speak with an expert advisor.'" class="svc-tile">
+                            <div class="svc-icon bg-rose-500/15 text-rose-400"><i class="fa-solid fa-user-tie"></i></div>
+                            <div class="svc-label">Experts</div>
+                        </button>
+                    </div>
 
                     <!-- Ecosystem Micro-Utilities (Tracker & Visa Checker) -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -1918,6 +2063,52 @@
             </div>
         </div>
     </footer>
+
+    <!-- ═══════════════════════════════════════════════
+         NATIVE MOBILE BOTTOM NAV BAR
+         Hidden on desktop; shows only on mobile (< 1024px)
+    ════════════════════════════════════════════════════ -->
+    <nav class="mobile-bottom-nav" x-data="{ activeTab: 'home' }">
+        <div class="nav-items">
+
+            <!-- Home -->
+            <button class="nav-item" :class="activeTab === 'home' ? 'active' : ''" @click="activeTab = 'home'; window.scrollTo({top:0,behavior:'smooth'})">
+                <div class="nav-icon"><i class="fa-solid fa-house"></i></div>
+                <div class="nav-label">Home</div>
+                <div class="nav-dot"></div>
+            </button>
+
+            <!-- Search -->
+            <button class="nav-item" :class="activeTab === 'search' ? 'active' : ''" @click="activeTab = 'search'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})">
+                <div class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="nav-label">Search</div>
+                <div class="nav-dot"></div>
+            </button>
+
+            <!-- Center Book Button -->
+            <div class="nav-center" @click="showLeadModal = true; leadContext = 'Book Now'; leadMessage = 'I want to book a service with iSwitch.'">
+                <button class="center-btn">
+                    <i class="fa-solid fa-bolt"></i>
+                </button>
+                <div class="nav-label">Book</div>
+            </div>
+
+            <!-- Trips -->
+            <a href="/user/login" class="nav-item" :class="activeTab === 'trips' ? 'active' : ''">
+                <div class="nav-icon"><i class="fa-solid fa-suitcase-rolling"></i></div>
+                <div class="nav-label">Trips</div>
+                <div class="nav-dot"></div>
+            </a>
+
+            <!-- Profile -->
+            <a href="/user/login" class="nav-item" :class="activeTab === 'profile' ? 'active' : ''">
+                <div class="nav-icon"><i class="fa-solid fa-user-circle"></i></div>
+                <div class="nav-label">Profile</div>
+                <div class="nav-dot"></div>
+            </a>
+
+        </div>
+    </nav>
 
 </body>
 </html>
