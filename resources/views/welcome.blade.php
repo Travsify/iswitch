@@ -206,7 +206,27 @@
         showLeadModal: false,
         leadContext: 'Global Mobility',
         leadMessage: 'I am interested in exploring the iSwitch ecosystem.',
+        newsletterEmail: '',
         
+        async submitLead(email, type = 'newsletter', payload = null) {
+            this.searching = true;
+            try {
+                const response = await fetch('/api/v1/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, type, payload })
+                });
+                const data = await response.json();
+                alert(data.message);
+                this.newsletterEmail = '';
+                if(this.alertModal) this.alertModal = false;
+            } catch (e) {
+                alert('Connection failed. Please check your network.');
+            } finally {
+                this.searching = false;
+            }
+        },
+
         async fetchFlights() {
             this.searching = true;
             try {
@@ -543,7 +563,7 @@
                             </div>
                         </label>
                         
-                        <div class="ml-auto" x-data="{ alertModal: false }">
+                        <div class="ml-auto" x-data="{ alertModal: false, alertEmail: '' }">
                             <button @click.prevent="alertModal = true" class="text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1.5 transition-colors flex items-center gap-2 text-brand-orange">
                                 <i class="fa-solid fa-bell"></i> Get Price Alerts
                             </button>
@@ -556,9 +576,12 @@
                                     </div>
                                     <h3 class="text-2xl font-black text-white mb-2">Never miss a price drop</h3>
                                     <p class="text-slate-400 text-sm mb-6">Enter your email and we'll alert you the moment flights on this route get cheaper. No spam, just savings.</p>
-                                    <form class="flex flex-col gap-3">
-                                        <input type="email" placeholder="Enter your email address" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-brand-orange">
-                                        <button class="btn-magical w-full py-3 rounded-xl font-bold">Track Prices</button>
+                                    <form @submit.prevent="submitLead(alertEmail, 'tracker', {origin: searchOrigin, destination: searchDest})" class="flex flex-col gap-3">
+                                        <input type="email" x-model="alertEmail" placeholder="Enter your email address" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-brand-orange">
+                                        <button type="submit" :disabled="searching" class="btn-magical w-full py-3 rounded-xl font-bold">
+                                            <span x-show="!searching">Track Prices</span>
+                                            <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Syncing...</span>
+                                        </button>
                                     </form>
                                 </div>
                             </div>

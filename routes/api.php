@@ -6,7 +6,10 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\VisaDocumentController;
+use App\Http\Controllers\Api\LeadController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/v1/leads', [LeadController::class, 'store']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
