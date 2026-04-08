@@ -2364,20 +2364,20 @@
                 <div class="nav-dot"></div>
             </button>
 
-            <!-- EXPLORE: Scroll to Destinations/Routes section -->
-            <button id="nav-explore" class="nav-item" onclick="handleBottomNav('explore', this)">
-                <div class="nav-icon"><i class="fa-solid fa-compass"></i></div>
-                <div class="nav-label">Explore</div>
+            <!-- VAULT: Scroll to The Vault / Passport Features -->
+            <button id="nav-vault" class="nav-item" onclick="handleBottomNav('vault', this)">
+                <div class="nav-icon"><i class="fa-solid fa-vault"></i></div>
+                <div class="nav-label">Vault</div>
                 <div class="nav-dot"></div>
             </button>
 
-            <!-- BOOK: Center CTA — opens specialist modal -->
+            <!-- EXPERT CONCIERGE: Center CTA — opens specialist modal -->
             <div class="nav-center"
-                 @click="showLeadModal = true; leadContext = 'Global Booking'; leadMessage = 'I want to book my next journey with iSwitch — flights, hotels, visa or all three.'">
-                <button class="center-btn">
-                    <i class="fa-solid fa-bolt"></i>
+                 @click="showLeadModal = true; leadContext = 'Expert Concierge'; leadMessage = 'I want to speak with an iSwitch expert regarding my upcoming travel, visas, and mobility blueprint.'">
+                <button class="center-btn text-white">
+                    <i class="fa-solid fa-headset"></i>
                 </button>
-                <div class="nav-label">Book</div>
+                <div class="nav-label">Expert</div>
             </div>
 
             <!-- DEALS: Scroll to Promotions / Tours section -->
@@ -2405,10 +2405,8 @@
 
             if (target === 'home') {
                 window.scrollTo({top: 0, behavior: 'smooth'});
-            } else if (target === 'explore') {
-                let dest = document.querySelector('.destination-card')?.closest('div[class*="mt-16"]');
-                if(dest) dest.scrollIntoView({behavior:'smooth', block:'start'});
-                else document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'});
+            } else if (target === 'vault') {
+                document.getElementById('features')?.scrollIntoView({behavior:'smooth'});
             } else if (target === 'deals') {
                 document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'});
             }
