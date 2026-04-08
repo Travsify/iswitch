@@ -329,6 +329,53 @@
         leadContext: 'Global Mobility',
         leadMessage: 'I am interested in exploring the iSwitch ecosystem.',
         newsletterEmail: '',
+
+        /* ── AUTH MODAL ── */
+        showAuthModal: false,
+        authMode: 'login',
+        authName: '',
+        authEmail: '',
+        authPassword: '',
+        authConfirm: '',
+        authLoading: false,
+        authError: '',
+        authSuccess: '',
+
+        openAuth(mode = 'login') {
+            this.authMode = mode;
+            this.authError = '';
+            this.authSuccess = '';
+            this.showAuthModal = true;
+        },
+
+        async submitAuth() {
+            this.authLoading = true;
+            this.authError = '';
+            this.authSuccess = '';
+            const endpoint = this.authMode === 'login' ? '/api/login' : '/api/register';
+            const payload = this.authMode === 'login'
+                ? { email: this.authEmail, password: this.authPassword }
+                : { name: this.authName, email: this.authEmail, password: this.authPassword, password_confirmation: this.authConfirm };
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    this.authError = data.message || Object.values(data.errors || {})[0]?.[0] || 'Something went wrong.';
+                } else {
+                    if (data.token) localStorage.setItem('iswitch_token', data.token);
+                    this.authSuccess = this.authMode === 'login' ? 'Welcome back! Redirecting...' : 'Account created! Welcome aboard!';
+                    setTimeout(() => { window.location.href = '/user'; }, 1200);
+                }
+            } catch(e) {
+                this.authError = 'Network error. Please try again.';
+            } finally {
+                this.authLoading = false;
+            }
+        },
         
         async submitLead(email, type = 'newsletter', payload = null) {
             this.searching = true;
@@ -414,6 +461,114 @@
             }
         }
       }">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         AUTH MODAL: Sign In / Register — Slide Up Sheet
+         Replaces all /user/login and /register page navigations
+    ═══════════════════════════════════════════════════════════ -->
+    <div x-show="showAuthModal"
+         class="fixed inset-0 z-[200] flex items-end lg:items-center justify-center"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         style="display:none;">
+
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="showAuthModal = false"></div>
+
+        <!-- Sheet -->
+        <div class="relative w-full max-w-md bg-[#080c18] border border-white/10 rounded-t-[2.5rem] lg:rounded-[2.5rem] p-7 pb-10 shadow-2xl z-10"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="translate-y-full lg:translate-y-0 lg:scale-95 opacity-0"
+             x-transition:enter-end="translate-y-0 lg:scale-100 opacity-100"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="translate-y-0 lg:scale-100 opacity-100"
+             x-transition:leave-end="translate-y-full lg:translate-y-0 lg:scale-95 opacity-0">
+
+            <!-- Drag handle (mobile only) -->
+            <div class="w-10 h-1 rounded-full bg-white/20 mx-auto mb-6 lg:hidden"></div>
+
+            <!-- Close -->
+            <button @click="showAuthModal = false" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <!-- Logo & Brand -->
+            <div class="flex items-center gap-3 mb-6">
+                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null;this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-8 w-auto">
+                <span class="font-black text-white text-lg">iSwitch</span>
+            </div>
+
+            <!-- Mode Tab Selector -->
+            <div class="flex bg-white/5 rounded-2xl p-1 mb-6 border border-white/8">
+                <button @click="authMode = 'login'; authError = ''; authSuccess = ''"
+                        :class="authMode === 'login' ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/30' : 'text-slate-400 hover:text-white'"
+                        class="flex-1 py-2.5 rounded-xl text-sm font-black transition-all">
+                    Sign In
+                </button>
+                <button @click="authMode = 'register'; authError = ''; authSuccess = ''"
+                        :class="authMode === 'register' ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/30' : 'text-slate-400 hover:text-white'"
+                        class="flex-1 py-2.5 rounded-xl text-sm font-black transition-all">
+                    Create Account
+                </button>
+            </div>
+
+            <!-- Error / Success -->
+            <div x-show="authError" class="mb-4 px-4 py-3 bg-red-500/15 border border-red-500/30 rounded-xl text-red-400 text-sm font-medium" x-text="authError"></div>
+            <div x-show="authSuccess" class="mb-4 px-4 py-3 bg-emerald-500/15 border border-emerald-500/30 rounded-xl text-emerald-400 text-sm font-medium flex items-center gap-2">
+                <i class="fa-solid fa-circle-check"></i> <span x-text="authSuccess"></span>
+            </div>
+
+            <!-- Form -->
+            <form @submit.prevent="submitAuth()" class="flex flex-col gap-4">
+
+                <!-- Name (register only) -->
+                <div x-show="authMode === 'register'" class="relative">
+                    <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="text" x-model="authName" placeholder="Full Name" autocomplete="name"
+                           class="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white placeholder-slate-500 outline-none focus:border-brand-orange/60 transition-all text-sm font-medium">
+                </div>
+
+                <!-- Email -->
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="email" x-model="authEmail" placeholder="Email Address" autocomplete="email" required
+                           class="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white placeholder-slate-500 outline-none focus:border-brand-orange/60 transition-all text-sm font-medium">
+                </div>
+
+                <!-- Password -->
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="password" x-model="authPassword" placeholder="Password" autocomplete="current-password" required
+                           class="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white placeholder-slate-500 outline-none focus:border-brand-orange/60 transition-all text-sm font-medium">
+                </div>
+
+                <!-- Confirm Password (register only) -->
+                <div x-show="authMode === 'register'" class="relative">
+                    <i class="fa-solid fa-shield-check absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="password" x-model="authConfirm" placeholder="Confirm Password" autocomplete="new-password"
+                           class="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white placeholder-slate-500 outline-none focus:border-brand-orange/60 transition-all text-sm font-medium">
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" :disabled="authLoading"
+                        class="btn-magical w-full py-4 rounded-2xl font-black text-white text-sm mt-2 flex items-center justify-center gap-2 transition-all">
+                    <span x-show="!authLoading" x-text="authMode === 'login' ? 'Sign In to iSwitch' : 'Create My Account'"></span>
+                    <span x-show="authLoading" class="flex items-center gap-2">
+                        <i class="fa-solid fa-spinner animate-spin"></i> Please wait...
+                    </span>
+                </button>
+            </form>
+
+            <!-- Social proof -->
+            <p class="text-center text-slate-500 text-xs mt-5">
+                Join <span class="text-brand-orange font-bold">50,000+</span> global movers on iSwitch
+            </p>
+        </div>
+    </div>
 
     <!-- ================= LEAD CAPTURE MODAL (The Converter) ================= -->
     <div x-show="showLeadModal" 
@@ -561,9 +716,9 @@
                 @auth
                     <a href="/user" class="text-sm font-bold text-brand-orange hover:text-orange-400 transition-colors">Go to Portal</a>
                 @else
-                    <a href="/login" class="text-sm font-bold text-white hover:text-brand-orange transition-colors">Sign In</a>
+                    <a @click.prevent="openAuth('login')" href="#" class="text-sm font-bold text-white hover:text-brand-orange transition-colors">Sign In</a>
                 @endauth
-                <a href="/register" class="btn-magical px-6 py-2.5 rounded-full text-sm font-bold text-white ml-2">
+                <a @click.prevent="openAuth('register')" href="#" class="btn-magical px-6 py-2.5 rounded-full text-sm font-bold text-white ml-2">
                     Premium Setup
                 </a>
             </div>
@@ -588,8 +743,8 @@
                 <a href="/agent" class="text-white border-b border-white/10 pb-4 flex justify-between items-center">Partner Portal <i class="fa-solid fa-arrow-right text-sm"></i></a>
                 
                 <div class="mt-8 flex flex-col gap-4">
-                    <a href="/user/login" class="text-center py-4 rounded-2xl bg-white/5 border border-white/10">Sign In</a>
-                    <a href="/user/register" class="btn-magical text-center py-4 rounded-2xl">Create Free Account</a>
+                    <a @click.prevent="openAuth('login')" href="#" class="text-center py-4 rounded-2xl bg-white/5 border border-white/10">Sign In</a>
+                    <a @click.prevent="openAuth('register')" href="#" class="btn-magical text-center py-4 rounded-2xl">Create Free Account</a>
                 </div>
             </div>
         </div>
@@ -644,7 +799,7 @@
                 <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
                 <div class="svc-label" :class="tab === 'transfers' ? 'text-purple-400' : ''">Pickups</div>
             </button>
-            <a href="/user/login" class="svc-tile">
+            <a @click.prevent="openAuth('login')" href="#" class="svc-tile">
                 <div class="svc-icon bg-indigo-500/15 text-indigo-400"><i class="fa-solid fa-vault"></i></div>
                 <div class="svc-label">Vault</div>
             </a>
@@ -2046,7 +2201,7 @@
                     <li><a @click="showLeadModal = true; leadContext = 'Migration Expert'; leadMessage = 'I need professional immigration support for my relocation.'" class="hover:text-white transition-colors cursor-pointer">Immigration Support</a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Corporate Concierge'; leadMessage = 'I want to discuss a Corporate Relocation or offshore business setup.'" class="hover:text-white transition-colors cursor-pointer">Business & Corp Setup</a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Visa & Immigration'; leadMessage = 'I need help managing my documents and visa applications in the Vault.'" class="hover:text-white transition-colors cursor-pointer">The Visa Vault</a></li>
-                    <li><a href="/user/login" class="hover:text-white transition-colors mt-4 inline-block font-semibold border-b border-slate-700 pb-1">Client Login <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></a></li>
+                    <li><a @click.prevent="openAuth('login')" href="#" class="hover:text-white transition-colors mt-4 inline-block font-semibold border-b border-slate-700 pb-1">Client Login <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></a></li>
                 </ul>
             </div>
 
@@ -2114,7 +2269,7 @@
             </button>
 
             <!-- ACCOUNT: Go to Sign In / Dashboard -->
-            <a href="/user/login" id="nav-account" class="nav-item">
+            <a @click.prevent="openAuth('login')" href="#" id="nav-account" class="nav-item">
                 <div class="nav-icon"><i class="fa-solid fa-circle-user"></i></div>
                 <div class="nav-label">Account</div>
                 <div class="nav-dot"></div>
