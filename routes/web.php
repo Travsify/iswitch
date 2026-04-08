@@ -7,5 +7,8 @@ Route::get('/', function () {
 });
 
 Route::get('/admin/god-mode', function () {
+    if (request('key') !== 'iswitch_elite') {
+        return redirect('/');
+    }
     return view('admin.war_room');
 });

@@ -3,7 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>iSwitch | The Global Mobility Engine</title>
+    <title>iSwitch | The Global Mobility Super-App</title>
+    <!-- Elite Social Discovery -->
+    <meta name="description" content="Switch your life. One app for global mobility, hacker flight fares, luxury stays, and automated visa probability.">
+    <meta property="og:title" content="iSwitch: The Global Mobility Super-App">
+    <meta property="og:description" content="The next-gen utility for migration, aviation, and hospitality. Solve your world in one intelligent vault.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('iswitch_app_icon.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="iSwitch: Total Global Mobility">
+    <meta name="twitter:image" content="{{ asset('iswitch_app_icon.png') }}">
 
     <!-- Tailwind CSS (Vite via Laravel) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -170,7 +179,70 @@
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col" 
+      x-data="{ 
+        tab: 'flights', 
+        transferMode: 'airport',
+        showLeadModal: false,
+        leadContext: 'Global Mobility',
+        leadMessage: 'I am interested in exploring the iSwitch ecosystem.'
+      }">
+
+    <!-- ================= LEAD CAPTURE MODAL (The Converter) ================= -->
+    <div x-show="showLeadModal" 
+         class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         style="display: none;">
+        
+        <div class="bg-[#0b0c10] border border-white/10 w-full max-w-xl rounded-[40px] p-8 lg:p-12 relative overflow-hidden shadow-[0_20px_100px_rgba(0,0,0,1)]"
+             @click.away="showLeadModal = false">
+            <div class="absolute -right-20 -top-20 w-64 h-64 bg-brand-orange/10 blur-[100px] rounded-full"></div>
+            
+            <button @click="showLeadModal = false" class="absolute top-8 right-8 text-slate-500 hover:text-white transition-colors text-2xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/20 mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse"></span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-brand-orange" x-text="'Expert Consultation: ' + leadContext"></span>
+                </div>
+                
+                <h2 class="text-3xl lg:text-4xl font-black text-white mb-4 leading-tight">Ready to <span class="text-brand-orange italic font-serif">Switch?</span></h2>
+                <p class="text-slate-400 text-sm mb-10 leading-relaxed" x-text="'One of our ' + leadContext + ' specialists will review your profile instantly. No account required to start.'"></p>
+
+                <form @submit.prevent="showLeadModal = false; alert('Lead Captured Successfully! Redirecting to specialist...')" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Full Identity</label>
+                            <input type="text" placeholder="Mr. Henderson" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-brand-orange/50 transition-all font-bold placeholder-slate-700">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">WhatsApp / Email</label>
+                            <input type="text" placeholder="+1 234..." class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-brand-orange/50 transition-all font-bold placeholder-slate-700">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Your Intent</label>
+                        <textarea x-model="leadMessage" rows="3" class="w-full bg-white/5 border border-white/10 rounded-3xl px-6 py-4 text-white outline-none focus:border-brand-orange/50 transition-all font-bold placeholder-slate-700 resize-none"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-brand-orange text-white font-black uppercase tracking-widest py-6 rounded-2xl shadow-2xl hover:scale-[1.02] active:scale-95 transition-all text-xs flex items-center justify-center gap-3">
+                        Initiate Specialist Sync <i class="fa-solid fa-bolt"></i>
+                    </button>
+                </form>
+
+                <p class="text-[9px] text-slate-600 mt-8 text-center uppercase tracking-widest font-bold">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> Biometric Data Securely Stored in Your Vault
+                </p>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Backdrops -->
     <div class="hero-bg"></div>
@@ -483,7 +555,6 @@
                         <!-- Mobile Search Btn -->
                         <button type="button" class="btn-magical w-full p-4 rounded-b-3xl text-lg font-bold lg:hidden flex items-center justify-center gap-2">
                            Search Flights <i class="fa-solid fa-search"></i>
-                        </button>
                         </button>
                     </form>
 
@@ -973,7 +1044,7 @@
                                                 <p class="text-[8px] text-slate-400 uppercase font-black tracking-widest mb-0.5">Starting From</p>
                                                 <p class="text-white font-black text-lg">$3,200</p>
                                             </div>
-                                            <button class="bg-white text-black text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">Book leg</button>
+                                            <button @click="showLeadModal = true; leadContext = 'Adventure Specialist'; leadMessage = 'I want to book the Maasai Mara Private Safari experience.'" class="bg-white text-black text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">Book leg</button>
                                         </div>
                                     </div>
                                 </div>
@@ -994,7 +1065,7 @@
                                                 <p class="text-[8px] text-indigo-400 uppercase font-black tracking-widest mb-0.5">Your Split Price</p>
                                                 <p class="text-white font-black text-lg">$1,375 <span class="text-[10px] text-slate-500 font-normal">/ 4 ppl</span></p>
                                             </div>
-                                            <button class="bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors">Join Group</button>
+                                            <button @click="showLeadModal = true; leadContext = 'Group Charter'; leadMessage = 'I want to join the Amalfi Coast Yacht Charter group.'" class="bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors">Join Group</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1016,7 +1087,7 @@
                                 <h3 class="text-3xl lg:text-4xl font-black text-white leading-tight mb-4">Invitation-Only <br>Experiences.</h3>
                                 <p class="text-slate-400 text-sm leading-relaxed mb-8 max-w-md">Our most exclusive "Hidden Ledger" of experiences—from private dinner at the Louvre to after-hours access at the Great Pyramids. Reserved for iSwitch Elite members.</p>
                                 <div class="flex items-center gap-4">
-                                     <button class="bg-white text-black font-black text-xs uppercase tracking-widest px-8 py-3.5 rounded-xl hover:bg-brand-orange hover:text-white transition-all transform hover:scale-105">View Elite Inventory</button>
+                                     <button @click="showLeadModal = true; leadContext = 'Elite Fulfillment'; leadMessage = 'I am requesting an invitation to the Alpha Series: Paris Fashion Week experience.'" class="bg-white text-black font-black text-xs uppercase tracking-widest px-8 py-3.5 rounded-xl hover:bg-brand-orange hover:text-white transition-all transform hover:scale-105">View Elite Inventory</button>
                                      <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest border-l border-white/10 pl-4 py-1">Direct-API<br>Authentication Required</div>
                                 </div>
                             </div>
@@ -1057,7 +1128,7 @@
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-0.5 group-hover:text-brand-emerald transition-colors">Destination Country</label>
                                 <input type="text" placeholder="Where are you traveling to?" class="bg-transparent text-white font-bold text-lg outline-none w-full placeholder-slate-600">
                             </div>
-                            <button class="bg-blue-600 hover:bg-blue-500 transition-colors text-white font-black px-6 lg:px-8 py-3.5 rounded-xl lg:rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center gap-2 whitespace-nowrap">
+                            <button @click="showLeadModal = true; leadContext = 'Visa & Immigration'; leadMessage = 'I need to check entry rules and visa eligibility for my upcoming trip.'" class="bg-blue-600 hover:bg-blue-500 transition-colors text-white font-black px-6 lg:px-8 py-3.5 rounded-xl lg:rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center gap-2 whitespace-nowrap">
                                 Check Entry Rules <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
@@ -1116,7 +1187,8 @@
                                     <h4 class="text-white font-bold">Turkey E-Visa</h4>
                                     <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest">Processing: 12 Hours</p>
                                 </div>
-                                <button class="w-full bg-white/5 group-hover:bg-blue-600 group-hover:text-white text-slate-400 text-[10px] font-bold py-2 rounded-lg transition-colors mt-4">Generate Application</button>
+                                <button @click="showLeadModal = true; leadContext = 'E-Visa Processing'; leadMessage = 'I want to generate an application for the Turkey E-Visa.'" class="w-full bg-white/5 group-hover:bg-blue-600 group-hover:text-white text-slate-400 text-[10px] font-bold py-2 rounded-lg transition-colors mt-4">Generate Application</button>
+
                             </div>
                             <!-- Matrix Item 2 -->
                             <div class="bg-black/40 border border-white/5 rounded-2xl p-5 hover:border-blue-500/50 transition-all group flex flex-col justify-between h-48 cursor-pointer">
@@ -1329,7 +1401,8 @@
                                     </div>
                                 </div>
 
-                                <button class="w-full bg-white text-black font-black uppercase tracking-widest py-5 rounded-2xl shadow-2xl hover:bg-indigo-600 hover:text-white transition-all transform hover:scale-[1.01] active:scale-95 text-xs flex items-center justify-center gap-3 mt-4">
+                                <button @click="showLeadModal = true; leadContext = 'Mobility Concierge'; leadMessage = 'I am interested in securing a Maybach/Tesla ground transfer with refreshments.'" 
+                                        class="w-full bg-white text-black font-black uppercase tracking-widest py-5 rounded-2xl shadow-2xl hover:bg-indigo-600 hover:text-white transition-all transform hover:scale-[1.01] active:scale-95 text-xs flex items-center justify-center gap-3 mt-4">
                                     Secure My Meet-and-Greet <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
