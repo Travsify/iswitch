@@ -483,7 +483,7 @@
     </nav>
 
     <!-- ULTRA PREMIUM HERO -->
-    <main class="flex-grow flex flex-col items-center justify-center pt-32 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto">
+    <main class="flex-grow flex flex-col items-center justify-center pt-24 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto overflow-hidden">
         
         <div class="text-center mb-10 lg:mb-16 w-full max-w-5xl mx-auto">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md mb-8">
@@ -1219,7 +1219,7 @@
                 <div x-show="tab === 'visas'" style="display: none;" class="w-full">
                     
                     <!-- Atlys Engine Form -->
-                    <div class="search-pill bg-[#0B1120]/80 backdrop-blur-xl border border-white/10 rounded-3xl lg:rounded-full p-2 flex flex-col lg:flex-row gap-2 shadow-[0_0_40px_rgba(59,130,246,0.15)] mb-6 relative z-20">
+                    <div class="bg-[#0B1120]/80 backdrop-blur-xl border border-white/10 rounded-[2rem] lg:rounded-full p-3 lg:p-2 flex flex-col lg:flex-row gap-2 shadow-[0_0_40px_rgba(59,130,246,0.15)] mb-8 relative z-20">
                         <div class="flex-1 bg-black/40 rounded-2xl lg:rounded-full p-4 flex items-center gap-4 group hover:bg-black/60 transition-colors cursor-text border border-transparent hover:border-white/5">
                             <i class="fa-solid fa-passport text-blue-500 text-2xl ml-4"></i>
                             <div>
@@ -1287,7 +1287,7 @@
                             <p class="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">The moment you enter your passport nationality above, our B2B engine scans the Global Entry Database to show you 100% verified E-Visa routes.</p>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             <!-- Matrix Item 1 -->
                             <div class="bg-black/40 border border-white/5 rounded-2xl p-5 hover:border-blue-500/50 transition-all group flex flex-col justify-between h-48 cursor-pointer">
                                 <div>
@@ -1410,7 +1410,7 @@
                          x-transition:enter-end="opacity-100 scale-100"
                          x-data="{ scanning: false, flightConfirmed: false, flightNum: '', arrivalAir: '' }">
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 pb-20">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-20">
                             <!-- Left: Terminal & Nameplate -->
                             <div class="flex flex-col gap-6">
                                 <!-- Intelligent Entry Block -->
