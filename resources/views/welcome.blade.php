@@ -853,11 +853,16 @@
             </div>
 
             <!-- Hamburger Button & Mobile Auth (Mobile) -->
-            <div class="lg:hidden flex items-center gap-4 z-50 relative">
-                <a @click.prevent="openAuth('login')" href="#" class="text-white text-sm font-bold bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
-                    Sign In
-                </a>
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white text-2xl focus:outline-none">
+            <div class="lg:hidden flex items-center gap-2 sm:gap-3 z-50 relative">
+                <div class="flex items-center bg-white/10 rounded-full p-0.5 backdrop-blur-md border border-white/5">
+                    <a @click.prevent="openAuth('login')" href="#" class="text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors">
+                        Sign In
+                    </a>
+                    <a @click.prevent="openAuth('register')" href="#" class="text-white text-[10px] sm:text-xs font-bold bg-brand-orange px-3 py-1.5 rounded-full shadow-sm shadow-brand-orange/20">
+                        Register
+                    </a>
+                </div>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white text-xl sm:text-2xl focus:outline-none px-1">
                     <i class="fa-solid" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars-staggered'"></i>
                 </button>
             </div>
@@ -877,8 +882,8 @@
                 <a href="/agent" class="text-white border-b border-white/10 pb-4 flex justify-between items-center">Partner Portal <i class="fa-solid fa-arrow-right text-sm"></i></a>
                 
                 <div class="mt-8 flex flex-col gap-4">
-                    <a @click.prevent="openAuth('login')" href="#" class="text-center py-4 rounded-2xl bg-white/5 border border-white/10">Sign In</a>
-                    <a @click.prevent="openAuth('register')" href="#" class="btn-magical text-center py-4 rounded-2xl">Create Free Account</a>
+                    <a @click.prevent="openAuth('login')" href="#" class="text-center text-lg py-4 rounded-2xl bg-white/5 border border-white/10">Sign In</a>
+                    <a @click.prevent="openAuth('register')" href="#" class="btn-magical text-center text-lg py-4 rounded-2xl">Register Now</a>
                 </div>
             </div>
         </div>
