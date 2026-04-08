@@ -1,0 +1,68 @@
+services:
+  - type: web
+    name: iswitch-api
+    env: docker
+    plan: free
+    region: ohio
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        fromValue: ${APP_KEY}
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromService:
+          type: database
+          name: iswitch-db
+          property: host
+      - key: DB_PORT
+        fromService:
+          type: database
+          name: iswitch-db
+          property: port
+      - key: DB_DATABASE
+        fromService:
+          type: database
+          name: iswitch-db
+          property: database
+      - key: DB_USERNAME
+        fromService:
+          type: database
+          name: iswitch-db
+          property: user
+      - key: DB_PASSWORD
+        fromService:
+          type: database
+          name: iswitch-db
+          property: password
+
+  - type: worker
+    name: iswitch-worker
+    env: docker
+    plan: free
+    region: ohio
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    buildCommand: ""
+    startCommand: "php artisan queue:work"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        fromValue: ${APP_KEY}
+      - key: DB_CONNECTION
+        value: pgsql
+      # ... (same DB env vars as above)
+
+databases:
+  - name: iswitch-db
+    plan: free
+    region: ohio
+
+cache:
+  - name: iswitch-redis
+    plan: free
+    region: ohio
