@@ -186,7 +186,8 @@
         transferMode: 'airport',
         showLeadModal: false,
         leadContext: 'Global Mobility',
-        leadMessage: 'I am interested in exploring the iSwitch ecosystem.'
+        leadMessage: 'I am interested in exploring the iSwitch ecosystem.',
+        flightConfirmed: false
       }">
 
     <!-- ================= LEAD CAPTURE MODAL (The Converter) ================= -->

@@ -14,6 +14,10 @@ export default {
             fontFamily: {
                 sans: ['Outfit', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'brand-orange': '#FF7D00',
+                'brand-emerald': '#00C897',
+            },
         },
     },
     plugins: [],
