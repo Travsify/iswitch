@@ -6,6 +6,16 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>iSwitch | The Global Mobility Super-App</title>
     <link rel="icon" href="/iswitch_brand_logo.png" type="image/png">
+    
+    <script>
+        // Global Elite State Hub
+        window.iSwitchState = {
+            flightConfirmed: false,
+            showLeadModal: false,
+            leadContext: 'Global Mobility',
+            leadMessage: 'Exploring the ecosystem'
+        };
+    </script>
     <!-- Elite Social Discovery -->
     <meta name="description" content="Switch your life. One app for global mobility, hacker flight fares, luxury stays, and automated visa probability.">
     <meta property="og:title" content="iSwitch: The Global Mobility Super-App">
@@ -262,7 +272,7 @@
             
             <!-- Brand Logo (High Fidelity) -->
             <a href="/" class="flex items-center gap-2 group relative z-50">
-                <img src="/iswitch_brand_logo.png" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
+                <img src="/iswitch_brand_logo.png" onerror="this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
                 <span class="text-2xl font-black tracking-tighter text-white group-hover:text-brand-orange transition-colors hidden lg:block">iSwitch</span>
             </a>
             
@@ -337,9 +347,9 @@
                 @auth
                     <a href="/user" class="text-sm font-bold text-brand-orange hover:text-orange-400 transition-colors">Go to Portal</a>
                 @else
-                    <a href="/user/login" class="text-sm font-bold text-white hover:text-brand-orange transition-colors">Sign In</a>
+                    <a href="/login" class="text-sm font-bold text-white hover:text-brand-orange transition-colors">Sign In</a>
                 @endauth
-                <a href="/user/register" class="btn-magical px-6 py-2.5 rounded-full text-sm font-bold text-white ml-2">
+                <a href="/register" class="btn-magical px-6 py-2.5 rounded-full text-sm font-bold text-white ml-2">
                     Premium Setup
                 </a>
             </div>

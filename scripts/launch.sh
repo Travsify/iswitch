@@ -36,7 +36,9 @@ php artisan migrate --force
 echo "⚡ Optimizing Engine..."
 php artisan config:cache
 php artisan route:cache
+php artisan view:clear
 php artisan view:cache
+php artisan filament:upgrade
 
 # Start Services
 echo "🌍 System Live. Handling connections."
