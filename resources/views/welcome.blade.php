@@ -272,7 +272,7 @@
             
             <!-- Brand Logo (High Fidelity) -->
             <a href="/" class="flex items-center gap-2 group relative z-50">
-                <img src="/iswitch_brand_logo.png" onerror="this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
+                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
                 <span class="text-2xl font-black tracking-tighter text-white group-hover:text-brand-orange transition-colors hidden lg:block">iSwitch</span>
             </a>
             
@@ -1726,7 +1726,7 @@
             <!-- Brand & CTA Col (Takes 2 columns) -->
             <div class="lg:col-span-2">
                 <a href="/" class="flex items-center gap-3 group relative z-50 mb-8 inline-flex">
-                    <img src="/iswitch_brand_logo.png" class="h-12 w-auto transform group-hover:scale-110 transition-transform duration-500">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-12 w-auto transform group-hover:scale-110 transition-transform duration-500">
                     <span class="text-3xl font-black tracking-tight text-white group-hover:text-brand-orange transition-colors">iSwitch</span>
                 </a>
                 <p class="text-slate-400 text-base leading-relaxed mb-10 max-w-sm">
