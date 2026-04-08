@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>iSwitch | The Global Mobility Super-App</title>
-    <link rel="icon" href="{{ asset('iswitch_brand_logo.png') }}" type="image/png">
+    <link rel="icon" href="/iswitch_brand_logo.png" type="image/png">
     <!-- Elite Social Discovery -->
     <meta name="description" content="Switch your life. One app for global mobility, hacker flight fares, luxury stays, and automated visa probability.">
     <meta property="og:title" content="iSwitch: The Global Mobility Super-App">
     <meta property="og:description" content="The next-gen utility for migration, aviation, and hospitality. Solve your world in one intelligent vault.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ asset('iswitch_brand_logo.png') }}">
+    <meta property="og:image" content="/iswitch_brand_logo.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="iSwitch: Total Global Mobility">
-    <meta name="twitter:image" content="{{ asset('iswitch_brand_logo.png') }}">
+    <meta name="twitter:image" content="/iswitch_brand_logo.png">
 
     <!-- Tailwind CSS (Vite via Laravel) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -260,8 +260,8 @@
         <div class="max-w-[90rem] mx-auto px-6 flex justify-between items-center">
             
             <!-- Brand Logo (High Fidelity) -->
-            <a href="#" class="flex items-center gap-2 group relative z-50">
-                <img src="{{ asset('iswitch_brand_logo.png') }}" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
+            <a href="/" class="flex items-center gap-2 group relative z-50">
+                <img src="/iswitch_brand_logo.png" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
                 <span class="text-2xl font-black tracking-tighter text-white group-hover:text-brand-orange transition-colors hidden lg:block">iSwitch</span>
             </a>
             
@@ -1714,8 +1714,8 @@
             
             <!-- Brand & CTA Col (Takes 2 columns) -->
             <div class="lg:col-span-2">
-                <a href="#" class="flex items-center gap-3 group relative z-50 mb-8 inline-flex">
-                    <img src="{{ asset('iswitch_brand_logo.png') }}" class="h-12 w-auto transform group-hover:scale-110 transition-transform duration-500">
+                <a href="/" class="flex items-center gap-3 group relative z-50 mb-8 inline-flex">
+                    <img src="/iswitch_brand_logo.png" class="h-12 w-auto transform group-hover:scale-110 transition-transform duration-500">
                     <span class="text-3xl font-black tracking-tight text-white group-hover:text-brand-orange transition-colors">iSwitch</span>
                 </a>
                 <p class="text-slate-400 text-base leading-relaxed mb-10 max-w-sm">
