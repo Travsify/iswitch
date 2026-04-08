@@ -287,9 +287,6 @@
         }
         .mobile-service-grid .svc-tile:active {
             transform: scale(0.93);
-            background: rgba(255,125,0,0.12);
-            border-color: rgba(255,125,0,0.35);
-        }
         .mobile-service-grid .svc-tile .svc-icon {
             width: 44px; height: 44px; border-radius: 14px;
             display: flex; align-items: center; justify-content: center; font-size: 20px;
@@ -298,18 +295,150 @@
             font-size: 9.5px; font-weight: 700; color: #94a3b8; line-height: 1.2;
         }
 
-        /* Smooth destination cards */
+        /* Smooth destination cards on mobile */
         .destination-card:hover { transform: none; }
         .destination-card:active { transform: scale(0.97); }
 
-        /* Hide desktop pill tabs on mobile — icon grid above replaces them */
+        /* Hide desktop pill tabs — icon grid replaces them */
         #desktop-tab-strip { display: none; }
+
+        /* ── PIXEL-PERFECT TYPOGRAPHY SCALE ── */
+        h1 { font-size: 22px !important; line-height: 1.15 !important; letter-spacing: -0.02em !important; }
+        h2 { font-size: 19px !important; line-height: 1.2 !important; }
+        h3 { font-size: 17px !important; line-height: 1.25 !important; }
+        h4 { font-size: 15px !important; }
+        p  { font-size: 13px !important; line-height: 1.6 !important; }
+        .text-sm, small { font-size: 12px !important; }
+        .hero-badge span { font-size: 10px !important; }
+
+        /* ── SEARCH ENGINE CARD — Perfect Mobile Stack ── */
+        #search-engine {
+            border-radius: 20px !important;
+            padding: 16px !important;
+            width: 100% !important;
+        }
+
+        /* All search input rows: full width, generous height */
+        #search-engine input[type="text"],
+        #search-engine input[type="email"],
+        #search-engine select {
+            font-size: 15px !important;
+            height: 52px !important;
+            padding: 0 16px 0 44px !important;
+        }
+
+        /* Stack flex rows vertically */
+        #search-engine form,
+        #search-engine .flex.flex-col.lg\:flex-row,
+        form[x-show] {
+            flex-direction: column !important;
+            border-radius: 16px !important;
+        }
+
+        /* Individual input sections: full width stacked */
+        #search-engine .flex-1,
+        #search-engine [class*="flex-1"] {
+            width: 100% !important;
+            padding: 12px 14px !important;
+            border-radius: 14px !important;
+        }
+
+        /* Remove dividers between stacked fields on mobile */
+        #search-engine .divide-y > * { border-top: 1px solid rgba(255,255,255,0.06) !important; }
+        #search-engine .divide-x > *,
+        #search-engine [class*="divide-x"] > * { border-left: none !important; border-top: 1px solid rgba(255,255,255,0.06) !important; }
+
+        /* Search submit button: Full width, 52px tall */
+        #search-engine button[type="submit"],
+        #search-engine .btn-magical,
+        #search-engine form > .btn-magical {
+            width: 100% !important;
+            height: 52px !important;
+            border-radius: 14px !important;
+            font-size: 14px !important;
+            font-weight: 900 !important;
+            margin-top: 4px !important;
+        }
+
+        /* Input label: Clear, small */
+        #search-engine label,
+        #search-engine .text-\[10px\] {
+            font-size: 9px !important;
+            letter-spacing: 0.08em !important;
+        }
+
+        /* Search results / flight results area */
+        #search-engine .grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+        /* Trip type switcher scrollable row */
+        #search-engine .flex.items-center.gap-3.mb-6 { gap: 8px !important; }
+
+        /* ── DESTINATION CARDS: Horizontal Snap Scroll ── */
+        .destinations-grid {
+            display: flex !important;
+            flex-direction: row !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            gap: 12px !important;
+            padding-bottom: 8px !important;
+            margin: 0 -4px !important;
+        }
+        .destinations-grid::-webkit-scrollbar { display: none; }
+        .destinations-grid > * {
+            flex: 0 0 76vw !important;
+            max-width: 300px !important;
+            scroll-snap-align: start !important;
+            height: 220px !important;
+        }
+        .destination-card { height: 220px !important; }
+
+        /* ── STATS / FEATURE GRIDS ── */
+        /* 4-col → 2×2 grid */
+        [class*="grid-cols-4"] { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+        [class*="grid-cols-3"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+        [class*="grid-cols-2"] { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+
+        /* ── BUTTONS: Minimum tap size ── */
+        .btn-magical { min-height: 48px !important; padding: 12px 20px !important; font-size: 14px !important; border-radius: 14px !important; }
+
+        /* ── GLASS WIDGETS on Mobile ── */
+        .glass-widget { padding: 16px !important; border-radius: 20px !important; }
+
+        /* ── SECTION SPACING ── */
+        section, [class*="py-20"], [class*="py-32"] { padding-top: 36px !important; padding-bottom: 36px !important; }
+        [class*="mb-16"] { margin-bottom: 24px !important; }
+        [class*="mb-10"] { margin-bottom: 16px !important; }
+        [class*="mt-16"] { margin-top: 24px !important; }
+
+        /* ── FOOTER: Compact Mobile ── */
+        footer .grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+        footer .lg\:col-span-2 { grid-column: 1 / -1 !important; }
+        footer p.text-slate-400 { font-size: 13px !important; line-height: 1.6 !important; }
+        footer h4 { font-size: 15px !important; margin-bottom: 0 !important; padding: 12px 0 !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        footer ul { padding-top: 16px !important; }
+        footer ul li a, footer ul li { font-size: 13px !important; }
+        footer [class*="px-6"] { padding-left: 16px !important; padding-right: 16px !important; }
+        footer .mb-20 { margin-bottom: 40px !important; }
+
+        /* ── MICRO-UTILITIES CARDS ── */
+        .glass-widget input { height: 44px !important; font-size: 14px !important; }
+        .glass-widget h4 { font-size: 14px !important; }
+        .glass-widget p { font-size: 11px !important; }
+
+        /* ── NAV COMPACT ── */
+        nav.glass-nav { padding: 10px 14px !important; }
+
+        /* ── MODAL FORMS ── */
+        .fixed.inset-0 input { height: 52px !important; font-size: 15px !important; }
     }
 
     @media (min-width: 1024px) {
         .mobile-only { display: none !important; }
         /* Show desktop pill tabs on desktop */
         #desktop-tab-strip { display: flex !important; }
+        .destinations-grid { display: grid; }
     }
 </style>
 
@@ -1030,7 +1159,7 @@
                             <h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-earth-americas text-brand-orange animate-pulse"></i> Handpicked Routes</h3>
                             <a href="#" class="text-brand-orange font-semibold text-sm hover:underline">Explore all <i class="fa-solid fa-arrow-right text-xs"></i></a>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 destinations-grid">
                             <!-- Card 1 -->
                             <div class="destination-card h-80 group border border-white/10">
                                 <img src="https://images.unsplash.com/photo-1502602898657-3e90760abfae?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="Paris">
@@ -2170,9 +2299,12 @@
             </div>
 
             <!-- Destinations Grid -->
-            <div>
-                <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-plane-up text-slate-500"></i> Trending Flights</h4>
-                <ul class="space-y-4 text-sm text-slate-400 font-medium">
+            <div x-data="{ open: window.innerWidth >= 1024 }">
+                <h4 @click="if(window.innerWidth < 1024) open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-plane-up text-slate-500"></i> Trending Flights</span>
+                    <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                </h4>
+                <ul x-show="open" x-collapse.duration.300ms class="space-y-4 text-sm text-slate-400 font-medium">
                     <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from Lagos to London.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">Lagos to London <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$750</span></a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from New York to Paris.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">New York to Paris <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$620</span></a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Aviation Specialist'; leadMessage = 'I want to book a flight from Dubai to Tokyo.'" class="hover:text-brand-orange transition-colors flex justify-between items-center group cursor-pointer">Dubai to Tokyo <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$890</span></a></li>
@@ -2182,9 +2314,12 @@
             </div>
 
             <!-- Hotels Grid -->
-            <div>
-                <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-hotel text-slate-500"></i> Amazing Hotels</h4>
-                <ul class="space-y-4 text-sm text-slate-400 font-medium">
+            <div x-data="{ open: window.innerWidth >= 1024 }">
+                <h4 @click="if(window.innerWidth < 1024) open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-hotel text-slate-500"></i> Amazing Hotels</span>
+                    <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                </h4>
+                <ul x-show="open" x-collapse.duration.300ms class="space-y-4 text-sm text-slate-400 font-medium">
                     <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Soneva Jani.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Soneva Jani <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$2,400</span></a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Burj Al Arab.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Burj Al Arab <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,850</span></a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Hospitality Specialist'; leadMessage = 'I want to book a stay at Aman Tokyo.'" class="hover:text-brand-emerald transition-colors flex justify-between items-center group cursor-pointer">Aman Tokyo <span class="bg-slate-800 px-2 py-1 relative right-0 group-hover:-translate-x-1 transition-transform rounded-md text-xs border border-white/10">$1,200</span></a></li>
@@ -2194,9 +2329,12 @@
             </div>
 
             <!-- Consultations Grid -->
-            <div>
-                <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-user-tie text-slate-500"></i> Consultations</h4>
-                <ul class="space-y-4 text-sm text-slate-400 font-medium">
+            <div x-data="{ open: window.innerWidth >= 1024 }">
+                <h4 @click="if(window.innerWidth < 1024) open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-slate-500"></i> Consultations</span>
+                    <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                </h4>
+                <ul x-show="open" x-collapse.duration.300ms class="space-y-4 text-sm text-slate-400 font-medium">
                     <li><a @click="showLeadModal = true; leadContext = 'Educational Placement'; leadMessage = 'I am interested in university placements and study abroad support.'" class="hover:text-white transition-colors cursor-pointer">Study Abroad Experts</a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Migration Expert'; leadMessage = 'I need professional immigration support for my relocation.'" class="hover:text-white transition-colors cursor-pointer">Immigration Support</a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Corporate Concierge'; leadMessage = 'I want to discuss a Corporate Relocation or offshore business setup.'" class="hover:text-white transition-colors cursor-pointer">Business & Corp Setup</a></li>
@@ -2206,9 +2344,12 @@
             </div>
 
             <!-- Partner Grid -->
-            <div>
-                <h4 class="text-white font-bold text-lg mb-6 flex items-center gap-2"><i class="fa-solid fa-handshake text-slate-500"></i> Partnerships</h4>
-                <ul class="space-y-4 text-sm text-slate-400 font-medium">
+            <div x-data="{ open: window.innerWidth >= 1024 }">
+                <h4 @click="if(window.innerWidth < 1024) open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-handshake text-slate-500"></i> Partnerships</span>
+                    <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                </h4>
+                <ul x-show="open" x-collapse.duration.300ms class="space-y-4 text-sm text-slate-400 font-medium">
                     <li><a href="/agent" class="hover:text-brand-orange transition-colors">B2B Agent Portal</a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Partnership Team'; leadMessage = 'I am interested in joining the iSwitch Affiliate Network.'" class="hover:text-brand-orange transition-colors cursor-pointer">Affiliate Network</a></li>
                     <li><a @click="showLeadModal = true; leadContext = 'Corporate Sales'; leadMessage = 'I want to open a Corporate Account for my company employees.'" class="hover:text-brand-orange transition-colors cursor-pointer">Corporate Accounts</a></li>
