@@ -18,6 +18,10 @@ Route::get('/agent', function () {
     return view('auth.agent_login');
 })->name('agent.portal');
 
+Route::get('/agent/register', function () {
+    return view('auth.agent_register');
+})->name('agent.register');
+
 Route::get('/admin/god-mode', function () {
     if (request('key') !== 'iswitch_elite') {
         return redirect('/');

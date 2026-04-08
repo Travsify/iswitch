@@ -103,14 +103,16 @@
                     <a href="#" class="text-xs font-medium text-brand-orange hover:text-white transition-colors">Forgot Password?</a>
                 </div>
 
-                <a href="/admin/god-mode?key=iswitch_elite" class="block w-full text-center bg-white text-slate-950 font-black py-4 rounded-2xl hover:bg-brand-orange hover:text-white transform active:scale-95 transition-all shadow-xl shadow-brand-orange/10 group">
-                    Enter Dashboard
-                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                </a>
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-white text-slate-950 font-black py-4 rounded-2xl hover:bg-brand-emerald hover:text-white transform active:scale-95 transition-all shadow-xl shadow-brand-emerald/10 group">
+                        Sign Up for Free
+                        <i class="fa-solid fa-sparkles ml-2"></i>
+                    </button>
+                </div>
             </form>
 
             <div class="mt-12 pt-12 border-t border-white/5 text-center">
-                <p class="text-slate-500">Don't have an iSwitch account? <a href="/register" class="text-white font-bold hover:text-brand-orange transition-colors">Start Free Trial</a></p>
+                <p class="text-slate-500">Interested in becoming a partner? <a href="/agent/register" class="text-white font-bold hover:text-brand-emerald transition-colors cursor-pointer">Start Partner Application</a></p>
                 <div class="mt-8 flex justify-center gap-8 grayscale opacity-40">
                     <span class="text-xs font-bold uppercase tracking-widest text-slate-600">Secure. Encryption. Global nodes.</span>
                 </div>

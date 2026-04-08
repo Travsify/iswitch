@@ -102,7 +102,7 @@
             </form>
 
             <div class="mt-12 pt-12 border-t border-white/5 text-center">
-                <p class="text-slate-500">Interested in becoming a partner? <a @click="window.location.href='/'" class="text-white font-bold hover:text-brand-emerald transition-colors cursor-pointer">Contact B2B Team</a></p>
+                <p class="text-slate-500">Interested in becoming a partner? <a href="/agent/register" class="text-white font-bold hover:text-brand-emerald transition-colors cursor-pointer">Start Partner Application</a></p>
             </div>
         </div>
     </div>

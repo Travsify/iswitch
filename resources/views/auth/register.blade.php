@@ -111,7 +111,7 @@
 
                 <div class="md:col-span-2">
                     <button type="submit" class="w-full bg-white text-slate-950 font-black py-4 rounded-2xl hover:bg-brand-emerald hover:text-white transform active:scale-95 transition-all shadow-xl shadow-brand-emerald/10 group">
-                        Initialize Membership
+                        Sign Up for Free
                         <i class="fa-solid fa-sparkles ml-2"></i>
                     </button>
                 </div>
