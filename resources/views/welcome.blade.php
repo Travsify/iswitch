@@ -913,27 +913,27 @@
         ══════════════════════════════════════════════════ -->
         <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-4 mobile-only">
             <!-- Row 1: Core Services -->
-            <button type="button" @click="tab = 'flights'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
+            <button type="button" @click="tab = 'flights'" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
                 <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
                 <div class="svc-label" :class="tab === 'flights' ? 'text-orange-400' : ''">Flights</div>
             </button>
-            <button type="button" @click="tab = 'hotels'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'hotels' ? 'border-emerald-400/60 bg-emerald-500/10' : ''">
+            <button type="button" @click="tab = 'hotels'" class="svc-tile" :class="tab === 'hotels' ? 'border-emerald-400/60 bg-emerald-500/10' : ''">
                 <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
                 <div class="svc-label" :class="tab === 'hotels' ? 'text-emerald-400' : ''">Hotels</div>
             </button>
-            <button type="button" @click="tab = 'visas'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'visas' ? 'border-blue-400/60 bg-blue-500/10' : ''">
+            <button type="button" @click="tab = 'visas'" class="svc-tile" :class="tab === 'visas' ? 'border-blue-400/60 bg-blue-500/10' : ''">
                 <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
                 <div class="svc-label" :class="tab === 'visas' ? 'text-blue-400' : ''">Visas</div>
             </button>
-            <button type="button" @click="tab = 'insurance'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'insurance' ? 'border-pink-400/60 bg-pink-500/10' : ''">
+            <button type="button" @click="tab = 'insurance'" class="svc-tile" :class="tab === 'insurance' ? 'border-pink-400/60 bg-pink-500/10' : ''">
                 <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
                 <div class="svc-label" :class="tab === 'insurance' ? 'text-pink-400' : ''">Insurance</div>
             </button>
-            <button type="button" @click="tab = 'tours'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'tours' ? 'border-yellow-400/60 bg-yellow-500/10' : ''">
+            <button type="button" @click="tab = 'tours'" class="svc-tile" :class="tab === 'tours' ? 'border-yellow-400/60 bg-yellow-500/10' : ''">
                 <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
                 <div class="svc-label" :class="tab === 'tours' ? 'text-yellow-400' : ''">Tours</div>
             </button>
-            <button type="button" @click="tab = 'transfers'; document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'transfers' ? 'border-purple-400/60 bg-purple-500/10' : ''">
+            <button type="button" @click="tab = 'transfers'" class="svc-tile" :class="tab === 'transfers' ? 'border-purple-400/60 bg-purple-500/10' : ''">
                 <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
                 <div class="svc-label" :class="tab === 'transfers' ? 'text-purple-400' : ''">Pickups</div>
             </button>
@@ -1310,7 +1310,7 @@
                 </div>
 
                 <!-- ================= HOTELS ================= -->
-                <div x-show="tab === 'hotels'" style="display: none;" class="w-full">
+                <div x-show="tab === 'hotels'" x-cloak class="w-full">
                     <form action="/search" class="search-pill flex flex-col lg:flex-row w-full rounded-3xl lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-2xl">
                         <div class="search-pill-input flex-[2] p-4 lg:py-4 lg:px-8 cursor-text group">
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-emerald transition-colors">Where are you going?</label>
@@ -1520,7 +1520,7 @@
                 </div>
 
                 <!-- ================= TOURS ================= -->
-                <div x-show="tab === 'tours'" style="display: none;" class="w-full">
+                <div x-show="tab === 'tours'" x-cloak class="w-full">
                     <!-- Live Activity Ticker (FOMO) -->
                     <div class="mb-8 overflow-hidden bg-black/40 border-y border-white/5 py-2.5 relative">
                         <div class="flex items-center gap-12 animate-marquee whitespace-nowrap">
@@ -1635,7 +1635,7 @@
                 </div>
 
                 <!-- ================= VISAS ================= -->
-                <div x-show="tab === 'visas'" style="display: none;" class="w-full">
+                <div x-show="tab === 'visas'" x-cloak class="w-full">
                     
                     <!-- Atlys Engine Form -->
                     <div class="bg-[#0B1120]/80 backdrop-blur-xl border border-white/10 rounded-[2rem] lg:rounded-full p-3 lg:p-2 flex flex-col lg:flex-row gap-2 shadow-[0_0_40px_rgba(59,130,246,0.15)] mb-8 relative z-20">
@@ -1810,7 +1810,7 @@
                 </div>
 
                 <!-- ================= TRANSFERS ================= -->
-                <div x-show="tab === 'transfers'" style="display: none;" class="w-full" x-data="{ transferMode: 'airport' }">
+                <div x-show="tab === 'transfers'" x-cloak class="w-full" x-data="{ transferMode: 'airport' }">
                     
                     <!-- Monzo-Style Sub-Navigation -->
                     <div class="flex items-center gap-1 bg-black/40 p-1.5 rounded-2xl border border-white/5 mb-8 w-full max-w-md mx-auto">
@@ -2082,7 +2082,7 @@
                 </div>
 
                 <!-- ================= INSURANCE ================= -->
-                <div x-show="tab === 'insurance'" style="display: none;" class="w-full" x-data="{ insType: 'medical', insCountry: '', recommended: '' }">
+                <div x-show="tab === 'insurance'" x-cloak class="w-full" x-data="{ insType: 'medical', insCountry: '', recommended: '' }">
                     
                     <!-- Global Insurance Hub Header -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 pb-12">
