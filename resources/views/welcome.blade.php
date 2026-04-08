@@ -770,8 +770,8 @@
             
             <!-- Brand Logo (High Fidelity) -->
             <a href="/" class="flex items-center gap-2 group relative z-50">
-                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-500">
-                <span class="text-2xl font-black tracking-tighter text-white group-hover:text-brand-orange transition-colors hidden lg:block">iSwitch</span>
+                <img src="/iswitch_brand_logo.png" class="h-8 sm:h-10 w-auto transform group-hover:scale-105 transition-transform duration-500" alt="iSwitch Logo">
+                <span class="text-xl sm:text-2xl font-black tracking-tighter text-white group-hover:text-brand-orange transition-colors">iSwitch</span>
             </a>
             
             <!-- Desktop Menu -->
@@ -852,10 +852,15 @@
                 </a>
             </div>
 
-            <!-- Hamburger Button (Mobile) -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-white text-2xl focus:outline-none z-50 relative">
-                <i class="fa-solid" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars-staggered'"></i>
-            </button>
+            <!-- Hamburger Button & Mobile Auth (Mobile) -->
+            <div class="lg:hidden flex items-center gap-4 z-50 relative">
+                <a @click.prevent="openAuth('login')" href="#" class="text-white text-sm font-bold bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
+                    Sign In
+                </a>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white text-2xl focus:outline-none">
+                    <i class="fa-solid" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars-staggered'"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Mobile Menu Overlay -->
@@ -902,7 +907,7 @@
              Above the search engine — MOBILE ONLY
              Acts as the tab switcher replacing the hidden pill tabs
         ══════════════════════════════════════════════════ -->
-        <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-4 mobile-only" x-data>
+        <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-4 mobile-only">
             <!-- Row 1: Core Services -->
             <button @click="tab = 'flights'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
                 <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
