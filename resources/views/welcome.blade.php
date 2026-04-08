@@ -191,7 +191,16 @@
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col" 
+<style>
+    [x-cloak] { display: none !important; }
+    html, body { 
+        max-width: 100%; 
+        overflow-x: hidden !important;
+        position: relative;
+    }
+</style>
+
+<body class="antialiased min-h-screen flex flex-col bg-[#030712] text-white" 
       x-data="{ 
         tab: 'flights', 
         transferMode: 'airport',
@@ -482,8 +491,8 @@
                 <span class="text-xs font-bold text-slate-300 tracking-wide uppercase">The Future of Mobility is Live</span>
             </div>
             
-            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-[6rem] font-black leading-[1.05] tracking-tighter mb-6">
-                <span class="text-gradient">Limitless Travel.</span><br>
+            <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-[6rem] font-black leading-[1.1] sm:leading-[1.05] tracking-tighter mb-6 break-words">
+                <span class="text-gradient">Limitless Travel.</span><br class="hidden sm:block">
                 <span class="text-gradient-orange">Zero Friction.</span>
             </h1>
             <p class="text-lg md:text-2xl text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
@@ -530,38 +539,36 @@
                 <!-- ================= FLIGHTS ================= -->
                 <div x-show="tab === 'flights'" class="w-full" x-data="{ tripType: 'round' }">
                     
-                    <!-- Trip Type Switcher -->
-                    <div class="flex items-center gap-4 mb-4 px-2">
-                        <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer group">
+                    <!-- Trip Type Switcher (Responsive) -->
+                    <div class="flex items-center gap-3 mb-6 px-1 overflow-x-auto hide-scroll pb-2">
+                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
                             <input type="radio" name="trip" value="one" x-model="tripType" class="hidden">
                             <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'one' ? 'border-brand-orange' : 'group-hover:border-white'">
                                 <div class="w-2 h-2 rounded-full bg-brand-orange transition-transform" :class="tripType === 'one' ? 'scale-100' : 'scale-0'"></div>
                             </div>
-                            <span :class="tripType === 'one' ? 'text-white' : 'text-slate-400 group-hover:text-white'">One-way</span>
+                            <span :class="tripType === 'one' ? 'text-white' : 'text-slate-400'">One-way</span>
                         </label>
-                        <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer group">
+                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
                             <input type="radio" name="trip" value="round" x-model="tripType" class="hidden">
                             <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'round' ? 'border-brand-orange' : 'group-hover:border-white'">
                                 <div class="w-2 h-2 rounded-full bg-brand-orange transition-transform" :class="tripType === 'round' ? 'scale-100' : 'scale-0'"></div>
                             </div>
-                            <span :class="tripType === 'round' ? 'text-white' : 'text-slate-400 group-hover:text-white'">Round-trip</span>
+                            <span :class="tripType === 'round' ? 'text-white' : 'text-slate-400'">Round-trip</span>
                         </label>
-                        <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer group">
+                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
                             <input type="radio" name="trip" value="multi" x-model="tripType" class="hidden">
                             <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'multi' ? 'border-brand-orange' : 'group-hover:border-white'">
                                 <div class="w-2 h-2 rounded-full bg-brand-orange transition-transform" :class="tripType === 'multi' ? 'scale-100' : 'scale-0'"></div>
                             </div>
-                            <span :class="tripType === 'multi' ? 'text-white' : 'text-slate-400 group-hover:text-white'">Multi-city</span>
+                            <span :class="tripType === 'multi' ? 'text-white' : 'text-slate-400'">Multi-city</span>
                         </label>
-                        
-                        <!-- Nomad Button added to Trip Types -->
-                        <div class="w-px h-4 bg-white/20 mx-1"></div>
-                        <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer group ml-1 relative group" title="Tell us your budget, we find the destination.">
+                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
                             <input type="radio" name="trip" value="nomad" x-model="tripType" class="hidden">
-                            <div class="px-3 py-1 rounded-full border transition-all flex items-center gap-1.5" :class="tripType === 'nomad' ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-white/5 border-white/10 text-slate-300 group-hover:bg-white/10 group-hover:text-white'">
-                                <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> <span>Inspire Me</span>
+                            <div class="px-3 py-1 rounded-full border transition-all flex items-center gap-1.5" :class="tripType === 'nomad' ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-white/5 border-white/10 text-slate-300'">
+                                <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> <span>Inspire Me</span>
                             </div>
                         </label>
+                    </div>
                         
                         <div class="ml-auto" x-data="{ alertModal: false, alertEmail: '' }">
                             <button @click.prevent="alertModal = true" class="text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1.5 transition-colors flex items-center gap-2 text-brand-orange">
@@ -1818,12 +1825,12 @@
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-px bg-gradient-to-r from-transparent via-brand-orange to-transparent opacity-50"></div>
         <div class="absolute -top-[300px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-brand-orange/10 blur-[100px] rounded-full pointer-events-none"></div>
 
-        <div class="max-w-[90rem] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-x-12 gap-y-16 mb-20 relative">
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-x-12 gap-y-16 mb-20 relative">
             
             <!-- Brand & CTA Col (Takes 2 columns) -->
             <div class="lg:col-span-2">
                 <a href="/" class="flex items-center gap-3 group relative z-50 mb-8 inline-flex">
-                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-12 w-auto transform group-hover:scale-110 transition-transform duration-500">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 sm:h-12 w-auto max-w-full transform group-hover:scale-110 transition-transform duration-500">
                     <span class="text-3xl font-black tracking-tight text-white group-hover:text-brand-orange transition-colors">iSwitch</span>
                 </a>
                 <p class="text-slate-400 text-base leading-relaxed mb-10 max-w-sm">
