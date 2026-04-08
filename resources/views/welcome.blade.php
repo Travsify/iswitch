@@ -284,7 +284,7 @@
          x-transition:leave-end="opacity-0"
          style="display: none;">
         
-        <div class="bg-[#0b0c10] border border-white/10 w-full max-w-xl rounded-[40px] p-8 lg:p-12 relative overflow-hidden shadow-[0_20px_100px_rgba(0,0,0,1)]"
+        <div class="bg-[#0b0c10] border border-white/10 w-full max-w-xl rounded-[40px] p-6 lg:p-12 relative overflow-y-auto max-h-[90vh] shadow-[0_20px_100px_rgba(0,0,0,1)]"
              @click.away="showLeadModal = false">
             <div class="absolute -right-20 -top-20 w-64 h-64 bg-brand-orange/10 blur-[100px] rounded-full"></div>
             
@@ -462,7 +462,7 @@
                 <span class="text-xs font-bold text-slate-300 tracking-wide uppercase">The Future of Mobility is Live</span>
             </div>
             
-            <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] font-black leading-[1.05] tracking-tighter mb-6">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-[6rem] font-black leading-[1.05] tracking-tighter mb-6">
                 <span class="text-gradient">Limitless Travel.</span><br>
                 <span class="text-gradient-orange">Zero Friction.</span>
             </h1>
@@ -475,7 +475,8 @@
         <div id="search-engine" class="w-full max-w-6xl glass-widget p-3 md:p-6 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10" x-data="{ tab: 'flights' }">
             
             <!-- Category Switcher (Scrollable on Mobile) -->
-            <div class="flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6">
+            <div class="flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6 no-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
+                <style>.no-scrollbar::-webkit-scrollbar { display: none; }</style>
                 
                 <button @click="tab = 'flights'" :class="tab === 'flights' ? 'text-white border-brand-orange bg-brand-orange/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
                     <i class="fa-solid fa-plane"></i> Flights
@@ -564,83 +565,76 @@
                         </div>
                     </div>
 
-                    <!-- Search Pill (Airbnb Style) -->
-                    <form @submit.prevent="fetchFlights()" class="search-pill flex flex-col lg:flex-row w-full rounded-3xl lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-slate-700 relative z-20">
-                        <div class="search-pill-input flex-[1.5] p-3 lg:py-4 lg:px-6 cursor-text group relative">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Where from?</label>
-                            <div class="flex items-center gap-2 mt-1">
-                                <i class="fa-solid fa-plane-departure text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" name="origin" placeholder="Lagos (LOS)" x-model="searchOrigin" class="bg-transparent border-none text-white focus:outline-none w-full font-semibold placeholder:text-slate-600 text-lg lg:text-xl">
-                            </div>
-                        </div>
-                        <div class="search-pill-input flex-[1.5] p-3 lg:py-4 lg:px-6 cursor-text group relative">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Where to?</label>
-                            <div class="flex items-center gap-2 mt-1">
-                                <i class="fa-solid fa-plane-arrival text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" name="destination" placeholder="London (LHR)" x-model="searchDest" class="bg-transparent border-none text-white focus:outline-none w-full font-semibold placeholder:text-slate-600 text-lg lg:text-xl">
-                            </div>
-                        </div>
-                        <div class="search-pill-input flex-1 p-3 lg:py-4 lg:px-6 cursor-text group relative">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Departure</label>
-                            <div class="flex items-center gap-2 mt-1">
-                                <i class="fa-regular fa-calendar text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" placeholder="Add date" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600">
-                            </div>
-                        </div>
-                        <div x-show="tripType !== 'one'" x-transition class="search-pill-input flex-1 p-3 lg:py-4 lg:px-6 cursor-text group relative border-t lg:border-t-0 lg:border-l border-white/10">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Return</label>
-                            <div class="flex items-center gap-2 mt-1">
-                                <i class="fa-regular fa-calendar-check text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" placeholder="Add date" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600">
-                            </div>
-                        </div>
-                        <div class="search-pill-input flex-[1.2] p-3 lg:py-4 lg:px-6 cursor-text group flex justify-between items-center relative border-t lg:border-t-0 lg:border-l border-white/10" x-data="{ popover: false }">
-                            <div @click="popover = !popover" class="cursor-pointer w-full">
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Travelers & Class</label>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <i class="fa-solid fa-user text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                    <input type="text" readonly value="1 Adult, Economy" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600 cursor-pointer pointer-events-none truncate">
-                                </div>
-                            </div>
-                            
-                            <!-- Dropdown Popover UX for Passengers -->
-                            <div x-show="popover" @click.outside="popover = false" x-transition class="absolute top-full right-0 mt-4 w-72 glass-widget p-4 rounded-2xl shadow-2xl z-[60] border border-white/10" style="display: none;">
-                                <div class="flex justify-between items-center mb-4">
-                                    <div>
-                                        <h4 class="font-bold text-white">Adults</h4>
-                                        <p class="text-xs text-slate-400">Age 12+</p>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <button type="button" class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-slate-300 hover:border-white transition-colors"><i class="fa-solid fa-minus text-xs"></i></button>
-                                        <span class="font-bold">1</span>
-                                        <button type="button" class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-slate-300 hover:border-white transition-colors"><i class="fa-solid fa-plus text-xs"></i></button>
-                                    </div>
-                                </div>
-                                <div class="border-t border-white/10 my-3"></div>
-                                <div>
-                                    <h4 class="font-bold text-white mb-2 text-sm">Cabin Class</h4>
-                                    <select class="w-full bg-black/50 border border-slate-700 rounded-lg p-2 text-sm text-white outline-none focus:border-brand-orange">
-                                        <option>Economy</option>
-                                        <option>Premium Economy</option>
-                                        <option>Business Class</option>
-                                        <option>First Class</option>
-                                    </select>
-                                </div>
-                                <button type="button" @click="popover = false" class="w-full mt-4 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg text-sm transition-colors">Done</button>
-                            </div>
-                            
-                            <!-- Search Btn -->
-                            <button type="submit" class="btn-magical w-14 h-14 rounded-full flex items-center justify-center shrink-0 ml-4 hidden lg:flex shadow-[0_0_20px_rgba(255,125,0,0.5)]" :disabled="searching">
-                                <i class="fa-solid fa-search text-xl" x-show="!searching"></i>
-                                <i class="fa-solid fa-spinner animate-spin text-xl" x-show="searching"></i>
-                            </button>
-                        </div>
+                    <!-- iSwitch Search Engine (The Pulse) -->
+                    <form @submit.prevent="fetchFlights()" class="flex flex-col lg:flex-row w-full bg-slate-900/60 backdrop-blur-3xl rounded-[2rem] lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_30px_60px_rgba(0,0,0,1)] border border-white/10 relative z-20 transition-all focus-within:ring-4 ring-brand-orange/10">
                         
-                        <!-- Mobile Search Btn -->
-                        <button type="submit" class="btn-magical w-full p-4 rounded-b-3xl text-lg font-bold lg:hidden flex items-center justify-center gap-2" :disabled="searching">
-                           <span x-show="!searching">Search Flights</span>
-                           <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Searching...</span>
-                        </button>
+                        <!-- ORIGIN -->
+                        <div class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-text relative">
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-focus-within:text-brand-orange transition-colors">Where From?</label>
+                            <div class="flex items-center gap-3 mt-1.5">
+                                <i class="fa-solid fa-plane-departure text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
+                                <input type="text" name="origin" placeholder="Lagos (LOS)" x-model="searchOrigin" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                            </div>
+                        </div>
+
+                        <!-- DESTINATION -->
+                        <div class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-text relative">
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-focus-within:text-brand-orange transition-colors">Where To?</label>
+                            <div class="flex items-center gap-3 mt-1.5">
+                                <i class="fa-solid fa-plane-arrival text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
+                                <input type="text" name="destination" placeholder="London (LHR)" x-model="searchDest" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                            </div>
+                        </div>
+
+                        <!-- TRAVELERS & CLASS -->
+                        <div class="flex-1 p-6 lg:py-5 lg:px-8 group relative" x-data="{ popover: false }">
+                            <div @click="popover = !popover" class="cursor-pointer">
+                                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-focus-within:text-brand-orange transition-colors">Passengers & Class</label>
+                                <div class="flex items-center gap-3 mt-1.5">
+                                    <i class="fa-solid fa-user-group text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
+                                    <span class="text-white font-black text-lg truncate">1 Adult, Economy</span>
+                                </div>
+                            </div>
+                            <!-- Popover -->
+                            <div x-show="popover" @click.outside="popover = false" x-transition class="absolute top-full left-0 lg:right-0 lg:left-auto mt-4 w-full lg:w-80 bg-[#0b0c10] border border-white/10 p-6 rounded-3xl shadow-2xl z-[100]" style="display: none;">
+                                <div class="space-y-6">
+                                    <div class="flex justify-between items-center">
+                                        <div><h4 class="font-bold text-white text-sm">Adults</h4><p class="text-[10px] text-slate-500 uppercase tracking-widest">Age 12+</p></div>
+                                        <div class="flex items-center gap-4 bg-white/5 rounded-full px-3 py-1 border border-white/10">
+                                            <button type="button" class="text-slate-400 hover:text-white"><i class="fa-solid fa-minus"></i></button>
+                                            <span class="text-white font-black text-sm">1</span>
+                                            <button type="button" class="text-slate-400 hover:text-white"><i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="border-t border-white/5"></div>
+                                    <div>
+                                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3">Service Tier</label>
+                                        <select class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-bold outline-none focus:border-brand-orange">
+                                            <option>Economy</option>
+                                            <option>Premium Economy</option>
+                                            <option>Business Class</option>
+                                            <option>First Class</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" @click="popover = false" class="w-full bg-white text-black font-black uppercase tracking-widest text-[10px] py-4 rounded-xl shadow-xl">Confirm Choices</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBMIT WRAPPER -->
+                        <div class="p-3 lg:p-4 flex items-center justify-center">
+                             <!-- Desktop Button -->
+                             <button type="submit" class="hidden lg:flex w-16 h-16 rounded-full bg-brand-orange text-white items-center justify-center text-xl shadow-[0_0_30px_rgba(255,125,0,0.5)] hover:scale-110 active:scale-90 transition-all shrink-0" :disabled="searching">
+                                <i class="fa-solid fa-search" x-show="!searching"></i>
+                                <i class="fa-solid fa-spinner animate-spin" x-show="searching"></i>
+                             </button>
+
+                             <!-- Mobile Button -->
+                             <button type="submit" class="lg:hidden w-full bg-brand-orange text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-brand-orange/20 active:scale-95 transition-all text-sm uppercase tracking-widest" :disabled="searching">
+                                <span x-show="!searching">Locate Fares <i class="fa-solid fa-arrow-right ml-2"></i></span>
+                                <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Analyzing...</span>
+                             </button>
+                        </div>
                     </form>
 
                     <!-- Ecosystem Micro-Utilities (Tracker & Visa Checker) -->
