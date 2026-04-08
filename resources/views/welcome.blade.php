@@ -301,10 +301,15 @@
         /* Smooth destination cards */
         .destination-card:hover { transform: none; }
         .destination-card:active { transform: scale(0.97); }
+
+        /* Hide desktop pill tabs on mobile — icon grid above replaces them */
+        #desktop-tab-strip { display: none; }
     }
 
     @media (min-width: 1024px) {
         .mobile-only { display: none !important; }
+        /* Show desktop pill tabs on desktop */
+        #desktop-tab-strip { display: flex !important; }
     }
 </style>
 
@@ -608,11 +613,52 @@
             </p>
         </div>
 
+        <!-- ══════════════════════════════════════════════════
+             MOBILE SERVICE ICON GRID
+             Above the search engine — MOBILE ONLY
+             Acts as the tab switcher replacing the hidden pill tabs
+        ══════════════════════════════════════════════════ -->
+        <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-4 mobile-only" x-data>
+            <!-- Row 1: Core Services -->
+            <button @click="tab = 'flights'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
+                <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
+                <div class="svc-label" :class="tab === 'flights' ? 'text-orange-400' : ''">Flights</div>
+            </button>
+            <button @click="tab = 'hotels'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'hotels' ? 'border-emerald-400/60 bg-emerald-500/10' : ''">
+                <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
+                <div class="svc-label" :class="tab === 'hotels' ? 'text-emerald-400' : ''">Hotels</div>
+            </button>
+            <button @click="tab = 'visas'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'visas' ? 'border-blue-400/60 bg-blue-500/10' : ''">
+                <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
+                <div class="svc-label" :class="tab === 'visas' ? 'text-blue-400' : ''">Visas</div>
+            </button>
+            <button @click="tab = 'insurance'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'insurance' ? 'border-pink-400/60 bg-pink-500/10' : ''">
+                <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
+                <div class="svc-label" :class="tab === 'insurance' ? 'text-pink-400' : ''">Insurance</div>
+            </button>
+            <button @click="tab = 'tours'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'tours' ? 'border-yellow-400/60 bg-yellow-500/10' : ''">
+                <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
+                <div class="svc-label" :class="tab === 'tours' ? 'text-yellow-400' : ''">Tours</div>
+            </button>
+            <button @click="tab = 'transfers'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile" :class="tab === 'transfers' ? 'border-purple-400/60 bg-purple-500/10' : ''">
+                <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
+                <div class="svc-label" :class="tab === 'transfers' ? 'text-purple-400' : ''">Pickups</div>
+            </button>
+            <a href="/user/login" class="svc-tile">
+                <div class="svc-icon bg-indigo-500/15 text-indigo-400"><i class="fa-solid fa-vault"></i></div>
+                <div class="svc-label">Vault</div>
+            </a>
+            <button @click="showLeadModal = true; leadContext = 'Expert Advisor'; leadMessage = 'I need to speak with an iSwitch expert advisor.'" class="svc-tile">
+                <div class="svc-icon bg-rose-500/15 text-rose-400"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="svc-label">Experts</div>
+            </button>
+        </div>
+
         <!-- MIND BLOWING SEARCH ENGINE (Pill Layout) -->
-        <div id="search-engine" class="w-full max-w-6xl glass-widget p-3 md:p-6 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10" x-data="{ tab: 'flights' }">
+        <div id="search-engine" class="w-full max-w-6xl glass-widget p-3 md:p-6 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
             
-            <!-- Category Switcher (Scrollable on Mobile) -->
-            <div class="flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6 no-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
+            <!-- Category Switcher (Desktop only — hidden on mobile, replaced by icon grid above) -->
+            <div id="desktop-tab-strip" class="flex overflow-x-auto hide-scroll gap-2 mb-6 border-b border-white/5 pb-4 px-2 md:px-6 no-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
                 <style>.no-scrollbar::-webkit-scrollbar { display: none; }</style>
                 
                 <button @click="tab = 'flights'" :class="tab === 'flights' ? 'text-white border-brand-orange bg-brand-orange/10' : 'text-slate-400 border-transparent hover:text-white'" class="flex-shrink-0 px-6 py-3 rounded-full text-sm lg:text-base font-bold transition-all flex items-center gap-2 border">
@@ -775,42 +821,6 @@
                         </div>
                     </form>
 
-                    <!-- ══ MOBILE SERVICE ICON GRID (App Home-Screen Style) ══ -->
-                    <!-- Only visible on mobile, hidden on desktop -->
-                    <div class="mobile-service-grid mt-6 mobile-only">
-                        <button @click="tab = 'flights'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
-                            <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
-                            <div class="svc-label">Flights</div>
-                        </button>
-                        <button @click="tab = 'hotels'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
-                            <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
-                            <div class="svc-label">Hotels</div>
-                        </button>
-                        <button @click="tab = 'visas'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
-                            <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
-                            <div class="svc-label">Visas</div>
-                        </button>
-                        <button @click="tab = 'insurance'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
-                            <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
-                            <div class="svc-label">Insurance</div>
-                        </button>
-                        <button @click="tab = 'tours'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
-                            <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
-                            <div class="svc-label">Tours</div>
-                        </button>
-                        <button @click="tab = 'transfers'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})" class="svc-tile">
-                            <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
-                            <div class="svc-label">Transfers</div>
-                        </button>
-                        <a href="/user/login" class="svc-tile">
-                            <div class="svc-icon bg-indigo-500/15 text-indigo-400"><i class="fa-solid fa-vault"></i></div>
-                            <div class="svc-label">The Vault</div>
-                        </a>
-                        <button @click="showLeadModal = true; leadContext = 'Expert Advisor'; leadMessage = 'I need to speak with an expert advisor.'" class="svc-tile">
-                            <div class="svc-icon bg-rose-500/15 text-rose-400"><i class="fa-solid fa-user-tie"></i></div>
-                            <div class="svc-label">Experts</div>
-                        </button>
-                    </div>
 
                     <!-- Ecosystem Micro-Utilities (Tracker & Visa Checker) -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -2064,51 +2074,68 @@
         </div>
     </footer>
 
-    <!-- ═══════════════════════════════════════════════
-         NATIVE MOBILE BOTTOM NAV BAR
-         Hidden on desktop; shows only on mobile (< 1024px)
-    ════════════════════════════════════════════════════ -->
-    <nav class="mobile-bottom-nav" x-data="{ activeTab: 'home' }">
+    <!-- ═══════════════════════════════════════════════════════════
+         NATIVE MOBILE BOTTOM NAV — Fully Functional — Mobile Only
+         ═══════════════════════════════════════════════════════════ -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
         <div class="nav-items">
 
-            <!-- Home -->
-            <button class="nav-item" :class="activeTab === 'home' ? 'active' : ''" @click="activeTab = 'home'; window.scrollTo({top:0,behavior:'smooth'})">
+            <!-- HOME: Scroll to top of page -->
+            <button id="nav-home" class="nav-item active"
+                    onclick="window.scrollTo({top:0,behavior:'smooth'}); document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); this.classList.add('active')">
                 <div class="nav-icon"><i class="fa-solid fa-house"></i></div>
                 <div class="nav-label">Home</div>
                 <div class="nav-dot"></div>
             </button>
 
-            <!-- Search -->
-            <button class="nav-item" :class="activeTab === 'search' ? 'active' : ''" @click="activeTab = 'search'; document.getElementById('search-engine').scrollIntoView({behavior:'smooth'})">
-                <div class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                <div class="nav-label">Search</div>
+            <!-- EXPLORE: Scroll to Destinations/Routes section -->
+            <button id="nav-explore" class="nav-item"
+                    onclick="document.querySelector('.destination-card')?.closest('div[class*=mt-16]')?.scrollIntoView({behavior:'smooth',block:'start'}) || document.getElementById('search-engine').scrollIntoView({behavior:'smooth'}); document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); this.classList.add('active')">
+                <div class="nav-icon"><i class="fa-solid fa-compass"></i></div>
+                <div class="nav-label">Explore</div>
                 <div class="nav-dot"></div>
             </button>
 
-            <!-- Center Book Button -->
-            <div class="nav-center" @click="showLeadModal = true; leadContext = 'Book Now'; leadMessage = 'I want to book a service with iSwitch.'">
+            <!-- BOOK: Center CTA — opens specialist modal -->
+            <div class="nav-center"
+                 @click="showLeadModal = true; leadContext = 'Global Booking'; leadMessage = 'I want to book my next journey with iSwitch — flights, hotels, visa or all three.'">
                 <button class="center-btn">
                     <i class="fa-solid fa-bolt"></i>
                 </button>
                 <div class="nav-label">Book</div>
             </div>
 
-            <!-- Trips -->
-            <a href="/user/login" class="nav-item" :class="activeTab === 'trips' ? 'active' : ''">
-                <div class="nav-icon"><i class="fa-solid fa-suitcase-rolling"></i></div>
-                <div class="nav-label">Trips</div>
+            <!-- DEALS: Scroll to Promotions / Tours section -->
+            <button id="nav-deals" class="nav-item"
+                    onclick="document.querySelector('[x-show=\"tab === \'tours\'\"]')?.scrollIntoView({behavior:'smooth'}) || document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'}); document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); this.classList.add('active')">
+                <div class="nav-icon"><i class="fa-solid fa-tag"></i></div>
+                <div class="nav-label">Deals</div>
                 <div class="nav-dot"></div>
-            </a>
+            </button>
 
-            <!-- Profile -->
-            <a href="/user/login" class="nav-item" :class="activeTab === 'profile' ? 'active' : ''">
-                <div class="nav-icon"><i class="fa-solid fa-user-circle"></i></div>
-                <div class="nav-label">Profile</div>
+            <!-- ACCOUNT: Go to Sign In / Dashboard -->
+            <a href="/user/login" id="nav-account" class="nav-item">
+                <div class="nav-icon"><i class="fa-solid fa-circle-user"></i></div>
+                <div class="nav-label">Account</div>
                 <div class="nav-dot"></div>
             </a>
 
         </div>
     </nav>
+
+    <script>
+        /* Mobile nav active state on scroll */
+        (function() {
+            if (window.innerWidth >= 1024) return;
+            const homeBtn = document.getElementById('nav-home');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY < 300) {
+                    document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+                    homeBtn && homeBtn.classList.add('active');
+                }
+            }, { passive: true });
+        })();
+    </script>
 
 </body>
 </html>
