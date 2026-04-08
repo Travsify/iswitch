@@ -18,6 +18,35 @@ return [
         'token' => env('POSTMARK_TOKEN'),
     ],
 
+    'mailgun' => [
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+    ],
+
+    /* iSwitch Global Mobility Stack */
+    'duffel' => [
+        'token' => env('DUFFEL_TOKEN'),
+    ],
+
+    'amadeus' => [
+        'key' => env('AMADEUS_API_KEY'),
+        'secret' => env('AMADEUS_API_SECRET'),
+    ],
+
+    'atlys' => [
+        'key' => env('ATLYS_API_KEY'),
+    ],
+
+    'viator' => [
+        'key' => env('VIATOR_API_KEY'),
+    ],
+
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

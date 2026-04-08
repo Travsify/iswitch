@@ -194,11 +194,47 @@
 <body class="antialiased min-h-screen flex flex-col" 
       x-data="{ 
         tab: 'flights', 
-        transferMode: 'airport',
+        transferMode: 'airport',        flightConfirmed: false,
+        searchOrigin: 'LOS',
+        searchDest: 'LHR',
+        flightResults: [],
+        searching: false,
+        recommended: null,
         showLeadModal: false,
         leadContext: 'Global Mobility',
         leadMessage: 'I am interested in exploring the iSwitch ecosystem.',
-        flightConfirmed: false
+        
+        async fetchFlights() {
+            this.searching = true;
+            try {
+                const response = await fetch(`/api/v1/flights/search?origin=${this.searchOrigin}&destination=${this.searchDest}`);
+                this.flightResults = await response.json();
+                this.flightConfirmed = true;
+                if(this.searchDest.toLowerCase().includes('lon') || this.searchDest.toLowerCase().includes('cdg')) {
+                    this.recommended = 'schengen';
+                }
+            } catch (e) {
+                console.error('Flight Search Failed', e);
+            } finally {
+                this.searching = false;
+            }
+        }
+        async verifyVisa() {
+            this.searching = true;
+            try {
+                const response = await fetch(`/api/v1/visa/check?passport=NGA&destination=${this.searchDest}`);
+                const data = await response.json();
+                this.visaResult = data;
+                alert(`iSwitch Visa Intelligence: For ${this.searchDest}, approval probability is ${data.probability}. Redirecting to specialist...`);
+                this.showLeadModal = true;
+                this.leadContext = 'Visa & Immigration';
+                this.leadMessage = `I noticed a ${data.probability} approval probability for ${this.searchDest}. I want to start my application.`;
+            } catch (e) {
+                console.error('Visa Check Failed', e);
+            } finally {
+                this.searching = false;
+            }
+        }
       }">
 
     <!-- ================= LEAD CAPTURE MODAL (The Converter) ================= -->
@@ -493,19 +529,19 @@
                     </div>
 
                     <!-- Search Pill (Airbnb Style) -->
-                    <form action="/search" class="search-pill flex flex-col lg:flex-row w-full rounded-3xl lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-slate-700 relative z-20">
+                    <form @submit.prevent="fetchFlights()" class="search-pill flex flex-col lg:flex-row w-full rounded-3xl lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-slate-700 relative z-20">
                         <div class="search-pill-input flex-[1.5] p-3 lg:py-4 lg:px-6 cursor-text group relative">
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Where from?</label>
                             <div class="flex items-center gap-2 mt-1">
                                 <i class="fa-solid fa-plane-departure text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" value="Lagos (LOS)" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600">
+                                <input type="text" name="origin" placeholder="Lagos (LOS)" x-model="searchOrigin" class="bg-transparent border-none text-white focus:outline-none w-full font-semibold placeholder:text-slate-600 text-lg lg:text-xl">
                             </div>
                         </div>
                         <div class="search-pill-input flex-[1.5] p-3 lg:py-4 lg:px-6 cursor-text group relative">
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-orange transition-colors">Where to?</label>
                             <div class="flex items-center gap-2 mt-1">
                                 <i class="fa-solid fa-plane-arrival text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" placeholder="London (LHR)" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600">
+                                <input type="text" name="destination" placeholder="London (LHR)" x-model="searchDest" class="bg-transparent border-none text-white focus:outline-none w-full font-semibold placeholder:text-slate-600 text-lg lg:text-xl">
                             </div>
                         </div>
                         <div class="search-pill-input flex-1 p-3 lg:py-4 lg:px-6 cursor-text group relative">
@@ -558,14 +594,16 @@
                             </div>
                             
                             <!-- Search Btn -->
-                            <button type="button" class="btn-magical w-14 h-14 rounded-full flex items-center justify-center shrink-0 ml-4 hidden lg:flex shadow-[0_0_20px_rgba(255,125,0,0.5)]">
-                                <i class="fa-solid fa-search text-xl"></i>
+                            <button type="submit" class="btn-magical w-14 h-14 rounded-full flex items-center justify-center shrink-0 ml-4 hidden lg:flex shadow-[0_0_20px_rgba(255,125,0,0.5)]" :disabled="searching">
+                                <i class="fa-solid fa-search text-xl" x-show="!searching"></i>
+                                <i class="fa-solid fa-spinner animate-spin text-xl" x-show="searching"></i>
                             </button>
                         </div>
                         
                         <!-- Mobile Search Btn -->
-                        <button type="button" class="btn-magical w-full p-4 rounded-b-3xl text-lg font-bold lg:hidden flex items-center justify-center gap-2">
-                           Search Flights <i class="fa-solid fa-search"></i>
+                        <button type="submit" class="btn-magical w-full p-4 rounded-b-3xl text-lg font-bold lg:hidden flex items-center justify-center gap-2" :disabled="searching">
+                           <span x-show="!searching">Search Flights</span>
+                           <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Searching...</span>
                         </button>
                     </form>
 
@@ -1137,10 +1175,11 @@
                             <i class="fa-solid fa-location-dot text-brand-emerald text-2xl ml-2 lg:ml-6"></i>
                             <div class="flex-1">
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-0.5 group-hover:text-brand-emerald transition-colors">Destination Country</label>
-                                <input type="text" placeholder="Where are you traveling to?" class="bg-transparent text-white font-bold text-lg outline-none w-full placeholder-slate-600">
+                                <input type="text" placeholder="Where are you traveling to?" x-model="searchDest" class="bg-transparent text-white font-bold text-lg outline-none w-full placeholder-slate-600">
                             </div>
-                            <button @click="showLeadModal = true; leadContext = 'Visa & Immigration'; leadMessage = 'I need to check entry rules and visa eligibility for my upcoming trip.'" class="bg-blue-600 hover:bg-blue-500 transition-colors text-white font-black px-6 lg:px-8 py-3.5 rounded-xl lg:rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center gap-2 whitespace-nowrap">
-                                Check Entry Rules <i class="fa-solid fa-arrow-right"></i>
+                            <button @click="verifyVisa()" :disabled="searching" class="bg-blue-600 hover:bg-blue-500 transition-colors text-white font-black px-6 lg:px-8 py-3.5 rounded-xl lg:rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center gap-2 whitespace-nowrap">
+                                <span x-show="!searching">Check Entry Rules <i class="fa-solid fa-arrow-right"></i></span>
+                                <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Atlys Scanning...</span>
                             </button>
                         </div>
                     </div>

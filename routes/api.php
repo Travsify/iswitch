@@ -23,6 +23,10 @@ Route::get('/tours/{id}', [TourController::class, 'show']);
 Route::get('/search', [SearchController::class, 'search']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/v1/flights/search', [TravelController::class, 'searchFlights']);
+    Route::get('/v1/hotels/search', [TravelController::class, 'searchHotels']);
+    Route::get('/v1/visa/check', [TravelController::class, 'checkVisa']);
+
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
     
