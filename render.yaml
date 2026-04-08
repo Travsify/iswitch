@@ -47,7 +47,6 @@ services:
     dockerContext: .
     dockerfilePath: Dockerfile
     buildCommand: ""
-    startCommand: "php artisan queue:work"
     envVars:
       - key: APP_ENV
         value: production
