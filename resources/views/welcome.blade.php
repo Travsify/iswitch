@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>iSwitch | The Global Mobility Super-App</title>
     <link rel="icon" href="/iswitch_brand_logo.png" type="image/png">
     <!-- Elite Social Discovery -->

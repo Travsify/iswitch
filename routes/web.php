@@ -6,6 +6,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::get('/agent', function () {
+    return view('auth.agent_login');
+})->name('agent.portal');
+
 Route::get('/admin/god-mode', function () {
     if (request('key') !== 'iswitch_elite') {
         return redirect('/');
