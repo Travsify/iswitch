@@ -194,7 +194,10 @@
 <body class="antialiased min-h-screen flex flex-col" 
       x-data="{ 
         tab: 'flights', 
-        transferMode: 'airport',        flightConfirmed: false,
+        transferMode: 'airport',
+        flightConfirmed: false,
+        insuranceData: null,
+        visaResult: null,
         searchOrigin: 'LOS',
         searchDest: 'LHR',
         flightResults: [],
@@ -225,10 +228,17 @@
                 const response = await fetch(`/api/v1/visa/check?passport=NGA&destination=${this.searchDest}`);
                 const data = await response.json();
                 this.visaResult = data;
-                alert(`iSwitch Visa Intelligence: For ${this.searchDest}, approval probability is ${data.probability}. Redirecting to specialist...`);
+                
+                // Also pre-fetch insurance for this region
+                const region = this.searchDest.toLowerCase().includes('france') ? 'schengen' : 'worldwide';
+                const insResponse = await fetch(`/api/v1/insurance/quote?region=${region}`);
+                this.insuranceData = await insResponse.json();
+
+                alert(`iSwitch Intelligence: Probability ${data.probability}. ${this.insuranceData.name} identified at $${this.insuranceData.price}.`);
+                
                 this.showLeadModal = true;
                 this.leadContext = 'Visa & Immigration';
-                this.leadMessage = `I noticed a ${data.probability} approval probability for ${this.searchDest}. I want to start my application.`;
+                this.leadMessage = `I noticed a ${data.probability} approval probability and a ${this.insuranceData.name} policy for ${this.searchDest}. I want to proceed.`;
             } catch (e) {
                 console.error('Visa Check Failed', e);
             } finally {
@@ -1663,8 +1673,8 @@
                                              <li class="flex items-center gap-2 text-emerald-400"><i class="fa-solid fa-circle-check"></i> Zero-Deductible Policy</li>
                                          </ul>
                                          <div class="flex justify-between items-center bg-black/40 p-4 rounded-xl border border-white/5">
-                                             <p class="text-white font-black text-xl">$45.00 <span class="text-[9px] text-slate-500">/mo</span></p>
-                                             <button class="bg-pink-600 text-white px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg">Lock Policy</button>
+                                             <p class="text-white font-black text-xl" x-text="'$' + (insuranceData ? insuranceData.price : '45.00') + (insuranceData ? '' : ' /mo')"></p>
+                                             <button @click="showLeadModal = true; leadContext = 'Insurance Shield'; leadMessage = 'I want to lock in the ' + (insuranceData?.name || 'Schengen Shield') + ' policy.'" class="bg-pink-600 text-white px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg">Lock Policy</button>
                                          </div>
                                      </div>
 

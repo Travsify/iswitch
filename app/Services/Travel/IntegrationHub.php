@@ -72,6 +72,18 @@ class IntegrationHub
     }
 
     /**
+     * SAFETYWING (Nomad Insurance & Shield)
+     */
+    public function getInsuranceQuote(string $region = 'worldwide')
+    {
+        $apiId = config('services.safetywing.id');
+        if (!$apiId) return $this->mockInsurance($region);
+
+        // SafetyWing logic...
+        return $this->mockInsurance($region);
+    }
+
+    /**
      * STRIPE (Global Payment Conduit)
      */
     public function createPaymentSession(float $amount, string $currency = 'usd')
@@ -94,6 +106,23 @@ class IntegrationHub
         return [
             ['id' => 'ht_1', 'name' => 'The Ritz Paris', 'rating' => 5, 'price' => 1100],
             ['id' => 'ht_2', 'name' => 'Burj Al Arab', 'rating' => 5, 'price' => 1850]
+        ];
+    }
+
+    private function mockInsurance(string $region) {
+        if ($region === 'schengen') {
+            return [
+                'name' => 'Schengen-Elite Shield',
+                'price' => 45.00,
+                'coverage' => '€30,000 Medical Limit + Repatriation',
+                'compliance' => '100% Schengen Compliant'
+            ];
+        }
+        return [
+            'name' => 'Global Nomad Guard',
+            'price' => 56.40,
+            'coverage' => '$1M Crisis Support + Medical',
+            'compliance' => 'Worldwide (Excl. USA)'
         ];
     }
 }

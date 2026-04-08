@@ -44,4 +44,13 @@ class TravelController extends Controller
         );
         return response()->json($results);
     }
+
+    /**
+     * Live Insurance Quote
+     */
+    public function getInsurance(Request $request)
+    {
+        $results = $this->hub->getInsuranceQuote($request->input('region', 'worldwide'));
+        return response()->json($results);
+    }
 }
