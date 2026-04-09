@@ -271,8 +271,8 @@
         .hero-badge { margin-bottom: 10px !important; }
 
         .mobile-service-grid {
-            display: grid !important;
-            grid-template-columns: repeat(4, 1fr) !important;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px !important;
             width: 100% !important;
             padding: 0 16px !important;
@@ -280,15 +280,15 @@
         }
 
         .mobile-service-grid .svc-tile {
-            width: 100% !important;
-            min-width: 0 !important;
+            width: 100%;
+            min-width: 0;
             min-height: 80px;
-            padding: 14px 4px !important;
-            border-radius: 18px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
+            padding: 14px 4px;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
         }
@@ -696,15 +696,14 @@
          AUTH MODAL: Sign In / Register — Slide Up Sheet
          Replaces all /user/login and /register page navigations
     ═══════════════════════════════════════════════════════════ -->
-    <div x-show="showAuthModal"
+    <div x-show="showAuthModal" x-cloak
          class="fixed inset-0 z-[200] flex items-end lg:items-center justify-center"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         style="display:none;">
+         x-transition:leave-end="opacity-0">
 
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="showAuthModal = false"></div>
@@ -1080,7 +1079,7 @@
 
         <div id="service-hub" class="w-full max-w-6xl mx-auto mb-8 px-4 sm:px-0">
             <!-- Mobile-only Service Grid (4x2 Architecture) -->
-            <div class="mobile-service-grid lg:hidden">
+            <div class="mobile-service-grid lg:hidden" x-show="!searching" x-transition>
                 <button type="button" @click="tab = 'flights'" class="svc-tile" :class="tab === 'flights' ? 'active-tab' : ''">
                     <div class="svc-icon bg-orange-500/15 text-orange-400 flex items-center justify-center"><i class="fa-solid fa-plane"></i></div>
                     <div class="svc-label">Flights</div>
@@ -1116,7 +1115,7 @@
             </div>
 
             <!-- Desktop-only Tab Strip -->
-            <div id="desktop-tab-strip" class="hidden lg:flex items-center gap-4 w-full overflow-x-auto scrollbar-hide">
+            <div id="desktop-tab-strip" class="hidden lg:flex items-center gap-4 w-full overflow-x-auto scrollbar-hide" x-show="!searching" x-transition>
                 <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'flights' ? 'active-tab' : ''">
                     <div class="svc-icon bg-orange-500/15 text-orange-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-plane"></i></div>
                     <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Flights</div>
