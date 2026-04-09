@@ -17,14 +17,14 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'nullable|string|in:customer,agent',
-            // Agent specific fields
+            // Agent (B2B) specific fields
             'company_registration_name' => 'required_if:role,agent|string|max:255',
             'business_name' => 'required_if:role,agent|string|max:255',
             'address' => 'required_if:role,agent|string',
-            'registration_document' => 'required_if:role,agent|file|mimes:pdf,jpg,png,jpeg|max:2048',
-            'utility_bill' => 'required_if:role,agent|file|mimes:pdf,jpg,png,jpeg|max:2048',
-            'passport_photo' => 'required_if:role,agent|file|mimes:jpg,png,jpeg|max:2048',
-            'government_id' => 'required_if:role,agent|file|mimes:pdf,jpg,png,jpeg|max:2048',
+            'registration_document' => 'required_if:role,agent|file|mimes:pdf,jpg,png,jpeg|max:5120',
+            'utility_bill' => 'required_if:role,agent|file|mimes:pdf,jpg,png,jpeg|max:5120',
+            'passport_photo' => 'required_if:role,agent|file|mimes:jpg,png,jpeg|max:5120',
+            'government_id' => 'required_if:role,agent|file|mimes:pdf,jpg,png,jpeg|max:5120',
         ]);
 
         $user = User::create([
@@ -32,13 +32,15 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role ?? 'customer',
+            'is_approved' => ($request->role === 'agent') ? false : true, // Agents require admin vetting
+            'kyb_status' => ($request->role === 'agent') ? 'pending' : 'none',
         ]);
 
         if ($user->isAgent()) {
-            $regDocPath = $request->file('registration_document')->store('agent_docs', 'private');
-            $utilityBillPath = $request->file('utility_bill')->store('agent_docs', 'private');
-            $passportPath = $request->file('passport_photo')->store('agent_docs', 'private');
-            $govIdPath = $request->file('government_id')->store('agent_docs', 'private');
+            $regDocPath = $request->file('registration_document')->store('agent_docs', 'public');
+            $utilityBillPath = $request->file('utility_bill')->store('agent_docs', 'public');
+            $passportPath = $request->file('passport_photo')->store('agent_docs', 'public');
+            $govIdPath = $request->file('government_id')->store('agent_docs', 'public');
 
             $user->businessProfile()->create([
                 'company_registration_name' => $request->company_registration_name,
@@ -60,6 +62,8 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => $user->load('businessProfile'),
+            'message' => $user->isAgent() ? 'B2B Registration received. Your account is pending administrative approval.' : 'Registration successful.',
+            'is_approved' => $user->is_approved,
             'otp' => $otp,
         ]);
     }
@@ -74,6 +78,14 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->firstOrFail();
         
+        // Strict B2B Approval Check
+        if ($user->isAgent() && !$user->is_approved) {
+            return response()->json([
+                'message' => 'Your B2B account is pending approval. Please contact iSwitch support.',
+                'status' => 'pending_approval'
+            ], 403);
+        }
+
         $otp = (string) rand(100000, 999999);
         $user->update(['otp' => $otp]);
 

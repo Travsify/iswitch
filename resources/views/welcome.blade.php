@@ -539,8 +539,20 @@
         authPassword: '',
         authConfirm: '',
         authLoading: false,
+        isAgency: false,
         authError: '',
         authSuccess: '',
+        
+        // Agency Specific Fields
+        agencyName: '',
+        agencyReg: '',
+        agencyAddress: '',
+        agencyFiles: {
+            cert: null,
+            utility: null,
+            photo: null,
+            id: null
+        },
 
         openAuth(mode = 'login') {
             this.authMode = mode;
@@ -554,22 +566,47 @@
             this.authError = '';
             this.authSuccess = '';
             const endpoint = this.authMode === 'login' ? '/api/login' : '/api/register';
-            const payload = this.authMode === 'login'
-                ? { email: this.authEmail, password: this.authPassword }
-                : { name: this.authName, email: this.authEmail, password: this.authPassword, password_confirmation: this.authConfirm };
+            
+            let formData = new FormData();
+            formData.append('email', this.authEmail);
+            formData.append('password', this.authPassword);
+            
+            if (this.authMode === 'register') {
+                formData.append('name', this.authName);
+                formData.append('password_confirmation', this.authConfirm);
+                formData.append('role', this.isAgency ? 'agent' : 'customer');
+                
+                if (this.isAgency) {
+                    formData.append('company_registration_name', this.agencyReg);
+                    formData.append('business_name', this.agencyName);
+                    formData.append('address', this.agencyAddress);
+                    
+                    if (this.agencyFiles.cert) formData.append('registration_document', this.agencyFiles.cert);
+                    if (this.agencyFiles.utility) formData.append('utility_bill', this.agencyFiles.utility);
+                    if (this.agencyFiles.photo) formData.append('passport_photo', this.agencyFiles.photo);
+                    if (this.agencyFiles.id) formData.append('government_id', this.agencyFiles.id);
+                }
+            }
+
             try {
                 const res = await fetch(endpoint, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(payload)
+                    headers: { 'Accept': 'application/json' },
+                    body: formData
                 });
                 const data = await res.json();
                 if (!res.ok) {
                     this.authError = data.message || Object.values(data.errors || {})[0]?.[0] || 'Something went wrong.';
                 } else {
-                    if (data.token) localStorage.setItem('iswitch_token', data.token);
-                    this.authSuccess = this.authMode === 'login' ? 'Welcome back! Redirecting...' : 'Account created! Welcome aboard!';
-                    setTimeout(() => { window.location.href = '/user'; }, 1200);
+                    if (data.access_token) localStorage.setItem('iswitch_token', data.access_token);
+                    this.authSuccess = data.message || (this.authMode === 'login' ? 'Welcome back! Redirecting...' : 'Account created! Welcome aboard!');
+                    
+                    if (data.status === 'pending_approval' || (data.user && data.user.role === 'agent' && !data.user.is_approved)) {
+                        this.authSuccess = "B2B Registration Received. Your account is pending administrative approval.";
+                        setTimeout(() => { this.showAuthModal = false; }, 3000);
+                    } else {
+                        setTimeout(() => { window.location.href = '/user'; }, 1500);
+                    }
                 }
             } catch(e) {
                 this.authError = 'Network error. Please try again.';
@@ -752,6 +789,54 @@
                     <i class="fa-solid fa-shield-check absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                     <input type="password" x-model="authConfirm" placeholder="Confirm Password" autocomplete="new-password"
                            class="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white placeholder-slate-500 outline-none focus:border-brand-orange/60 transition-all text-sm font-medium">
+                </div>
+
+                <!-- B2B Agency Toggle -->
+                <div x-show="authMode === 'register'" class="mt-2 space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-white">Agency Registration</p>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Become an iSwitch B2B Partner</p>
+                        </div>
+                        <button type="button" @click="isAgency = !isAgency" 
+                                :class="isAgency ? 'bg-brand-emerald shadow-lg shadow-emerald-500/20' : 'bg-white/10'"
+                                class="w-12 h-6 rounded-full relative transition-all duration-300">
+                            <div :class="isAgency ? 'translate-x-6' : 'translate-x-1'" class="absolute top-1 left-0 w-4 h-4 bg-white rounded-full transition-transform"></div>
+                        </button>
+                    </div>
+
+                    <!-- Agency Specific Fields -->
+                    <div x-show="isAgency" x-transition class="space-y-4 border-l-2 border-brand-emerald/30 pl-4 mt-4">
+                        <div class="space-y-3">
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest">Business Identity (KYB)</p>
+                            <input type="text" x-model="agencyName" placeholder="Agency / Business Name" class="w-full bg-white/3 border border-white/5 rounded-xl px-4 py-3 text-white text-xs outline-none focus:border-brand-emerald/50">
+                            <input type="text" x-model="agencyReg" placeholder="Registration Number (ID)" class="w-full bg-white/3 border border-white/5 rounded-xl px-4 py-3 text-white text-xs outline-none focus:border-brand-emerald/50">
+                            <textarea x-model="agencyAddress" placeholder="Physical Business Address" rows="2" class="w-full bg-white/3 border border-white/5 rounded-xl px-4 py-3 text-white text-xs outline-none focus:border-brand-emerald/50 resize-none"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="space-y-1">
+                                <label class="text-[8px] font-black uppercase tracking-widest text-slate-600 block">Certificate</label>
+                                <input type="file" @change="agencyFiles.cert = $event.target.files[0]" class="hidden" id="reg-cert">
+                                <label for="reg-cert" class="block w-full text-center py-2 bg-white/5 border border-dashed border-white/20 rounded-lg text-[9px] text-slate-400 cursor-pointer overflow-hidden whitespace-nowrap px-2" x-text="agencyFiles.cert ? agencyFiles.cert.name : '+ Upload'"></label>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[8px] font-black uppercase tracking-widest text-slate-600 block">Utility Bill</label>
+                                <input type="file" @change="agencyFiles.utility = $event.target.files[0]" class="hidden" id="util-bill">
+                                <label for="util-bill" class="block w-full text-center py-2 bg-white/5 border border-dashed border-white/20 rounded-lg text-[9px] text-slate-400 cursor-pointer overflow-hidden whitespace-nowrap px-2" x-text="agencyFiles.utility ? agencyFiles.utility.name : '+ Upload'"></label>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[8px] font-black uppercase tracking-widest text-slate-600 block">Rep. Passport</label>
+                                <input type="file" @change="agencyFiles.photo = $event.target.files[0]" class="hidden" id="rep-photo">
+                                <label for="rep-photo" class="block w-full text-center py-2 bg-white/5 border border-dashed border-white/20 rounded-lg text-[9px] text-slate-400 cursor-pointer overflow-hidden whitespace-nowrap px-2" x-text="agencyFiles.photo ? agencyFiles.photo.name : '+ Upload'"></label>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[8px] font-black uppercase tracking-widest text-slate-600 block">National ID</label>
+                                <input type="file" @change="agencyFiles.id = $event.target.files[0]" class="hidden" id="gov-id">
+                                <label for="gov-id" class="block w-full text-center py-2 bg-white/5 border border-dashed border-white/20 rounded-lg text-[9px] text-slate-400 cursor-pointer overflow-hidden whitespace-nowrap px-2" x-text="agencyFiles.id ? agencyFiles.id.name : '+ Upload'"></label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Submit -->
