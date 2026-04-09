@@ -7,6 +7,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\VisaDocumentController;
 use App\Http\Controllers\Api\LeadController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/v1/leads', [LeadController::class, 'store']);
@@ -14,24 +15,14 @@ Route::post('/v1/leads', [LeadController::class, 'store']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/flights', [FlightController::class, 'index']);
-Route::get('/flights/{id}', [FlightController::class, 'show']);
-
-Route::get('/hotels', [HotelController::class, 'index']);
-Route::get('/hotels/{id}', [HotelController::class, 'show']);
-
-Route::get('/tours', [TourController::class, 'index']);
-Route::get('/tours/{id}', [TourController::class, 'show']);
-
-Route::get('/search', [SearchController::class, 'search']);
+Route::get('/v1/flights/search', [\App\Http\Controllers\TravelController::class, 'searchFlights']);
+Route::get('/v1/hotels/search', [\App\Http\Controllers\TravelController::class, 'searchHotels']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/v1/flights/search', [TravelController::class, 'searchFlights']);
-    Route::get('/v1/hotels/search', [TravelController::class, 'searchHotels']);
-    Route::get('/v1/visa/check', [TravelController::class, 'checkVisa']);
-    Route::get('/v1/insurance/quote', [TravelController::class, 'getInsurance']);
-    Route::get('/v1/tours/search', [TravelController::class, 'searchTours']);
-    Route::get('/v1/logistics/quote', [TravelController::class, 'getTransfers']);
+    Route::get('/v1/visa/check', [\App\Http\Controllers\TravelController::class, 'checkVisa']);
+    Route::get('/v1/insurance/quote', [\App\Http\Controllers\TravelController::class, 'getInsurance']);
+    Route::get('/v1/tours/search', [\App\Http\Controllers\TravelController::class, 'searchTours']);
+    Route::get('/v1/logistics/quote', [\App\Http\Controllers\TravelController::class, 'getTransfers']);
 
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -61,4 +52,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Ancillary Services
     Route::get('/ancillary-services', [\App\Http\Controllers\AncillaryServiceController::class, 'index']);
     Route::post('/ancillary-services/{id}/book', [\App\Http\Controllers\AncillaryServiceController::class, 'book']);
+
+    // iSwitch "God Mode" (Super Admin)
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard']);
+        Route::get('/agents', [AdminController::class, 'listAgents']);
+        Route::post('/agents/{id}/approve', [AdminController::class, 'approveAgent']);
+        Route::post('/agents/{id}/suspend', [AdminController::class, 'suspendAgent']);
+        Route::get('/users', [AdminController::class, 'listUsers']);
+    });
 });

@@ -6,7 +6,7 @@
     <title>God Mode | iSwitch Super-Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Outfit:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -44,33 +44,51 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            background: rgba(99, 102, 241, 0.2);
-            border-radius: 5px;
-            outline: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: var(--brand-gold);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--brand-gold);
-        }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="antialiased font-sans" x-data="{ 
-    markupFlights: 12, 
-    markupHotels: 10, 
-    markupVisas: 15, 
-    markupTours: 8,
-    appLive: true,
-    mobileSynced: true
-}">
+    stats: { total_users: 0, pending_agents: 0, approved_agents: 0, total_balance: 0 },
+    agents: [],
+    loading: true,
+    
+    async init() {
+        await this.fetchStats();
+        await this.fetchAgents();
+        this.loading = false;
+    },
+
+    async fetchStats() {
+        const res = await fetch('/api/admin/dashboard', { headers: { 'Accept': 'application/json' } });
+        this.stats = await res.json();
+    },
+
+    async fetchAgents() {
+        const res = await fetch('/api/admin/agents?status=pending', { headers: { 'Accept': 'application/json' } });
+        this.agents = await res.json();
+    },
+
+    async approveAgent(id) {
+        if (!confirm('Provision Master API Key and Approve Agency?')) return;
+        const res = await fetch(`/api/admin/agents/${id}/approve`, { 
+            method: 'POST', 
+            headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' } 
+        });
+        const data = await res.json();
+        alert(data.message);
+        await this.init();
+    },
+
+    async suspendAgent(id) {
+        if (!confirm('Suspend Agency and Revoke API Key?')) return;
+        const res = await fetch(`/api/admin/agents/${id}/suspend`, { 
+            method: 'POST', 
+            headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' } 
+        });
+        await this.init();
+    }
+}" x-init="init()">
+
     <!-- God Mode Overlay -->
     <div class="fixed inset-0 pointer-events-none border-[12px] border-brand-gold/10 z-[100] god-mode-pulse"></div>
 
@@ -87,7 +105,6 @@
             </div>
             <div class="flex items-center gap-6">
                 <div class="text-[10px] font-mono text-slate-500">> Session_ID: ADMIN-{{ rand(1000,9999) }}</div>
-                <button class="bg-white/5 hover:bg-white/10 p-2 rounded-lg text-white transition-all"><i class="fa-solid fa-gear"></i></button>
             </div>
         </nav>
 
@@ -96,33 +113,20 @@
             <!-- TOP STATS: THE HEARTBEAT -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 <div class="glass-panel rounded-3xl p-6 relative group overflow-hidden">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-brand-gold/5 blur-3xl group-hover:bg-brand-gold/10 transition-all"></div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Global Active Revenue</p>
-                    <h3 class="text-3xl font-black text-white">$142,840.00</h3>
-                    <div class="mt-4 flex items-center gap-2 text-[10px] text-emerald-400 font-bold">
-                        <i class="fa-solid fa-arrow-up"></i> 24% from last session
-                    </div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Global Ecosystem Balance</p>
+                    <h3 class="text-3xl font-black text-white" x-text="'$' + parseFloat(stats.total_balance).toLocaleString()">$0.00</h3>
                 </div>
                 <div class="glass-panel rounded-3xl p-6 relative group overflow-hidden">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Active Visa Syncs</p>
-                    <h3 class="text-3xl font-black text-white">1,204</h3>
-                    <div class="mt-4 flex items-center gap-2 text-[10px] text-slate-400 font-bold">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 42 Live Consultations
-                    </div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Pending KYB Approvals</p>
+                    <h3 class="text-3xl font-black text-brand-gold" x-text="stats.pending_agents">0</h3>
                 </div>
                 <div class="glass-panel rounded-3xl p-6 relative group overflow-hidden">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Mobile App Deployment</p>
-                    <h3 class="text-3xl font-black text-white">v2.1.0</h3>
-                    <div class="mt-4 flex items-center gap-2 text-[10px] text-indigo-400 font-bold">
-                        <i class="fa-solid fa-check"></i> Production Ready
-                    </div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Total iSwitch Entities</p>
+                    <h3 class="text-3xl font-black text-white" x-text="stats.total_users">0</h3>
                 </div>
                 <div class="glass-panel rounded-3xl p-6 relative group overflow-hidden border-brand-gold/20">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Founder's God Profit</p>
-                    <h3 class="text-3xl font-black text-brand-gold italic font-serif">$28,402.15</h3>
-                    <div class="mt-4 flex items-center gap-2 text-[10px] text-brand-gold font-bold">
-                        <i class="fa-solid fa-crown"></i> Net After API Margins
-                    </div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Active B2B Partners</p>
+                    <h3 class="text-3xl font-black text-indigo-400 italic font-serif" x-text="stats.approved_agents">0</h3>
                 </div>
             </div>
 
@@ -130,168 +134,63 @@
             <div class="mb-12 glass-panel rounded-2xl p-4 overflow-hidden border-brand-indigo/20">
                 <div class="war-marquee">
                     <div class="war-marquee-content flex gap-12 text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-300">
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: Mr. Henderson synced Flight UA-2433</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: Agent Sarah generated 3 Visa Roadmaps</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: 14 Users currently in 'The Vault'</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: New Maybach Transfer booked in London</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: Mr. Henderson synced Flight UA-2433</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: Agent Sarah generated 3 Visa Roadmaps</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: 14 Users currently in 'The Vault'</span>
-                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: New Maybach Transfer booked in London</span>
+                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: Agent Verification Protocol engaged</span>
+                        <span><i class="fa-solid fa-shield text-brand-gold"></i> Security: Monitoring cryptographically secure API keys</span>
+                        <span><i class="fa-solid fa-vault text-brand-gold"></i> KYB: Strict administrative approval enforced</span>
+                        <span><i class="fa-solid fa-bolt text-brand-gold"></i> Live Action: Agent Verification Protocol engaged</span>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <!-- Col 1: THE MARKUP ENGINE -->
-                <div class="lg:col-span-1 border-r border-white/5 pr-0 lg:pr-12">
+            <div class="grid grid-cols-1 gap-12">
+                <!-- AGENT MANAGEMENT MATRIX -->
+                <div class="glass-panel rounded-3xl p-8 border-white/5">
                     <div class="flex items-center justify-between mb-8">
-                        <h2 class="text-2xl font-black text-white">The Markup <span class="text-brand-gold">Engine</span></h2>
-                        <i class="fa-solid fa-sliders text-brand-gold text-lg"></i>
+                        <h3 class="text-xl font-black text-white">Agency <span class="text-slate-500 italic font-serif">Onboarding Matrix</span></h3>
+                        <button @click="fetchAgents()" class="text-[10px] font-black uppercase tracking-widest text-indigo-400 border border-indigo-400/30 px-3 py-1 rounded-full"><i class="fa-solid fa-sync mr-1"></i> Refresh Node</button>
                     </div>
                     
-                    <div class="space-y-10">
-                        <!-- Flights -->
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center text-[11px] font-black uppercase tracking-widest">
-                                <span class="text-slate-500">Flights Margin</span>
-                                <span class="text-brand-gold" x-text="markupFlights + '%'"></span>
-                            </div>
-                            <input type="range" min="0" max="30" x-model="markupFlights">
-                            <p class="text-[9px] text-slate-600 italic">Connected to AviationStack API Lead-Time Logic</p>
-                        </div>
-                        <!-- Hotels -->
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center text-[11px] font-black uppercase tracking-widest">
-                                <span class="text-slate-500">Hotels Margin</span>
-                                <span class="text-brand-gold" x-text="markupHotels + '%'"></span>
-                            </div>
-                            <input type="range" min="0" max="30" x-model="markupHotels">
-                            <p class="text-[9px] text-slate-600 italic">Includes "Stay-to-Visa" cross-sell buffer</p>
-                        </div>
-                        <!-- Visas -->
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center text-[11px] font-black uppercase tracking-widest">
-                                <span class="text-slate-500">Visas Fixed Fee</span>
-                                <span class="text-brand-gold" x-text="'$' + markupVisas"></span>
-                            </div>
-                            <input type="range" min="10" max="100" x-model="markupVisas">
-                            <p class="text-[9px] text-slate-600 italic">Fulfillment of "Embassy White-Glove" service</p>
-                        </div>
-                        <!-- Tours -->
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center text-[11px] font-black uppercase tracking-widest">
-                                <span class="text-slate-500">Tours Spread</span>
-                                <span class="text-brand-gold" x-text="markupTours + '%'"></span>
-                            </div>
-                            <input type="range" min="0" max="25" x-model="markupTours">
-                            <p class="text-[9px] text-slate-600 italic">Hidden in 'Alpha Series' inventory prices</p>
-                        </div>
-
-                        <button class="w-full bg-brand-gold text-black font-black uppercase tracking-widest py-4 rounded-xl shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:scale-[1.02] active:scale-95 transition-all text-xs">
-                             Update Global Wholesale Pricing <i class="fa-solid fa-sync ml-2"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Col 2 & 3: LEADRADAR & APP CONTROL -->
-                <div class="lg:col-span-2 space-y-12">
-                    <!-- APP STATUS CARD -->
-                    <div class="glass-panel rounded-3xl p-8 border-brand-indigo/30 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-brand-indigo/10 to-transparent"></div>
-                        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div>
-                                <h3 class="text-2xl font-black text-white mb-2">Ecosystem <span class="text-indigo-400">Heartbeat</span></h3>
-                                <p class="text-slate-400 text-sm">Deployment status of your Web & Mobile assets.</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <!-- Web Status -->
-                                <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center min-w-[120px]">
-                                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-3 text-center">Web Platform</p>
-                                    <button @click="appLive = !appLive" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none" :class="appLive ? 'bg-emerald-600' : 'bg-slate-700'">
-                                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform" :class="appLive ? 'translate-x-6' : 'translate-x-1'"></span>
-                                    </button>
-                                    <p class="text-[9px] font-black mt-2 tracking-widest" :class="appLive ? 'text-emerald-400' : 'text-slate-500'" x-text="appLive ? 'ONLINE' : 'MAINTENANCE'"></p>
-                                </div>
-                                <!-- Mobile Status -->
-                                <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center min-w-[120px]">
-                                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-3 text-center">iOS/Android</p>
-                                    <button @click="mobileSynced = !mobileSynced" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none" :class="mobileSynced ? 'bg-indigo-600' : 'bg-slate-700'">
-                                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform" :class="mobileSynced ? 'translate-x-6' : 'translate-x-1'"></span>
-                                    </button>
-                                    <p class="text-[9px] font-black mt-2 tracking-widest" :class="mobileSynced ? 'text-indigo-400' : 'text-slate-500'" x-text="mobileSynced ? 'SYNCED' : 'DISCONNECTED'"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FULFILLMENT MATRIX -->
-                    <div class="glass-panel rounded-3xl p-8 border-white/5">
-                        <div class="flex items-center justify-between mb-8">
-                            <h3 class="text-xl font-black text-white">White-Glove <span class="text-slate-500 italic font-serif">Process Feed</span></h3>
-                            <button class="text-[10px] font-black uppercase tracking-widest text-indigo-400 border border-indigo-400/30 px-3 py-1 rounded-full">Explore Audit Ledger</button>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="border-b border-white/5 text-[10px] uppercase font-black tracking-widest text-slate-500">
-                                    <tr>
-                                        <th class="py-4">Lead / Identity</th>
-                                        <th class="py-4">Service Required</th>
-                                        <th class="py-4">Fulfillment Status</th>
-                                        <th class="py-4">God Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="border-b border-white/5 text-[10px] uppercase font-black tracking-widest text-slate-500">
+                                <tr>
+                                    <th class="py-4">Agency / Business</th>
+                                    <th class="py-4">Vetting Status</th>
+                                    <th class="py-4">Master API Key</th>
+                                    <th class="py-4">God Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <template x-for="agent in agents" :key="agent.id">
                                     <tr class="border-b border-white/5 group hover:bg-white/5 transition-colors">
                                         <td class="py-6">
                                             <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 rounded-full bg-indigo-500/20 border border-indigo-500/50 flex items-center justify-center text-indigo-300 text-xs">JH</div>
+                                                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/50 flex items-center justify-center text-indigo-300 text-xs font-black" x-text="agent.business_name?.[0] || agent.name[0]"></div>
                                                 <div>
-                                                    <p class="text-white font-bold">James Henderson</p>
-                                                    <p class="text-[10px] text-slate-500 uppercase tracking-widest">Vault ID: #42031</p>
+                                                    <p class="text-white font-bold" x-text="agent.business_name || agent.name"></p>
+                                                    <p class="text-[10px] text-slate-500 uppercase tracking-widest" x-text="agent.email"></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="py-6">
-                                            <p class="text-white font-medium">Schengen E-Visa Concierge</p>
-                                            <p class="text-[10px] text-brand-gold font-black uppercase tracking-tighter">Premium Service</p>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-[9px] font-black uppercase text-brand-gold" x-text="agent.kyb_status"></span>
+                                        </td>
+                                        <td class="py-6 font-mono text-[9px] text-slate-600">
+                                            <span x-text="agent.api_key || 'Awaiting Provisioning...'"></span>
                                         </td>
                                         <td class="py-6">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[9px] font-black uppercase text-indigo-400">
-                                                In Verification
-                                            </span>
-                                        </td>
-                                        <td class="py-6">
-                                            <button class="text-brand-gold hover:text-white transition-colors"><i class="fa-solid fa-eye-low-vision text-lg"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b border-white/5 group hover:bg-white/5 transition-colors">
-                                        <td class="py-6">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-300 text-xs">MY</div>
-                                                <div>
-                                                    <p class="text-white font-bold">Musa Yahaya</p>
-                                                    <p class="text-[10px] text-slate-500 uppercase tracking-widest">Vault ID: #99281</p>
-                                                </div>
+                                            <div class="flex items-center gap-4">
+                                                <button @click="approveAgent(agent.id)" class="text-emerald-500 hover:text-white transition-colors" title="Approve & Provision KEY"><i class="fa-solid fa-check-double text-lg"></i></button>
+                                                <button @click="suspendAgent(agent.id)" class="text-red-500 hover:text-white transition-colors" title="Suspend Agent"><i class="fa-solid fa-ban text-lg"></i></button>
                                             </div>
                                         </td>
-                                        <td class="py-6">
-                                            <p class="text-white font-medium">Maybach Ground Control</p>
-                                            <p class="text-[10px] text-slate-500 font-black uppercase tracking-tighter">London Chauffeur</p>
-                                        </td>
-                                        <td class="py-6">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-black uppercase text-emerald-400">
-                                                Fulfillment Ready
-                                            </span>
-                                        </td>
-                                        <td class="py-6">
-                                            <button class="text-brand-gold hover:text-white transition-colors"><i class="fa-solid fa-check-double text-lg"></i></button>
-                                        </td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                </template>
+                                <tr x-show="agents.length === 0">
+                                    <td colspan="4" class="py-12 text-center text-slate-500 italic text-xs">No pending onboarding requests located.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -300,7 +199,7 @@
 
         <!-- FOOTER -->
         <footer class="p-8 border-t border-white/5 text-center">
-            <p class="text-[10px] text-slate-500 font-black uppercase tracking-[0.5em]">Global Mobility God Mode v1.0.0 (Beta)</p>
+            <p class="text-[10px] text-slate-500 font-black uppercase tracking-[0.5em]">Global Mobility God Mode v1.2.0 (Synchronized Build)</p>
         </footer>
     </div>
 </body>

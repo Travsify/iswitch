@@ -25,6 +25,11 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
+        'is_approved',
+        'kyb_status',
+        'api_key',
+        'balance',
+        'webhook_url',
         'otp',
     ];
 
@@ -76,13 +81,9 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
+        'api_key',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     /**
      * Get the attributes that should be cast.
      *
@@ -93,6 +94,8 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_approved' => 'boolean',
+            'balance' => 'decimal:2',
         ];
     }
 
