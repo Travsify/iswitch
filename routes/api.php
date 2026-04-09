@@ -60,5 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/agents/{id}/approve', [AdminController::class, 'approveAgent']);
         Route::post('/agents/{id}/suspend', [AdminController::class, 'suspendAgent']);
         Route::get('/users', [AdminController::class, 'listUsers']);
+        Route::get('/leads', [AdminController::class, 'listLeads']);
     });
 });

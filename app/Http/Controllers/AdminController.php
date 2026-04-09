@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -16,9 +17,14 @@ class AdminController extends Controller
     {
         $stats = [
             'total_users' => User::count(),
+            'total_customers' => User::where('role', 'customer')->count(),
             'pending_agents' => User::where('role', 'agent')->where('is_approved', false)->count(),
             'approved_agents' => User::where('role', 'agent')->where('is_approved', true)->count(),
             'total_balance' => User::sum('balance'),
+            'total_leads' => DB::table('leads')->count(),
+            'leads_today' => DB::table('leads')->whereDate('created_at', now()->toDateString())->count(),
+            'recent_leads' => DB::table('leads')->latest()->limit(10)->get(),
+            'recent_users' => User::where('role', 'customer')->latest()->limit(10)->get(['id', 'name', 'email', 'created_at']),
         ];
 
         return response()->json($stats);
@@ -34,7 +40,7 @@ class AdminController extends Controller
 
         if ($status === 'pending') {
             $query->where('is_approved', false);
-        } else {
+        } elseif ($status === 'approved') {
             $query->where('is_approved', true);
         }
 
@@ -84,5 +90,14 @@ class AdminController extends Controller
     public function listUsers()
     {
         return response()->json(User::where('role', 'customer')->latest()->get());
+    }
+
+    /**
+     * List All Leads
+     */
+    public function listLeads()
+    {
+        $leads = DB::table('leads')->latest()->limit(50)->get();
+        return response()->json($leads);
     }
 }
