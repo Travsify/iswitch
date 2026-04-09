@@ -47,59 +47,48 @@
             --secondary: #00C897;
         }
 
-        /* --- PERFECT MOBILE HARMONIZATION --- */
+        /* --- UNIVERSAL BRAND HARMONIZATION --- */
+        main { padding-top: 160px; }
+        
+        .svc-tile {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .svc-tile:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.05) !important;
+        }
+
+        .svc-tile.active-tab {
+            background: rgba(255,125,0,0.15) !important;
+            border: 1px solid rgba(255,125,0,0.3) !important;
+        }
+        .svc-tile.active-tab .svc-label { color: white !important; }
+        
+        #search-engine {
+            max-width: 90rem;
+            margin: 0 auto;
+        }
+
         @media (max-width: 1023px) {
-            .mobile-only { display: block !important; }
-            .desktop-only { display: none !important; }
-            
-            main { padding-top: 120px !important; } /* Tighten hero space */
-            
+            main { padding-top: 120px; }
             .text-gradient, .text-gradient-orange { 
-                font-size: 2.75rem !important; 
-                line-height: 1 !important;
-                letter-spacing: -0.05em !important;
+                font-size: 3rem !important; 
             }
-
-            .mobile-service-grid {
-                display: grid !important;
-                grid-template-columns: repeat(4, 1fr) !important;
-                gap: 8px !important;
-                padding: 0 10px !important;
+            #mobile-svc-grid {
+                overflow-x: auto;
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                gap: 12px !important;
+                padding-bottom: 20px !important;
+                scrollbar-width: none;
             }
-
+            #mobile-svc-grid::-webkit-scrollbar { display: none; }
             .svc-tile {
-                padding: 12px 4px !important;
-                border-radius: 16px !important;
-            }
-
-            .svc-icon {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 0.8rem !important;
-                margin-bottom: 6px !important;
-            }
-
-            .svc-label {
-                font-size: 9px !important;
-                letter-spacing: 0 !important;
-            }
-
-            /* Fix Search Engine distortion */
-            #search-engine {
-                margin: 0 !important;
-                width: 100% !important;
-                border-radius: 2rem !important;
-                padding: 1.5rem 1rem !important;
-            }
-
-            .glass-widget {
-                backdrop-filter: blur(20px) !important;
-            }
-
-            .active-tab {
-                background: rgba(255, 125, 0, 0.1) !important;
-                border: 1px solid rgba(255, 125, 0, 0.3) !important;
-                box-shadow: 0 4px 15px rgba(255,125,0,0.1) !important;
+                flex: 0 0 auto;
+                width: 100px;
+                padding: 16px 8px !important;
             }
         }
 
@@ -981,40 +970,39 @@
             </p>
         </div>
 
-        <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-6 mobile-only">
+        <div id="mobile-svc-grid" class="flex items-center justify-center gap-4 mb-8 w-full max-w-6xl mx-auto overflow-x-auto scrolling-touch">
             <!-- Row 1 -->
-            <button type="button" @click="tab = 'flights'" class="svc-tile" :class="tab === 'flights' ? 'active-tab' : ''">
-                <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
-                <div class="svc-label">Flights</div>
+            <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'flights' ? 'active-tab' : ''">
+                <div class="svc-icon bg-orange-500/15 text-orange-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-plane"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Flights</div>
             </button>
-            <button type="button" @click="tab = 'hotels'" class="svc-tile" :class="tab === 'hotels' ? 'active-tab' : ''">
-                <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
-                <div class="svc-label">Hotels</div>
+            <button type="button" @click="tab = 'hotels'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'hotels' ? 'active-tab' : ''">
+                <div class="svc-icon bg-emerald-500/15 text-emerald-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-bed"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Hotels</div>
             </button>
-            <button type="button" @click="tab = 'visas'" class="svc-tile" :class="tab === 'visas' ? 'active-tab' : ''">
-                <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
-                <div class="svc-label">Visas</div>
+            <button type="button" @click="tab = 'visas'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'visas' ? 'active-tab' : ''">
+                <div class="svc-icon bg-blue-500/15 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-passport"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Visas</div>
             </button>
-            <button type="button" @click="tab = 'insurance'" class="svc-tile" :class="tab === 'insurance' ? 'active-tab' : ''">
-                <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
-                <div class="svc-label">Insurance</div>
+            <button type="button" @click="tab = 'insurance'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'insurance' ? 'active-tab' : ''">
+                <div class="svc-icon bg-pink-500/15 text-pink-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-shield-heart"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Insurance</div>
             </button>
-            <!-- Row 2 -->
-            <button type="button" @click="tab = 'tours'" class="svc-tile" :class="tab === 'tours' ? 'active-tab' : ''">
-                <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
-                <div class="svc-label">Tours</div>
+            <button type="button" @click="tab = 'tours'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'tours' ? 'active-tab' : ''">
+                <div class="svc-icon bg-yellow-500/15 text-yellow-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-umbrella-beach"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Tours</div>
             </button>
-            <button type="button" @click="tab = 'transfers'" class="svc-tile" :class="tab === 'transfers' ? 'active-tab' : ''">
-                <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
-                <div class="svc-label">Pickups</div>
+            <button type="button" @click="tab = 'transfers'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'transfers' ? 'active-tab' : ''">
+                <div class="svc-icon bg-purple-500/15 text-purple-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-car"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Pickups</div>
             </button>
-            <button type="button" @click.prevent="openAuth('login')" class="svc-tile">
-                <div class="svc-icon bg-indigo-500/15 text-indigo-400"><i class="fa-solid fa-vault"></i></div>
-                <div class="svc-label">Vault</div>
+            <button type="button" @click.prevent="openAuth('login')" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]">
+                <div class="svc-icon bg-indigo-500/15 text-indigo-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-vault"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Vault</div>
             </button>
-            <button type="button" @click="showLeadModal = true; leadContext = 'Expert Advisor'" class="svc-tile">
-                <div class="svc-icon bg-rose-500/15 text-rose-400"><i class="fa-solid fa-user-tie"></i></div>
-                <div class="svc-label">Experts</div>
+            <button type="button" @click="showLeadModal = true; leadContext = 'Expert Advisor'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]">
+                <div class="svc-icon bg-rose-500/15 text-rose-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="svc-label text-xs font-bold text-slate-400">Experts</div>
             </button>
         </div>
 
