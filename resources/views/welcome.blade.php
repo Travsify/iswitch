@@ -603,7 +603,7 @@
             } finally {
                 this.searching = false;
             }
-        }
+        },
         async verifyVisa() {
             this.searching = true;
             try {
@@ -970,7 +970,7 @@
             </p>
         </div>
 
-        <div id="mobile-svc-grid" class="flex items-center justify-center gap-4 mb-8 w-full max-w-6xl mx-auto overflow-x-auto scrolling-touch">
+        <div id="mobile-svc-grid" class="flex items-center justify-start lg:justify-center gap-4 mb-8 w-full max-w-6xl mx-auto overflow-x-auto scrolling-touch px-4 pb-4">
             <!-- Row 1 -->
             <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'flights' ? 'active-tab' : ''">
                 <div class="svc-icon bg-orange-500/15 text-orange-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-plane"></i></div>
