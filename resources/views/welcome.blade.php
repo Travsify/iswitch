@@ -2612,7 +2612,7 @@
         
         <!-- Bottom Bar -->
         <div class="max-w-[90rem] mx-auto px-6 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 font-medium">
-            <p>&copy; {{ date('Y') }} Smiles Global Groups LLC. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Iswitch Global LLC. All rights reserved.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
                 <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Privacy Policy</a>
                 <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Terms of Service</a>
