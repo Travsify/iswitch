@@ -594,7 +594,7 @@
                     this.authSuccess = data.message || (this.authMode === 'login' ? 'Welcome back! Redirecting...' : 'Account created! Welcome aboard!');
                     
                     if (data.status === 'pending_approval' || (data.user && data.user.role === 'agent' && !data.user.is_approved)) {
-                        this.authSuccess = "B2B Registration Received. Your account is pending administrative approval.";
+                        this.authSuccess = 'B2B Registration Received. Your account is pending administrative approval.';
                         setTimeout(() => { this.showAuthModal = false; }, 3000);
                     } else {
                         setTimeout(() => { window.location.href = '/user'; }, 1500);
