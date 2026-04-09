@@ -964,122 +964,104 @@
 
         <!-- MIND BLOWING SEARCH ENGINE (Grid Architecture) -->
         <div id="search-engine" class="w-full max-w-6xl glass-widget p-3 md:p-6 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
-            <!-- category-tab-strip completely removed per request -->
-
+             
              <!-- ENGINE FORMS & DYNAMIC CONTENT -->
             <div class="px-2 md:px-6 relative min-h-[400px]">
                 
                 <!-- ================= FLIGHTS ================= -->
                 <div x-show="tab === 'flights'" class="w-full" x-data="{ tripType: 'round' }">
                     
-                    <!-- Segmented Trip Switcher (Apple Style) -->
-                    <div class="flex p-1 bg-black/40 rounded-xl border border-white/5 mb-8 w-full max-w-sm">
-                        <button type="button" @click="tripType = 'one'" :class="tripType === 'one' ? 'bg-white/10 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'" class="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">One-way</button>
-                        <button type="button" @click="tripType = 'round'" :class="tripType === 'round' ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/20' : 'text-slate-500 hover:text-slate-300'" class="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">Round-trip</button>
-                        <button type="button" @click="tripType = 'multi'" :class="tripType === 'multi' ? 'bg-white/10 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'" class="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">Multi-city</button>
-                    </div>
-                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
-                            <input type="radio" name="trip" value="multi" x-model="tripType" class="hidden">
-                            <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'multi' ? 'border-brand-orange' : 'group-hover:border-white'">
-                                <div class="w-2 h-2 rounded-full bg-brand-orange transition-transform" :class="tripType === 'multi' ? 'scale-100' : 'scale-0'"></div>
-                            </div>
-                            <span :class="tripType === 'multi' ? 'text-white' : 'text-slate-400'">Multi-city</span>
-                        </label>
-                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
-                            <input type="radio" name="trip" value="nomad" x-model="tripType" class="hidden">
-                            <div class="px-3 py-1 rounded-full border transition-all flex items-center gap-1.5" :class="tripType === 'nomad' ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-white/5 border-white/10 text-slate-300'">
-                                <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> <span>Inspire Me</span>
-                            </div>
-                        </label>
-                    </div>
-                        
-                        <div class="ml-auto" x-data="{ alertModal: false, alertEmail: '' }">
-                            <button @click.prevent="alertModal = true" class="text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1.5 transition-colors flex items-center gap-2 text-brand-orange">
-                                <i class="fa-solid fa-bell"></i> Get Price Alerts
+                    <!-- Integrated Control Row -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 px-1">
+                        <!-- Segmented Switcher (The Pill) -->
+                        <div class="flex p-1 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 w-full max-w-sm shadow-xl">
+                            <button type="button" @click="tripType = 'one'" 
+                                :class="tripType === 'one' ? 'bg-white/10 text-white shadow-lg shadow-white/5 border-white/10' : 'text-slate-500 hover:text-slate-300 border-transparent'" 
+                                class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all border border-transparent">One-way</button>
+                            <button type="button" @click="tripType = 'round'" 
+                                :class="tripType === 'round' ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/30 border-brand-orange/20' : 'text-slate-500 hover:text-slate-300 border-transparent'" 
+                                class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all border border-transparent">Round-trip</button>
+                            <button type="button" @click="tripType = 'multi'" 
+                                :class="tripType === 'multi' ? 'bg-white/10 text-white shadow-lg shadow-white/5 border-white/10' : 'text-slate-500 hover:text-slate-300 border-transparent'" 
+                                class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all border border-transparent">Multi-city</button>
+                        </div>
+
+                        <!-- Price Alert Action -->
+                        <div x-data="{ alertModal: false, alertEmail: '' }" class="w-full md:w-auto">
+                            <button @click.prevent="alertModal = true" class="w-full md:w-auto text-[10px] font-black uppercase tracking-widest bg-brand-orange/10 hover:bg-brand-orange/20 border border-brand-orange/30 rounded-full px-6 py-3.5 transition-all text-brand-orange flex items-center justify-center gap-2 group">
+                                <i class="fa-solid fa-bell group-hover:animate-bounce"></i> Price Drop Tracker
                             </button>
-                            <!-- Lead Gen Modal -->
-                            <div x-show="alertModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm" style="display: none;">
-                                <div @click.outside="alertModal = false" class="glass-widget p-8 max-w-md w-full relative">
-                                    <button @click="alertModal = false" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-times"></i></button>
-                                    <div class="w-12 h-12 rounded-full bg-brand-orange/20 border border-brand-orange/50 flex items-center justify-center mb-6">
-                                        <i class="fa-solid fa-bell text-brand-orange text-xl"></i>
+                            <!-- Alert Modal -->
+                            <div x-show="alertModal" class="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" x-cloak style="display: none;">
+                                <div @click.outside="alertModal = false" class="glass-widget p-8 max-w-md w-full relative border border-white/10 shadow-2xl">
+                                    <button @click="alertModal = false" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"><i class="fa-solid fa-times text-xl"></i></button>
+                                    <div class="w-16 h-16 rounded-2xl bg-brand-orange/20 border border-brand-orange/30 flex items-center justify-center mb-6">
+                                        <i class="fa-solid fa-paper-plane text-brand-orange text-2xl"></i>
                                     </div>
-                                    <h3 class="text-2xl font-black text-white mb-2">Never miss a price drop</h3>
-                                    <p class="text-slate-400 text-sm mb-6">Enter your email and we'll alert you the moment flights on this route get cheaper. No spam, just savings.</p>
-                                    <form @submit.prevent="submitLead(alertEmail, 'tracker', {origin: searchOrigin, destination: searchDest})" class="flex flex-col gap-3">
-                                        <input type="email" x-model="alertEmail" placeholder="Enter your email address" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-brand-orange">
-                                        <button type="submit" :disabled="searching" class="btn-magical w-full py-3 rounded-xl font-bold">
-                                            <span x-show="!searching">Track Prices</span>
-                                            <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Syncing...</span>
-                                        </button>
+                                    <h3 class="text-3xl font-black text-white mb-2 leading-none">Price Radar</h3>
+                                    <p class="text-slate-400 text-sm mb-8 font-medium">We'll scan the global network and alert you the second this route hits your target price.</p>
+                                    <form @submit.prevent="submitLead(alertEmail, 'tracker', {origin: searchOrigin, destination: searchDest})" class="space-y-4">
+                                        <input type="email" x-model="alertEmail" placeholder="Elite ID or Email" required class="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white font-bold outline-none focus:border-brand-orange transition-all placeholder:text-slate-600">
+                                        <button type="submit" class="w-full bg-white text-black font-black uppercase tracking-[0.2em] text-[11px] py-5 rounded-2xl hover:bg-brand-orange hover:text-white transition-all shadow-xl shadow-white/5">Activate Radar</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- iSwitch Search Engine (The Pulse) -->
-                    <form @submit.prevent="fetchFlights()" class="flex flex-col lg:flex-row w-full bg-slate-900/60 backdrop-blur-3xl rounded-[2rem] lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_30px_60px_rgba(0,0,0,1)] border border-white/10 relative z-20 transition-all focus-within:ring-4 ring-brand-orange/10">
+                    <!-- iSwitch Search Engine (The Form) -->
+                    <form @submit.prevent="fetchFlights()" class="flex flex-col lg:flex-row w-full bg-slate-900/40 backdrop-blur-3xl rounded-[2.5rem] lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 relative z-20 focus-within:ring-4 ring-brand-orange/20 transition-all overflow-hidden group/form">
                         
                         <!-- ORIGIN -->
-                        <div class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-text relative">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-focus-within:text-brand-orange transition-colors">Where From?</label>
-                            <div class="flex items-center gap-3 mt-1.5">
-                                <i class="fa-solid fa-plane-departure text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" name="origin" placeholder="Lagos (LOS)" x-model="searchOrigin" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                        <div class="flex-1 p-8 lg:py-6 lg:px-10 group/input cursor-text relative hover:bg-white/5 transition-colors">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within/input:text-brand-orange transition-colors mb-2">Origin</label>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-location-dot text-slate-500 text-lg group-focus-within/input:text-brand-orange transition-colors"></i>
+                                <input type="text" placeholder="Lagos (LOS)" x-model="searchOrigin" class="w-full bg-transparent outline-none text-white font-black text-xl placeholder:text-slate-800">
                             </div>
                         </div>
 
                         <!-- DESTINATION -->
-                        <div class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-text relative">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-focus-within:text-brand-orange transition-colors">Where To?</label>
-                            <div class="flex items-center gap-3 mt-1.5">
-                                <i class="fa-solid fa-plane-arrival text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                <input type="text" name="destination" placeholder="London (LHR)" x-model="searchDest" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                        <div class="flex-1 p-8 lg:py-6 lg:px-10 group/input cursor-text relative hover:bg-white/5 transition-colors">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within/input:text-brand-orange transition-colors mb-2">Destination</label>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-plane-arrival text-slate-500 text-lg group-focus-within/input:text-brand-orange transition-colors"></i>
+                                <input type="text" placeholder="London (LHR)" x-model="searchDest" class="w-full bg-transparent outline-none text-white font-black text-xl placeholder:text-slate-800">
                             </div>
                         </div>
 
-                        <!-- DATE PICKERS -->
+                        <!-- DATE BLOCKS -->
                         <div class="flex-1 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10">
                             <!-- Departure -->
-                            <div class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-pointer relative">
-                                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-brand-orange transition-colors">Departure</label>
-                                <div class="flex items-center gap-3 mt-1.5">
-                                    <i class="fa-solid fa-calendar-day text-slate-500 text-sm group-hover:text-brand-orange"></i>
-                                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Add Date" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                            <div class="flex-1 p-8 lg:py-6 lg:px-10 group/input cursor-pointer relative hover:bg-white/5 transition-colors">
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover/input:text-brand-orange transition-colors mb-2">Departure</label>
+                                <div class="flex items-center gap-4">
+                                    <i class="fa-solid fa-calendar-alt text-slate-500 text-lg group-hover/input:text-brand-orange transition-colors"></i>
+                                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Add Date" class="w-full bg-transparent outline-none text-white font-black text-xl placeholder:text-slate-800">
                                 </div>
                             </div>
-                            <!-- Return (Hidden if One-way) -->
-                            <div x-show="tripType === 'round'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-pointer relative bg-orange-500/[0.02]">
-                                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-brand-orange transition-colors">Return</label>
-                                <div class="flex items-center gap-3 mt-1.5">
-                                    <i class="fa-solid fa-calendar-check text-slate-500 text-sm group-hover:text-brand-orange"></i>
-                                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Return Date" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
-                                </div>
-                            </div>
-                            <!-- Multi-City Leg Indicator (Mock for Multi-city state) -->
-                            <div x-show="tripType === 'multi'" class="flex-1 p-6 lg:py-5 lg:px-8 flex items-center gap-4 bg-indigo-500/5">
-                                <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
-                                    <i class="fa-solid fa-layer-group text-indigo-400"></i>
-                                </div>
-                                <div>
-                                    <h5 class="text-xs font-bold text-white uppercase">Multi-City Leg 1</h5>
-                                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">3 Stops Linked</p>
+                            <!-- Return -->
+                            <div x-show="tripType === 'round'" x-transition 
+                                 class="flex-1 p-8 lg:py-6 lg:px-10 group/input cursor-pointer relative bg-brand-orange/5 hover:bg-brand-orange/10 transition-colors">
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover/input:text-brand-orange transition-colors mb-2">Return</label>
+                                <div class="flex items-center gap-4">
+                                    <i class="fa-solid fa-calendar-check text-brand-orange text-lg"></i>
+                                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Return Date" class="w-full bg-transparent outline-none text-white font-black text-xl placeholder:text-slate-700">
                                 </div>
                             </div>
                         </div>
 
                         <!-- TRAVELERS & CLASS -->
-                        <div class="flex-1 p-6 lg:py-5 lg:px-8 group relative" x-data="{ popover: false }">
+                        <div class="flex-1 p-8 lg:py-6 lg:px-10 group/input relative hover:bg-white/5 transition-colors" x-data="{ popover: false }">
                             <div @click="popover = !popover" class="cursor-pointer">
-                                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-focus-within:text-brand-orange transition-colors">Passengers & Class</label>
-                                <div class="flex items-center gap-3 mt-1.5">
-                                    <i class="fa-solid fa-user-group text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
-                                    <span class="text-white font-black text-lg truncate">1 Adult, Economy</span>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover/input:text-brand-orange transition-colors mb-2">Travelers</label>
+                                <div class="flex items-center gap-4">
+                                    <i class="fa-solid fa-user-group text-slate-500 text-lg group-hover/input:text-brand-orange transition-colors"></i>
+                                    <span class="text-white font-black text-xl truncate">1 Adult, Economy</span>
                                 </div>
                             </div>
                             <!-- Popover -->
-                            <div x-show="popover" @click.outside="popover = false" x-transition class="absolute top-full left-0 lg:right-0 lg:left-auto mt-4 w-full lg:w-80 bg-[#0b0c10] border border-white/10 p-6 rounded-3xl shadow-2xl z-[100]" style="display: none;">
+                            <div x-show="popover" @click.outside="popover = false" x-transition class="absolute top-full left-0 lg:right-0 lg:left-auto mt-4 w-full lg:w-80 bg-[#0b0c10] border border-white/10 p-8 rounded-[2rem] shadow-2xl z-[100]" style="display: none;" x-cloak>
                                 <div class="space-y-6">
                                     <div class="flex justify-between items-center">
                                         <div><h4 class="font-bold text-white text-sm">Adults</h4><p class="text-[10px] text-slate-500 uppercase tracking-widest">Age 12+</p></div>
@@ -1099,23 +1081,20 @@
                                             <option>First Class</option>
                                         </select>
                                     </div>
-                                    <button type="button" @click="popover = false" class="w-full bg-white text-black font-black uppercase tracking-widest text-[10px] py-4 rounded-xl shadow-xl">Confirm Choices</button>
+                                    <button type="button" @click="popover = false" class="w-full bg-white text-black font-black uppercase tracking-[0.2em] text-[10px] py-5 rounded-2xl shadow-xl">Apply Choices</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- SUBMIT WRAPPER -->
-                        <div class="p-3 lg:p-4 flex items-center justify-center">
-                             <!-- Desktop Button -->
-                             <button type="submit" class="hidden lg:flex w-16 h-16 rounded-full bg-brand-orange text-white items-center justify-center text-xl shadow-[0_0_30px_rgba(255,125,0,0.5)] hover:scale-110 active:scale-90 transition-all shrink-0" :disabled="searching">
+                        <!-- SEARCH ACTION -->
+                        <div class="p-6 lg:p-4 flex items-center justify-center bg-white/5 lg:bg-transparent">
+                             <button type="submit" class="hidden lg:flex w-24 h-24 rounded-full bg-brand-orange text-white items-center justify-center text-3xl shadow-[0_0_40px_rgba(255,125,0,0.4)] hover:scale-110 active:scale-95 transition-all transform shrink-0" :disabled="searching">
                                 <i class="fa-solid fa-search" x-show="!searching"></i>
                                 <i class="fa-solid fa-spinner animate-spin" x-show="searching"></i>
                              </button>
-
-                             <!-- Mobile Button -->
-                             <button type="submit" class="lg:hidden w-full bg-brand-orange text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-brand-orange/20 active:scale-95 transition-all text-sm uppercase tracking-widest" :disabled="searching">
-                                <span x-show="!searching">Locate Fares <i class="fa-solid fa-arrow-right ml-2"></i></span>
-                                <span x-show="searching"><i class="fa-solid fa-spinner animate-spin"></i> Analyzing...</span>
+                             <button type="submit" class="lg:hidden w-full bg-brand-orange text-white font-black py-6 rounded-[2rem] flex items-center justify-center gap-4 shadow-xl shadow-brand-orange/20 active:scale-95 transition-all text-sm uppercase tracking-[0.3em]" :disabled="searching">
+                                <span x-show="!searching">Explore Fares <i class="fa-solid fa-arrow-right-long animate-pulse"></i></span>
+                                <span x-show="searching"><i class="fa-solid fa-gear animate-spin"></i> Optimizing Route...</span>
                              </button>
                         </div>
                     </form>
