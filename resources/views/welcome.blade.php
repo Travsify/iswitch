@@ -311,7 +311,7 @@
             margin-top: 20px;
         }
         .mobile-bottom-nav { display: block; }
-        body { padding-bottom: 90px; }
+        body { padding-bottom: 110px !important; }
         .mobile-only { display: block !important; }
         .desktop-only { display: none !important; }
         
@@ -519,6 +519,17 @@
         alertModal: false,
         priceRadar: false,
         popover: null,
+        currentCurrency: 'USD',
+        currencySymbol: '$',
+        currentLang: 'EN',
+        
+        switchCurrency(code, symbol) {
+            this.currentCurrency = code;
+            this.currencySymbol = symbol;
+        },
+        switchLang(code) {
+            this.currentLang = code;
+        },
 
         /* ── AUTH MODAL ── */
         showAuthModal: false,
@@ -943,29 +954,25 @@
                 <div class="text-slate-400 text-sm tracking-widest uppercase mt-4 mb-2">Consultations</div>
                 <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Study Abroad'; leadMessage = 'I am interested in Study Abroad and Admissions support.'" class="text-brand-orange border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-graduation-cap"></i> Study Abroad</a>
                 <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Work & Migrate'; leadMessage = 'I want to discuss Work & Migrate relocation support.'" class="text-brand-emerald border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-briefcase"></i> Work & Migrate</a>
-                <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Business Setup'; leadMessage = 'I am requesting a consultation for Business Setup and Corporate Relocation.'" class="text-blue-400 border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-building"></i> Business Setup</a>
-                
-                <a href="/agent" class="text-white border-b border-white/10 pb-4 flex justify-between items-center">Partner Portal <i class="fa-solid fa-arrow-right text-sm"></i></a>
-                
                 <div class="mt-8 flex flex-col gap-4">
                     <div class="grid grid-cols-2 gap-3 mb-2">
                          <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" class="w-full text-center text-xs py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-dollar-sign"></i> USD <i class="fa-solid fa-chevron-down text-[8px]"></i>
+                                <i class="fa-solid fa-dollar-sign"></i> <span x-text="currentCurrency"></span> <i class="fa-solid fa-chevron-down text-[8px]"></i>
                             </button>
                             <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 glass-widget p-2 rounded-xl border border-white/10 z-50">
-                                <a href="#" class="block p-2 text-[10px] font-bold text-brand-orange">USD ($)</a>
-                                <a href="#" class="block p-2 text-[10px] font-bold text-white">NGN (₦)</a>
-                                <a href="#" class="block p-2 text-[10px] font-bold text-white">GBP (£)</a>
+                                <a href="#" @click.prevent="switchCurrency('USD', '$'); open = false" class="block p-2 text-[10px] font-bold" :class="currentCurrency === 'USD' ? 'text-brand-orange' : 'text-white'">USD ($)</a>
+                                <a href="#" @click.prevent="switchCurrency('NGN', '₦'); open = false" class="block p-2 text-[10px] font-bold" :class="currentCurrency === 'NGN' ? 'text-brand-orange' : 'text-white'">NGN (₦)</a>
+                                <a href="#" @click.prevent="switchCurrency('GBP', '£'); open = false" class="block p-2 text-[10px] font-bold" :class="currentCurrency === 'GBP' ? 'text-brand-orange' : 'text-white'">GBP (£)</a>
                             </div>
                          </div>
                          <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" class="w-full text-center text-xs py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-globe"></i> EN <i class="fa-solid fa-chevron-down text-[8px]"></i>
+                                <i class="fa-solid fa-globe"></i> <span x-text="currentLang"></span> <i class="fa-solid fa-chevron-down text-[8px]"></i>
                             </button>
                             <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 glass-widget p-2 rounded-xl border border-white/10 z-50">
-                                <a href="#" class="block p-2 text-[10px] font-bold text-brand-emerald">English</a>
-                                <a href="#" class="block p-2 text-[10px] font-bold text-white">French</a>
+                                <a href="#" @click.prevent="switchLang('EN'); open = false" class="block p-2 text-[10px] font-bold" :class="currentLang === 'EN' ? 'text-brand-emerald' : 'text-white'">English</a>
+                                <a href="#" @click.prevent="switchLang('FR'); open = false" class="block p-2 text-[10px] font-bold" :class="currentLang === 'FR' ? 'text-brand-emerald' : 'text-white'">French</a>
                             </div>
                          </div>
                     </div>
@@ -2464,14 +2471,14 @@
             <!-- HOME: Scroll to top of page -->
             <button id="nav-home" class="nav-item active" onclick="handleBottomNav('home', this)">
                 <div class="nav-icon"><i class="fa-solid fa-house"></i></div>
-                <div class="nav-label">Home</div>
+                <div class="nav-label" x-text="currentLang === 'EN' ? 'Home' : 'Accueil'">Home</div>
                 <div class="nav-dot"></div>
             </button>
 
             <!-- VAULT: Scroll to The Vault / Passport Features -->
             <button id="nav-vault" class="nav-item" onclick="handleBottomNav('vault', this)">
                 <div class="nav-icon"><i class="fa-solid fa-vault"></i></div>
-                <div class="nav-label">Vault</div>
+                <div class="nav-label" x-text="currentLang === 'EN' ? 'Vault' : 'Coffre'">Vault</div>
                 <div class="nav-dot"></div>
             </button>
 
@@ -2481,20 +2488,20 @@
                 <div class="center-btn text-white">
                     <i class="fa-solid fa-headset"></i>
                 </div>
-                <div class="nav-label">Expert</div>
+                <div class="nav-label text-brand-orange" x-text="currentLang === 'EN' ? 'Expert' : 'Expert'">Expert</div>
             </button>
 
             <!-- DEALS: Scroll to Promotions / Tours section -->
             <button id="nav-deals" class="nav-item" onclick="handleBottomNav('deals', this)">
                 <div class="nav-icon"><i class="fa-solid fa-tag"></i></div>
-                <div class="nav-label">Deals</div>
+                <div class="nav-label" x-text="currentLang === 'EN' ? 'Deals' : 'Offres'">Deals</div>
                 <div class="nav-dot"></div>
             </button>
 
             <!-- ACCOUNT: Go to Sign In / Dashboard -->
             <a @click.prevent="openAuth('login')" href="#" id="nav-account" class="nav-item">
                 <div class="nav-icon"><i class="fa-solid fa-circle-user"></i></div>
-                <div class="nav-label">Account</div>
+                <div class="nav-label" x-text="currentLang === 'EN' ? 'Account' : 'Compte'">Account</div>
                 <div class="nav-dot"></div>
             </a>
 
