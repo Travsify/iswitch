@@ -22,9 +22,13 @@ Route::get('/agent/register', function () {
     return view('auth.agent_register');
 })->name('agent.register');
 
+Route::get('/admin/login', function () {
+    return view('admin.login');
+});
+
 Route::get('/admin/god-mode', function () {
     if (request('key') !== 'iswitch_elite') {
-        return redirect('/');
+        return redirect('/admin/login');
     }
     return view('admin.war_room');
 });
