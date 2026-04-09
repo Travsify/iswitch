@@ -1381,23 +1381,44 @@
 
                 <!-- ================= HOTELS ================= -->
                 <div x-show="tab === 'hotels'" x-cloak class="w-full">
-                    <form action="/search" class="search-pill flex flex-col lg:flex-row w-full rounded-3xl lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-2xl">
-                        <div class="search-pill-input flex-[2] p-4 lg:py-4 lg:px-8 cursor-text group">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-emerald transition-colors">Where are you going?</label>
-                            <input type="text" placeholder="Search cities, hotels, or landmarks" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600 mt-1">
-                        </div>
-                        <div class="search-pill-input flex-1 p-4 lg:py-4 lg:px-8 cursor-text group flex justify-between items-center">
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-brand-emerald transition-colors">Guests & Rooms</label>
-                                <input type="text" placeholder="2 Guests, 1 Room" class="w-full bg-transparent outline-none text-white font-semibold text-lg lg:text-xl placeholder-slate-600 mt-1">
+                    <form action="/search" class="flex flex-col lg:flex-row w-full bg-slate-900/40 backdrop-blur-3xl rounded-[2.5rem] lg:rounded-full divide-y lg:divide-y-0 lg:divide-x divide-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 relative z-20 focus-within:ring-4 ring-brand-emerald/20 transition-all overflow-hidden group/form">
+                        
+                        <!-- LOCATION -->
+                        <div class="flex-[2] p-8 lg:py-6 lg:px-10 group/input cursor-text relative hover:bg-white/5 transition-colors">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within/input:text-brand-emerald transition-colors mb-2">Location</label>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-map-location-dot text-slate-500 text-lg group-focus-within/input:text-brand-emerald transition-colors"></i>
+                                <input type="text" placeholder="Search cities, hotels, or landmarks" class="w-full bg-transparent outline-none text-white font-black text-xl placeholder:text-slate-800">
                             </div>
-                            <button type="button" class="bg-brand-emerald hover:bg-emerald-400 transition-colors w-14 h-14 rounded-full shadow-[0_5px_15px_rgba(0,200,151,0.4)] hidden lg:flex items-center justify-center shrink-0 ml-4">
-                                <i class="fa-solid fa-search text-xl text-slate-900"></i>
-                            </button>
                         </div>
-                         <button type="button" class="bg-brand-emerald text-slate-900 w-full p-4 rounded-b-3xl text-lg font-bold lg:hidden flex items-center justify-center gap-2">
-                            Search Stays <i class="fa-solid fa-search"></i>
-                         </button>
+
+                        <!-- DATE RANGE -->
+                        <div class="flex-1 p-8 lg:py-6 lg:px-10 group/input cursor-pointer relative hover:bg-white/5 transition-colors">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover/input:text-brand-emerald transition-colors mb-2">Dates</label>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-calendar-range text-slate-500 text-lg group-hover/input:text-brand-emerald transition-colors"></i>
+                                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Check-in / Out" class="w-full bg-transparent outline-none text-white font-black text-xl placeholder:text-slate-800">
+                            </div>
+                        </div>
+
+                        <!-- GUESTS -->
+                        <div class="flex-1 p-8 lg:py-6 lg:px-10 group/input cursor-pointer relative hover:bg-white/5 transition-colors">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover/input:text-brand-emerald transition-colors mb-2">Occupancy</label>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-user-tag text-slate-500 text-lg group-hover/input:text-brand-emerald transition-colors"></i>
+                                <span class="text-white font-black text-xl">2 Adults, 1 Room</span>
+                            </div>
+                        </div>
+
+                        <!-- HOTEL ACTION -->
+                        <div class="p-6 lg:p-4 flex items-center justify-center bg-white/5 lg:bg-transparent">
+                             <button type="submit" class="hidden lg:flex w-24 h-24 rounded-full bg-brand-emerald text-slate-900 items-center justify-center text-3xl shadow-[0_0_40px_rgba(0,200,151,0.4)] hover:scale-110 active:scale-95 transition-all transform shrink-0">
+                                <i class="fa-solid fa-search"></i>
+                             </button>
+                             <button type="submit" class="lg:hidden w-full bg-brand-emerald text-slate-900 font-black py-6 rounded-[2rem] flex items-center justify-center gap-4 shadow-xl shadow-brand-emerald/20 active:scale-95 transition-all text-sm uppercase tracking-[0.3em]">
+                                Locate Stays <i class="fa-solid fa-arrow-right-long animate-pulse"></i>
+                             </button>
+                        </div>
                     </form>
 
                     <!-- Quick Filters & Luggage Toggle -->
@@ -2379,8 +2400,9 @@
             </div>
 
             <!-- Consultations Grid -->
-            <div x-data="{ open: window.innerWidth >= 1024 }">
-                <h4 @click="if(window.innerWidth < 1024) open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+            <!-- Consultations Grid -->
+            <div x-data="{ open: false }" x-init="open = window.innerWidth >= 1024">
+                <h4 @click="open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-slate-500"></i> Consultations</span>
                     <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
                 </h4>
@@ -2394,8 +2416,8 @@
             </div>
 
             <!-- Partner Grid -->
-            <div x-data="{ open: window.innerWidth >= 1024 }">
-                <h4 @click="if(window.innerWidth < 1024) open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+            <div x-data="{ open: false }" x-init="open = window.innerWidth >= 1024">
+                <h4 @click="open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-handshake text-slate-500"></i> Partnerships</span>
                     <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
                 </h4>
@@ -2467,7 +2489,7 @@
     </nav>
 
     <script>
-        /* Bottom Nav Navigation Logic to prevent inline JS spills */
+        /* Bottom Nav Navigation Logic (Fixed for Deals & Analytics) */
         window.handleBottomNav = function(target, btn) {
             document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
             if(btn) btn.classList.add('active');
@@ -2476,9 +2498,19 @@
                 window.scrollTo({top: 0, behavior: 'smooth'});
             } else if (target === 'vault') {
                 const el = document.getElementById('vault') || document.getElementById('features');
-                el?.scrollIntoView({behavior:'smooth'});
+                if(el) {
+                    const offset = 100;
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = el.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
             } else if (target === 'deals') {
-                document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'});
+                const el = document.getElementById('vault') || document.querySelector('.destinations-grid');
+                if(el) {
+                    el.scrollIntoView({behavior:'smooth', block: 'center'});
+                }
             }
         };
 
@@ -2489,7 +2521,7 @@
             window.addEventListener('scroll', function() {
                 if (window.scrollY < 300) {
                     document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-                    homeBtn && homeBtn.classList.add('active');
+                    if(homeBtn) homeBtn.classList.add('active');
                 }
             }, { passive: true });
         })();
