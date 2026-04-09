@@ -50,39 +50,10 @@
         @media (max-width: 1023px) {
             .mobile-only { display: block !important; }
             .desktop-only { display: none !important; }
-            
             main { padding-top: 110px !important; }
-            
             .text-gradient, .text-gradient-orange { 
                 font-size: 2.5rem !important; 
                 line-height: 1.1 !important;
-            }
-
-            #mobile-svc-grid {
-                display: grid !important;
-                grid-template-columns: repeat(4, 1fr) !important;
-                gap: 8px !important;
-                padding: 0 12px !important;
-                overflow: visible !important;
-            }
-
-            .svc-tile {
-                width: 100% !important;
-                min-width: 0 !important;
-                padding: 12px 4px !important;
-                border-radius: 16px !important;
-            }
-
-            .svc-icon {
-                width: 36px !important;
-                height: 36px !important;
-                font-size: 0.9rem !important;
-                margin-bottom: 6px !important;
-            }
-
-            .svc-label {
-                font-size: 9px !important;
-                letter-spacing: -0.02em !important;
             }
         }
 
@@ -300,16 +271,42 @@
         .hero-badge { margin-bottom: 10px !important; }
 
         .mobile-service-grid {
-            position: relative;
-            z-index: 100 !important;
-            pointer-events: auto !important;
             display: grid !important;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 8px !important;
             width: 100% !important;
-            padding: 0 4px;
-            margin-top: 20px;
+            padding: 0 16px !important;
+            margin-bottom: 24px !important;
         }
+
+        .mobile-service-grid .svc-tile {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 80px;
+            padding: 14px 4px !important;
+            border-radius: 18px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mobile-service-grid .svc-icon {
+            width: 34px !important;
+            height: 34px !important;
+            border-radius: 10px !important;
+            font-size: 14px !important;
+            margin-bottom: 6px !important;
+        }
+
+        .mobile-service-grid .svc-label {
+            font-size: 9px !important;
+            font-weight: 800 !important;
+            color: #94a3b8;
+        }
+
         .mobile-bottom-nav { display: block; }
         body { padding-bottom: 110px !important; }
         .mobile-only { display: block !important; }
@@ -318,14 +315,9 @@
         /* High-visibility active state for tabs */
         .svc-tile.active-tab {
             background: rgba(255,125,0,0.15) !important;
-            border: 1px solid rgba(255,125,0,0.3) !important;
+            border: 1px solid rgba(255,125,0,0.4) !important;
         }
         .svc-tile.active-tab .svc-label { color: white !important; }
-        
-        .mobile-service-grid .svc-tile {
-            min-height: 80px;
-            -webkit-tap-highlight-color: transparent;
-        }
         .glass-widget { border-radius: 1.25rem !important; }
 
         /* Mobile Service Grid */
@@ -1086,41 +1078,78 @@
             </p>
         </div>
 
-        <div id="mobile-svc-grid" class="flex items-center gap-4 mb-2 md:mb-8 w-full max-w-6xl mx-auto overflow-x-auto scrolling-touch px-4 pb-6 scrollbar-hide">
-            <!-- Row 1 -->
-            <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'flights' ? 'active-tab border-brand-orange ring-1 ring-brand-orange/20' : ''">
-                <div class="svc-icon bg-orange-500/15 text-orange-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-plane"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Flights</div>
-            </button>
-            <button type="button" @click="tab = 'hotels'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'hotels' ? 'active-tab border-brand-emerald ring-1 ring-brand-emerald/20' : ''">
-                <div class="svc-icon bg-emerald-500/15 text-emerald-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-bed"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Hotels</div>
-            </button>
-            <button type="button" @click="tab = 'visas'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'visas' ? 'active-tab border-blue-500 ring-1 ring-blue-500/20' : ''">
-                <div class="svc-icon bg-blue-500/15 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-passport"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Visas</div>
-            </button>
-            <button type="button" @click="tab = 'insurance'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'insurance' ? 'active-tab border-pink-500 ring-1 ring-pink-500/20' : ''">
-                <div class="svc-icon bg-pink-500/15 text-pink-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-shield-heart"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Insurance</div>
-            </button>
-            <button type="button" @click="tab = 'tours'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'tours' ? 'active-tab border-yellow-500 ring-1 ring-yellow-500/20' : ''">
-                <div class="svc-icon bg-yellow-500/15 text-yellow-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-umbrella-beach"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Tours</div>
-            </button>
-            <button type="button" @click="tab = 'transfers'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'transfers' ? 'active-tab border-purple-500 ring-1 ring-purple-500/20' : ''">
-                <div class="svc-icon bg-purple-500/15 text-purple-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-car"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Pickups</div>
-            </button>
+        <div id="service-hub" class="w-full max-w-6xl mx-auto mb-8 px-4 sm:px-0">
+            <!-- Mobile-only Service Grid (4x2 Architecture) -->
+            <div class="mobile-service-grid lg:hidden">
+                <button type="button" @click="tab = 'flights'" class="svc-tile" :class="tab === 'flights' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-orange-500/15 text-orange-400 flex items-center justify-center"><i class="fa-solid fa-plane"></i></div>
+                    <div class="svc-label">Flights</div>
+                </button>
+                <button type="button" @click="tab = 'hotels'" class="svc-tile" :class="tab === 'hotels' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-emerald-500/15 text-emerald-400 flex items-center justify-center"><i class="fa-solid fa-bed"></i></div>
+                    <div class="svc-label">Hotels</div>
+                </button>
+                <button type="button" @click="tab = 'visas'" class="svc-tile" :class="tab === 'visas' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-blue-500/15 text-blue-400 flex items-center justify-center"><i class="fa-solid fa-passport"></i></div>
+                    <div class="svc-label">Visas</div>
+                </button>
+                <button type="button" @click="tab = 'insurance'" class="svc-tile" :class="tab === 'insurance' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-pink-500/15 text-pink-400 flex items-center justify-center"><i class="fa-solid fa-shield-heart"></i></div>
+                    <div class="svc-label">Security</div>
+                </button>
+                <button type="button" @click="tab = 'tours'" class="svc-tile" :class="tab === 'tours' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-yellow-500/15 text-yellow-400 flex items-center justify-center"><i class="fa-solid fa-umbrella-beach"></i></div>
+                    <div class="svc-label">Tours</div>
+                </button>
+                <button type="button" @click="tab = 'transfers'" class="svc-tile" :class="tab === 'transfers' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-purple-500/15 text-purple-400 flex items-center justify-center"><i class="fa-solid fa-car"></i></div>
+                    <div class="svc-label">Pickups</div>
+                </button>
+                <button type="button" @click.prevent="openAuth('login')" class="svc-tile">
+                    <div class="svc-icon bg-indigo-500/15 text-indigo-400 flex items-center justify-center"><i class="fa-solid fa-vault"></i></div>
+                    <div class="svc-label">Vault</div>
+                </button>
+                <button type="button" @click="showLeadModal = true; leadContext = 'Expert Advisor'" class="svc-tile">
+                    <div class="svc-icon bg-rose-500/15 text-rose-400 flex items-center justify-center"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="svc-label">Expert</div>
+                </button>
+            </div>
 
-            <button type="button" @click.prevent="openAuth('login')" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]">
-                <div class="svc-icon bg-indigo-500/15 text-indigo-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-vault"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Vault</div>
-            </button>
-            <button type="button" @click="showLeadModal = true; leadContext = 'Expert Advisor'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]">
-                <div class="svc-icon bg-rose-500/15 text-rose-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-user-tie"></i></div>
-                <div class="svc-label text-xs font-bold text-slate-400">Experts</div>
-            </button>
+            <!-- Desktop-only Tab Strip -->
+            <div id="desktop-tab-strip" class="hidden lg:flex items-center gap-4 w-full overflow-x-auto scrollbar-hide">
+                <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'flights' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-orange-500/15 text-orange-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-plane"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Flights</div>
+                </button>
+                <button type="button" @click="tab = 'hotels'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'hotels' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-emerald-500/15 text-emerald-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-bed"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Stays</div>
+                </button>
+                <button type="button" @click="tab = 'visas'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'visas' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-blue-500/15 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-passport"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Visas</div>
+                </button>
+                <button type="button" @click="tab = 'insurance'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'insurance' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-pink-500/15 text-pink-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-shield-heart"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Insurance</div>
+                </button>
+                <button type="button" @click="tab = 'tours'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'tours' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-yellow-500/15 text-yellow-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-umbrella-beach"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Tours</div>
+                </button>
+                <button type="button" @click="tab = 'transfers'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all" :class="tab === 'transfers' ? 'active-tab' : ''">
+                    <div class="svc-icon bg-purple-500/15 text-purple-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-car"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Pickups</div>
+                </button>
+                 <button type="button" @click.prevent="openAuth('login')" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all">
+                    <div class="svc-icon bg-indigo-500/15 text-indigo-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-vault"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Vault</div>
+                </button>
+                <button type="button" @click="showLeadModal = true; leadContext = 'Expert Advisor'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[140px] transition-all">
+                    <div class="svc-icon bg-rose-500/15 text-rose-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="svc-label text-xs font-bold text-slate-400 uppercase tracking-widest">Experts</div>
+                </button>
+            </div>
         </div>
 
         <!-- MIND BLOWING SEARCH ENGINE (Grid Architecture) -->
