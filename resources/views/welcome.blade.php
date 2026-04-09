@@ -885,9 +885,9 @@
                 <a href="#features" @click="mobileMenuOpen = false" class="text-white border-b border-white/10 pb-4">The Vault</a>
                 
                 <div class="text-slate-400 text-sm tracking-widest uppercase mt-4 mb-2">Consultations</div>
-                <a href="#" class="text-brand-orange border-b border-white/10 pb-4 flex items-center gap-3"><i class="fa-solid fa-graduation-cap"></i> Study Abroad</a>
-                <a href="#" class="text-brand-emerald border-b border-white/10 pb-4 flex items-center gap-3"><i class="fa-solid fa-briefcase"></i> Work & Migrate</a>
-                <a href="#" class="text-blue-400 border-b border-white/10 pb-4 flex items-center gap-3"><i class="fa-solid fa-building"></i> Business Setup</a>
+                <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Study Abroad'; leadMessage = 'I am interested in Study Abroad and Admissions support.'" class="text-brand-orange border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-graduation-cap"></i> Study Abroad</a>
+                <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Work & Migrate'; leadMessage = 'I want to discuss Work & Migrate relocation support.'" class="text-brand-emerald border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-briefcase"></i> Work & Migrate</a>
+                <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Business Setup'; leadMessage = 'I am requesting a consultation for Business Setup and Corporate Relocation.'" class="text-blue-400 border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-building"></i> Business Setup</a>
                 
                 <a href="/agent" class="text-white border-b border-white/10 pb-4 flex justify-between items-center">Partner Portal <i class="fa-solid fa-arrow-right text-sm"></i></a>
                 
@@ -1135,7 +1135,7 @@
                             <div class="relative z-10">
                                 <div class="inline-block px-2 py-0.5 bg-brand-orange text-white text-[9px] font-black uppercase tracking-widest rounded mb-2 shadow-lg shadow-brand-orange/30">iSwitch Wallet</div>
                                 <h4 class="text-lg font-black text-white leading-tight">Fly Now,<br>Pay Later.</h4>
-                                <p class="text-[11px] text-slate-300 mt-1">Split any flight into 4 payments. <a href="#" class="text-white underline font-semibold">See if you qualify</a></p>
+                                <p class="text-[11px] text-slate-300 mt-1">Split any flight into 4 payments. <a @click="showLeadModal = true; leadContext = 'Payment Plan'; leadMessage = 'I would like to see if I qualify for the Split-into-4 Payment Plan for my flights.'" class="text-white underline font-semibold cursor-pointer">See if you qualify</a></p>
                             </div>
                         </div>
                     </div>
@@ -1144,7 +1144,7 @@
                     <div class="mt-16">
                         <div class="flex justify-between items-end mb-6">
                             <h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-earth-americas text-brand-orange animate-pulse"></i> Handpicked Routes</h3>
-                            <a href="#" class="text-brand-orange font-semibold text-sm hover:underline">Explore all <i class="fa-solid fa-arrow-right text-xs"></i></a>
+                            <a @click="handleBottomNav('vault')" class="text-brand-orange font-semibold text-sm hover:underline cursor-pointer">Explore all <i class="fa-solid fa-arrow-right text-xs"></i></a>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 destinations-grid">
                             <!-- Card 1 -->
@@ -2267,14 +2267,14 @@
                 <div class="space-y-4">
                     <span class="text-xs font-bold uppercase tracking-widest text-slate-500 block">Download Mobile App (Optional)</span>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 px-6 py-3 rounded-xl w-fit">
+                        <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 px-6 py-3 rounded-xl w-fit cursor-pointer">
                             <i class="fa-brands fa-apple text-2xl"></i>
                             <div class="text-left">
                                 <p class="text-[10px] text-slate-400 uppercase font-bold leading-none">Download on the</p>
                                 <p class="text-sm font-semibold text-white leading-none mt-1">App Store</p>
                             </div>
                         </a>
-                        <a href="#" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 px-6 py-3 rounded-xl w-fit">
+                        <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 px-6 py-3 rounded-xl w-fit cursor-pointer">
                             <i class="fa-brands fa-google-play text-2xl text-brand-emerald"></i>
                             <div class="text-left">
                                 <p class="text-[10px] text-slate-400 uppercase font-bold leading-none">GET IT ON</p>
