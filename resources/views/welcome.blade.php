@@ -248,27 +248,37 @@
 
     /* ═══════════ MOBILE OVERRIDES ═══════════ */
     @media (max-width: 1023px) {
-        .mobile-bottom-nav { display: block; }
-        body { padding-bottom: 84px; }
-        .mobile-only { display: block !important; }
-        .desktop-only { display: none !important; }
-
-        /* Prevent iOS zoom on form inputs */
-        input, select, textarea { font-size: 16px !important; }
-
-        /* Touch targets */
-        button { min-height: 44px; }
-
-        /* Active states */
-        button:active { opacity: 0.75; transform: scale(0.96); }
-        a:active { opacity: 0.75; }
-
         /* Hero: Compact */
-        .hero-compact-pt { padding-top: 76px !important; }
+        .hero-compact-pt { padding-top: 120px !important; }
         .hero-subtext { font-size: 14px !important; }
         .hero-badge { margin-bottom: 10px !important; }
 
-        /* Glass cards */
+        .mobile-service-grid {
+            position: relative;
+            z-index: 60 !important;
+            pointer-events: auto !important;
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px !important;
+            width: 100% !important;
+            padding: 0 4px;
+        }
+        .mobile-bottom-nav { display: block; }
+        body { padding-bottom: 90px; }
+        .mobile-only { display: block !important; }
+        .desktop-only { display: none !important; }
+        
+        /* High-visibility active state for tabs */
+        .svc-tile.active-tab {
+            background: rgba(255,125,0,0.15) !important;
+            border: 1px solid rgba(255,125,0,0.3) !important;
+        }
+        .svc-tile.active-tab .svc-label { color: white !important; }
+        
+        .mobile-service-grid .svc-tile {
+            min-height: 80px;
+            -webkit-tap-highlight-color: transparent;
+        }
         .glass-widget { border-radius: 1.25rem !important; }
 
         /* Mobile Service Grid */
@@ -287,6 +297,7 @@
         }
         .mobile-service-grid .svc-tile:active {
             transform: scale(0.93);
+        }
         .mobile-service-grid .svc-tile .svc-icon {
             width: 44px; height: 44px; border-radius: 14px;
             display: flex; align-items: center; justify-content: center; font-size: 20px;
@@ -889,7 +900,7 @@
     </nav>
 
     <!-- ULTRA PREMIUM HERO -->
-    <main class="flex-grow flex flex-col items-center justify-center pt-24 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto overflow-hidden">
+    <main class="flex-grow flex flex-col items-center justify-center pt-32 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto overflow-hidden">
         
         <div class="text-center mb-10 lg:mb-16 w-full max-w-5xl mx-auto">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md mb-8">
@@ -906,42 +917,38 @@
             </p>
         </div>
 
-        <!-- ══════════════════════════════════════════════════
-             MOBILE SERVICE ICON GRID
-             Above the search engine — MOBILE ONLY
-             Acts as the tab switcher replacing the hidden pill tabs
-        ══════════════════════════════════════════════════ -->
-        <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-4 mobile-only">
-            <!-- Row 1: Core Services -->
-            <button type="button" @click="tab = 'flights'" class="svc-tile" :class="tab === 'flights' ? 'border-orange-400/60 bg-orange-500/10' : ''">
+        <div id="mobile-svc-grid" class="mobile-service-grid w-full max-w-6xl mb-6 mobile-only">
+            <!-- Row 1 -->
+            <button type="button" @click="tab = 'flights'" class="svc-tile" :class="tab === 'flights' ? 'active-tab' : ''">
                 <div class="svc-icon bg-orange-500/15 text-orange-400"><i class="fa-solid fa-plane"></i></div>
-                <div class="svc-label" :class="tab === 'flights' ? 'text-orange-400' : ''">Flights</div>
+                <div class="svc-label">Flights</div>
             </button>
-            <button type="button" @click="tab = 'hotels'" class="svc-tile" :class="tab === 'hotels' ? 'border-emerald-400/60 bg-emerald-500/10' : ''">
+            <button type="button" @click="tab = 'hotels'" class="svc-tile" :class="tab === 'hotels' ? 'active-tab' : ''">
                 <div class="svc-icon bg-emerald-500/15 text-emerald-400"><i class="fa-solid fa-bed"></i></div>
-                <div class="svc-label" :class="tab === 'hotels' ? 'text-emerald-400' : ''">Hotels</div>
+                <div class="svc-label">Hotels</div>
             </button>
-            <button type="button" @click="tab = 'visas'" class="svc-tile" :class="tab === 'visas' ? 'border-blue-400/60 bg-blue-500/10' : ''">
+            <button type="button" @click="tab = 'visas'" class="svc-tile" :class="tab === 'visas' ? 'active-tab' : ''">
                 <div class="svc-icon bg-blue-500/15 text-blue-400"><i class="fa-solid fa-passport"></i></div>
-                <div class="svc-label" :class="tab === 'visas' ? 'text-blue-400' : ''">Visas</div>
+                <div class="svc-label">Visas</div>
             </button>
-            <button type="button" @click="tab = 'insurance'" class="svc-tile" :class="tab === 'insurance' ? 'border-pink-400/60 bg-pink-500/10' : ''">
+            <button type="button" @click="tab = 'insurance'" class="svc-tile" :class="tab === 'insurance' ? 'active-tab' : ''">
                 <div class="svc-icon bg-pink-500/15 text-pink-400"><i class="fa-solid fa-shield-heart"></i></div>
-                <div class="svc-label" :class="tab === 'insurance' ? 'text-pink-400' : ''">Insurance</div>
+                <div class="svc-label">Insurance</div>
             </button>
-            <button type="button" @click="tab = 'tours'" class="svc-tile" :class="tab === 'tours' ? 'border-yellow-400/60 bg-yellow-500/10' : ''">
+            <!-- Row 2 -->
+            <button type="button" @click="tab = 'tours'" class="svc-tile" :class="tab === 'tours' ? 'active-tab' : ''">
                 <div class="svc-icon bg-yellow-500/15 text-yellow-400"><i class="fa-solid fa-umbrella-beach"></i></div>
-                <div class="svc-label" :class="tab === 'tours' ? 'text-yellow-400' : ''">Tours</div>
+                <div class="svc-label">Tours</div>
             </button>
-            <button type="button" @click="tab = 'transfers'" class="svc-tile" :class="tab === 'transfers' ? 'border-purple-400/60 bg-purple-500/10' : ''">
+            <button type="button" @click="tab = 'transfers'" class="svc-tile" :class="tab === 'transfers' ? 'active-tab' : ''">
                 <div class="svc-icon bg-purple-500/15 text-purple-400"><i class="fa-solid fa-car"></i></div>
-                <div class="svc-label" :class="tab === 'transfers' ? 'text-purple-400' : ''">Pickups</div>
+                <div class="svc-label">Pickups</div>
             </button>
-            <a @click.prevent="openAuth('login')" href="#" class="svc-tile">
+            <button type="button" @click.prevent="openAuth('login')" class="svc-tile">
                 <div class="svc-icon bg-indigo-500/15 text-indigo-400"><i class="fa-solid fa-vault"></i></div>
                 <div class="svc-label">Vault</div>
-            </a>
-            <button @click="showLeadModal = true; leadContext = 'Expert Advisor'; leadMessage = 'I need to speak with an iSwitch expert advisor.'" class="svc-tile">
+            </button>
+            <button type="button" @click="showLeadModal = true; leadContext = 'Expert Advisor'" class="svc-tile">
                 <div class="svc-icon bg-rose-500/15 text-rose-400"><i class="fa-solid fa-user-tie"></i></div>
                 <div class="svc-label">Experts</div>
             </button>
