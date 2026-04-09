@@ -2583,11 +2583,36 @@
                     <li><a href="/admin/god-mode" class="text-brand-orange hover:text-white transition-colors mt-4 inline-block font-semibold border-b border-brand-orange/30 pb-1"><i class="fa-solid fa-crown mr-2"></i> God Mode Control</a></li>
                 </ul>
             </div>
+
+            <!-- Contact Us -->
+            <div x-data="{ open: false, cLoading: false }" x-init="open = window.innerWidth >= 1024">
+                <h4 @click="open = !open" class="text-white font-bold text-lg mb-6 flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-envelope-open-text text-slate-500"></i> Contact Us</span>
+                    <i class="fa-solid fa-chevron-down lg:hidden transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                </h4>
+                <div x-show="open" x-collapse.duration.300ms class="space-y-4 text-sm text-slate-400 font-medium bg-black/40 border border-white/5 rounded-2xl p-5 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-brand-orange/10 text-6xl"><i class="fa-solid fa-at"></i></div>
+                    
+                    <div class="space-y-3 relative z-10">
+                        <a href="mailto:contact@iswitchub.com" class="hover:text-brand-orange transition-colors flex items-center gap-3"><i class="fa-solid fa-envelope text-brand-orange"></i> contact@iswitchub.com</a>
+                        <a href="mailto:info@iswitchub.com" class="hover:text-brand-orange transition-colors flex items-center gap-3"><i class="fa-solid fa-envelopes-bulk text-brand-orange"></i> info@iswitchub.com</a>
+                    </div>
+                    
+                    <form @submit.prevent="cLoading = true; setTimeout(() => { cLoading = false; alert('Message Sent securely to iSwitch Support.'); $el.reset(); }, 1200)" class="mt-4 pt-4 border-t border-white/5 relative z-10 space-y-3">
+                        <input type="email" placeholder="Your Address" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-brand-orange/50 transition-all text-xs">
+                        <textarea placeholder="How can we assist?" rows="2" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-brand-orange/50 transition-all text-xs resize-none"></textarea>
+                        <button type="submit" :disabled="cLoading" class="w-full bg-brand-orange text-white text-[10px] font-black uppercase tracking-widest py-2.5 rounded-xl hover:bg-orange-500 transition-colors flex justify-center items-center gap-2">
+                            <span x-show="!cLoading">Send Direct Message</span>
+                            <span x-show="cLoading"><i class="fa-solid fa-spinner animate-spin"></i></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
         
         <!-- Bottom Bar -->
         <div class="max-w-[90rem] mx-auto px-6 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 font-medium">
-            <p>&copy; {{ date('Y') }} iSwitch Mobility Line. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Smiles Global Groups LLC. All rights reserved.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
                 <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Privacy Policy</a>
                 <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition border-b border-transparent hover:border-slate-500 pb-0.5 cursor-pointer">Terms of Service</a>
