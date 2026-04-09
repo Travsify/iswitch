@@ -47,48 +47,42 @@
             --secondary: #00C897;
         }
 
-        /* --- UNIVERSAL BRAND HARMONIZATION --- */
-        main { padding-top: 160px; }
-        
-        .svc-tile {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .svc-tile:hover {
-            transform: translateY(-4px);
-            background: rgba(255,255,255,0.05) !important;
-        }
-
-        .svc-tile.active-tab {
-            background: rgba(255,125,0,0.15) !important;
-            border: 1px solid rgba(255,125,0,0.3) !important;
-        }
-        .svc-tile.active-tab .svc-label { color: white !important; }
-        
-        #search-engine {
-            max-width: 90rem;
-            margin: 0 auto;
-        }
-
         @media (max-width: 1023px) {
-            main { padding-top: 120px; }
+            .mobile-only { display: block !important; }
+            .desktop-only { display: none !important; }
+            
+            main { padding-top: 110px !important; }
+            
             .text-gradient, .text-gradient-orange { 
-                font-size: 3rem !important; 
+                font-size: 2.5rem !important; 
+                line-height: 1.1 !important;
             }
+
             #mobile-svc-grid {
-                overflow-x: auto;
-                display: flex !important;
-                flex-wrap: nowrap !important;
-                gap: 12px !important;
-                padding-bottom: 20px !important;
-                scrollbar-width: none;
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 8px !important;
+                padding: 0 12px !important;
+                overflow: visible !important;
             }
-            #mobile-svc-grid::-webkit-scrollbar { display: none; }
+
             .svc-tile {
-                flex: 0 0 auto;
-                width: 100px;
-                padding: 16px 8px !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                padding: 12px 4px !important;
+                border-radius: 16px !important;
+            }
+
+            .svc-icon {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 0.9rem !important;
+                margin-bottom: 6px !important;
+            }
+
+            .svc-label {
+                font-size: 9px !important;
+                letter-spacing: -0.02em !important;
             }
         }
 
@@ -522,6 +516,9 @@
         leadContext: 'Global Mobility',
         leadMessage: 'I am interested in exploring the iSwitch ecosystem.',
         newsletterEmail: '',
+        alertModal: false,
+        priceRadar: false,
+        popover: null,
 
         /* ── AUTH MODAL ── */
         showAuthModal: false,
@@ -917,6 +914,12 @@
 
             <!-- Hamburger Button & Mobile Auth (Mobile) -->
             <div class="lg:hidden flex items-center gap-2 sm:gap-3 z-50 relative">
+                <!-- Mobile Selectors (Currency/Lang) -->
+                <div class="hidden sm:flex items-center gap-2 mr-1">
+                    <button class="text-[9px] font-black text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md uppercase tracking-tighter">USD $</button>
+                    <button class="text-[9px] font-black text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md uppercase tracking-tighter">EN</button>
+                </div>
+
                 <div class="flex items-center bg-white/10 rounded-full p-0.5 backdrop-blur-md border border-white/5">
                     <a @click.prevent="openAuth('login')" href="#" class="text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors">
                         Sign In
@@ -945,6 +948,27 @@
                 <a href="/agent" class="text-white border-b border-white/10 pb-4 flex justify-between items-center">Partner Portal <i class="fa-solid fa-arrow-right text-sm"></i></a>
                 
                 <div class="mt-8 flex flex-col gap-4">
+                    <div class="grid grid-cols-2 gap-3 mb-2">
+                         <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="w-full text-center text-xs py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-dollar-sign"></i> USD <i class="fa-solid fa-chevron-down text-[8px]"></i>
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 glass-widget p-2 rounded-xl border border-white/10 z-50">
+                                <a href="#" class="block p-2 text-[10px] font-bold text-brand-orange">USD ($)</a>
+                                <a href="#" class="block p-2 text-[10px] font-bold text-white">NGN (₦)</a>
+                                <a href="#" class="block p-2 text-[10px] font-bold text-white">GBP (£)</a>
+                            </div>
+                         </div>
+                         <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="w-full text-center text-xs py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-globe"></i> EN <i class="fa-solid fa-chevron-down text-[8px]"></i>
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 glass-widget p-2 rounded-xl border border-white/10 z-50">
+                                <a href="#" class="block p-2 text-[10px] font-bold text-brand-emerald">English</a>
+                                <a href="#" class="block p-2 text-[10px] font-bold text-white">French</a>
+                            </div>
+                         </div>
+                    </div>
                     <a @click.prevent="openAuth('login')" href="#" class="text-center text-lg py-4 rounded-2xl bg-white/5 border border-white/10">Sign In</a>
                     <a @click.prevent="openAuth('register')" href="#" class="btn-magical text-center text-lg py-4 rounded-2xl">Register Now</a>
                 </div>
@@ -970,32 +994,33 @@
             </p>
         </div>
 
-        <div id="mobile-svc-grid" class="flex items-center justify-start lg:justify-center gap-4 mb-8 w-full max-w-6xl mx-auto overflow-x-auto scrolling-touch px-4 pb-4">
+        <div id="mobile-svc-grid" class="flex items-center gap-4 mb-2 md:mb-8 w-full max-w-6xl mx-auto overflow-x-auto scrolling-touch px-4 pb-6 scrollbar-hide">
             <!-- Row 1 -->
-            <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'flights' ? 'active-tab' : ''">
+            <button type="button" @click="tab = 'flights'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'flights' ? 'active-tab border-brand-orange ring-1 ring-brand-orange/20' : ''">
                 <div class="svc-icon bg-orange-500/15 text-orange-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-plane"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Flights</div>
             </button>
-            <button type="button" @click="tab = 'hotels'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'hotels' ? 'active-tab' : ''">
+            <button type="button" @click="tab = 'hotels'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'hotels' ? 'active-tab border-brand-emerald ring-1 ring-brand-emerald/20' : ''">
                 <div class="svc-icon bg-emerald-500/15 text-emerald-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-bed"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Hotels</div>
             </button>
-            <button type="button" @click="tab = 'visas'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'visas' ? 'active-tab' : ''">
+            <button type="button" @click="tab = 'visas'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'visas' ? 'active-tab border-blue-500 ring-1 ring-blue-500/20' : ''">
                 <div class="svc-icon bg-blue-500/15 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-passport"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Visas</div>
             </button>
-            <button type="button" @click="tab = 'insurance'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'insurance' ? 'active-tab' : ''">
+            <button type="button" @click="tab = 'insurance'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'insurance' ? 'active-tab border-pink-500 ring-1 ring-pink-500/20' : ''">
                 <div class="svc-icon bg-pink-500/15 text-pink-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-shield-heart"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Insurance</div>
             </button>
-            <button type="button" @click="tab = 'tours'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'tours' ? 'active-tab' : ''">
+            <button type="button" @click="tab = 'tours'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'tours' ? 'active-tab border-yellow-500 ring-1 ring-yellow-500/20' : ''">
                 <div class="svc-icon bg-yellow-500/15 text-yellow-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-umbrella-beach"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Tours</div>
             </button>
-            <button type="button" @click="tab = 'transfers'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]" :class="tab === 'transfers' ? 'active-tab' : ''">
+            <button type="button" @click="tab = 'transfers'" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[125px] transition-all" :class="tab === 'transfers' ? 'active-tab border-purple-500 ring-1 ring-purple-500/20' : ''">
                 <div class="svc-icon bg-purple-500/15 text-purple-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-car"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Pickups</div>
             </button>
+
             <button type="button" @click.prevent="openAuth('login')" class="svc-tile bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center p-6 min-w-[120px]">
                 <div class="svc-icon bg-indigo-500/15 text-indigo-400 w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-vault"></i></div>
                 <div class="svc-label text-xs font-bold text-slate-400">Vault</div>
