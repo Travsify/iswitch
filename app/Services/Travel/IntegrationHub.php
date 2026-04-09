@@ -17,7 +17,7 @@ class IntegrationHub
      */
     public function searchFlights(array $params)
     {
-        $token = config('services.duffel.token');
+        $token = config('services.iswitch_aviation.token');
         if (!$token) return $this->mockFlights();
 
         try {
@@ -49,8 +49,8 @@ class IntegrationHub
      */
     public function searchHotels(string $cityCode)
     {
-        $apiKey = config('services.amadeus.key');
-        $apiSecret = config('services.amadeus.secret');
+        $apiKey = config('services.iswitch_property.key');
+        $apiSecret = config('services.iswitch_property.secret');
         
         if (!$apiKey) return $this->mockHotels();
 
@@ -77,7 +77,7 @@ class IntegrationHub
      */
     public function searchExperiences(string $query)
     {
-        $apiKey = config('services.viator.key');
+        $apiKey = config('services.iswitch_experiences.key');
         if (!$apiKey) return $this->mockTours();
 
         // iSwitch Tour Logic...

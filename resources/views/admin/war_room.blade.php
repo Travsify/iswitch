@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="glass-panel rounded-3xl p-6 relative group overflow-hidden">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Active Atlys Syncs</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Active Visa Syncs</p>
                     <h3 class="text-3xl font-black text-white">1,204</h3>
                     <div class="mt-4 flex items-center gap-2 text-[10px] text-slate-400 font-bold">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 42 Live Consultations

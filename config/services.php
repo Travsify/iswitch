@@ -24,21 +24,21 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
-    /* iSwitch Global Mobility Stack */
-    'duffel' => [
+    /* iSwitch Global Mobility Stack (Proprietary Namespace) */
+    'iswitch_aviation' => [
         'token' => env('DUFFEL_TOKEN'),
     ],
 
-    'amadeus' => [
+    'iswitch_property' => [
         'key' => env('AMADEUS_API_KEY'),
         'secret' => env('AMADEUS_API_SECRET'),
     ],
 
-    'atlys' => [
+    'iswitch_visa' => [
         'key' => env('ATLYS_API_KEY'),
     ],
 
-    'viator' => [
+    'iswitch_experiences' => [
         'key' => env('VIATOR_API_KEY'),
     ],
 
