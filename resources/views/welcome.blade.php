@@ -999,62 +999,83 @@
                 </a>
             </div>
 
-            <!-- Hamburger Button & Mobile Auth (Mobile) -->
-            <div class="lg:hidden flex items-center gap-2 sm:gap-3 z-50 relative">
-                <!-- Mobile Selectors (Currency/Lang) -->
-                <div class="hidden sm:flex items-center gap-2 mr-1">
-                    <button class="text-[9px] font-black text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md uppercase tracking-tighter">USD $</button>
-                    <button class="text-[9px] font-black text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md uppercase tracking-tighter">EN</button>
+            <!-- Compact Mobile Control Suite -->
+            <div class="lg:hidden flex items-center gap-2 z-50">
+                <!-- Inline Auth/B2B Cluster (Single Row) -->
+                <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-1 py-1 backdrop-blur-md">
+                    <a @click.prevent="openAuth('login')" href="#" class="text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 hover:text-brand-orange transition-colors">Login</a>
+                    <div class="w-px h-3 bg-white/20"></div>
+                    <a @click.prevent="openAuth('register')" href="#" class="text-brand-orange text-[9px] font-black uppercase tracking-widest px-3 py-1.5">Join</a>
+                    <div class="w-px h-3 bg-white/20"></div>
+                    <a href="/agent" class="text-brand-emerald text-[9px] font-black uppercase tracking-widest px-3 py-1.5">B2B</a>
                 </div>
 
-                <div class="flex items-center bg-white/10 rounded-full p-0.5 backdrop-blur-md border border-white/5">
-                    <a @click.prevent="openAuth('login')" href="#" class="text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors">
-                        Sign In
-                    </a>
-                    <a @click.prevent="openAuth('register')" href="#" class="text-white text-[10px] sm:text-xs font-bold bg-brand-orange px-3 py-1.5 rounded-full shadow-sm shadow-brand-orange/20">
-                        Register
-                    </a>
-                </div>
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white text-xl sm:text-2xl focus:outline-none px-1">
-                    <i class="fa-solid" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars-staggered'"></i>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="w-8 h-8 flex items-center justify-center text-white bg-white/5 border border-white/10 rounded-lg">
+                    <i class="fa-solid" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars-staggered text-sm'"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Menu Overlay -->
-        <div x-show="mobileMenuOpen" x-transition class="fixed inset-0 bg-slate-900/95 backdrop-blur-xl z-40 lg:hidden flex flex-col pt-24 px-6 pb-6 overflow-y-auto">
-            <div class="flex flex-col gap-6 text-xl font-bold">
-                <a href="#search-engine" @click="mobileMenuOpen = false" class="text-white border-b border-white/10 pb-4">Booking Engine</a>
-                <a href="#features" @click="mobileMenuOpen = false" class="text-white border-b border-white/10 pb-4">The Vault</a>
+        <div x-show="mobileMenuOpen" x-transition 
+             class="fixed inset-0 bg-slate-950/98 backdrop-blur-2xl z-40 lg:hidden flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
+             x-data="{ consultationsOpen: false }">
+            
+            <div class="flex flex-col gap-6">
+                <!-- Main Nav Links -->
+                <a href="#search-engine" @click="mobileMenuOpen = false" class="text-2xl font-black text-white py-3 border-b border-white/5">Search Engine</a>
+                <a href="#features" @click="mobileMenuOpen = false" class="text-2xl font-black text-white py-3 border-b border-white/5">The Vault</a>
                 
-                <div class="text-slate-400 text-sm tracking-widest uppercase mt-4 mb-2">Consultations</div>
-                <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Study Abroad'; leadMessage = 'I am interested in Study Abroad and Admissions support.'" class="text-brand-orange border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-graduation-cap"></i> Study Abroad</a>
-                <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Work & Migrate'; leadMessage = 'I want to discuss Work & Migrate relocation support.'" class="text-brand-emerald border-b border-white/10 pb-4 flex items-center gap-3 cursor-pointer"><i class="fa-solid fa-briefcase"></i> Work & Migrate</a>
-                <div class="mt-8 flex flex-col gap-4">
-                    <div class="grid grid-cols-2 gap-3 mb-2">
-                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="w-full text-center text-xs py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-dollar-sign"></i> <span x-text="currentCurrency"></span> <i class="fa-solid fa-chevron-down text-[8px]"></i>
-                            </button>
-                            <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 glass-widget p-2 rounded-xl border border-white/10 z-50">
-                                <a href="#" @click.prevent="switchCurrency('USD', '$'); open = false" class="block p-2 text-[10px] font-bold" :class="currentCurrency === 'USD' ? 'text-brand-orange' : 'text-white'">USD ($)</a>
-                                <a href="#" @click.prevent="switchCurrency('NGN', '₦'); open = false" class="block p-2 text-[10px] font-bold" :class="currentCurrency === 'NGN' ? 'text-brand-orange' : 'text-white'">NGN (₦)</a>
-                                <a href="#" @click.prevent="switchCurrency('GBP', '£'); open = false" class="block p-2 text-[10px] font-bold" :class="currentCurrency === 'GBP' ? 'text-brand-orange' : 'text-white'">GBP (£)</a>
-                            </div>
-                         </div>
-                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="w-full text-center text-xs py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-globe"></i> <span x-text="currentLang"></span> <i class="fa-solid fa-chevron-down text-[8px]"></i>
-                            </button>
-                            <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 glass-widget p-2 rounded-xl border border-white/10 z-50">
-                                <a href="#" @click.prevent="switchLang('EN'); open = false" class="block p-2 text-[10px] font-bold" :class="currentLang === 'EN' ? 'text-brand-emerald' : 'text-white'">English</a>
-                                <a href="#" @click.prevent="switchLang('FR'); open = false" class="block p-2 text-[10px] font-bold" :class="currentLang === 'FR' ? 'text-brand-emerald' : 'text-white'">French</a>
-                            </div>
-                         </div>
+                <!-- Consultations Dropdown (Accordion Style) -->
+                <div class="border-b border-white/5 py-3">
+                    <button @click="consultationsOpen = !consultationsOpen" class="w-full flex justify-between items-center text-2xl font-black text-white">
+                        <span>Consultations</span>
+                        <i class="fa-solid fa-chevron-down text-sm transition-transform" :class="consultationsOpen ? 'rotate-180 text-brand-orange' : 'text-slate-600'"></i>
+                    </button>
+                    
+                    <div x-show="consultationsOpen" x-collapse class="mt-4 space-y-4 pl-4 border-l-2 border-brand-orange/30">
+                        <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Educational Placement'; leadMessage = 'I am interested in Study Abroad and Admissions support.'" class="flex items-center gap-4 text-slate-300 py-2">
+                            <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <span class="font-bold">Study Abroad</span>
+                        </a>
+                        <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Migration Expert'; leadMessage = 'I want to discuss Work & Migrate relocation support.'" class="flex items-center gap-4 text-slate-300 py-2">
+                            <div class="w-8 h-8 rounded-lg bg-brand-emerald/10 flex items-center justify-center text-brand-emerald"><i class="fa-solid fa-briefcase"></i></div>
+                            <span class="font-bold">Work & Migrate</span>
+                        </a>
+                        <a @click="mobileMenuOpen = false; showLeadModal = true; leadContext = 'Corporate Concierge'; leadMessage = 'I want to discuss a Corporate Relocation or offshore business setup.'" class="flex items-center gap-4 text-slate-300 py-2">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-building"></i></div>
+                            <span class="font-bold">Business Setup</span>
+                        </a>
                     </div>
-                    <a @click.prevent="openAuth('login')" href="#" class="text-center text-lg py-4 rounded-2xl bg-white/5 border border-white/10">Sign In</a>
-                    <a @click.prevent="openAuth('register')" href="#" class="btn-magical text-center text-lg py-4 rounded-2xl">Register Now</a>
                 </div>
+
+                <!-- Identity/Settings (Unified row) -->
+                <div class="grid grid-cols-2 gap-4 mt-8">
+                     <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="w-full text-center text-[10px] py-4 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                             <span x-text="currentCurrency"></span> <i class="fa-solid fa-chevron-down text-[8px]"></i>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 bg-slate-900 border border-white/10 p-2 rounded-2xl shadow-2xl z-50">
+                            <a href="#" @click.prevent="switchCurrency('USD', '$'); open = false" class="block p-3 text-xs font-bold" :class="currentCurrency === 'USD' ? 'text-brand-orange' : 'text-white'">USD ($)</a>
+                            <a href="#" @click.prevent="switchCurrency('NGN', '₦'); open = false" class="block p-3 text-xs font-bold" :class="currentCurrency === 'NGN' ? 'text-brand-orange' : 'text-white'">NGN (₦)</a>
+                            <a href="#" @click.prevent="switchCurrency('GBP', '£'); open = false" class="block p-3 text-xs font-bold" :class="currentCurrency === 'GBP' ? 'text-brand-orange' : 'text-white'">GBP (£)</a>
+                        </div>
+                     </div>
+                     <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="w-full text-center text-[10px] py-4 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-globe text-brand-emerald"></i> <span x-text="currentLang"></span>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute bottom-full left-0 w-full mb-2 bg-slate-900 border border-white/10 p-2 rounded-2xl shadow-2xl z-50">
+                            <a href="#" @click.prevent="switchLang('EN'); open = false" class="block p-3 text-xs font-bold" :class="currentLang === 'EN' ? 'text-brand-emerald' : 'text-white'">English (EN)</a>
+                            <a href="#" @click.prevent="switchLang('FR'); open = false" class="block p-3 text-xs font-bold" :class="currentLang === 'FR' ? 'text-brand-emerald' : 'text-white'">French (FR)</a>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Partner CTA (Prominent Bottom) -->
+                <a href="/agent" class="mt-4 w-full py-5 rounded-2xl bg-brand-emerald/10 border border-brand-emerald/30 text-brand-emerald font-black text-center text-xs uppercase tracking-widest flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-handshake"></i> Agency Partner Portal
+                </a>
             </div>
         </div>
     </nav>
