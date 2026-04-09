@@ -972,22 +972,12 @@
                 <!-- ================= FLIGHTS ================= -->
                 <div x-show="tab === 'flights'" class="w-full" x-data="{ tripType: 'round' }">
                     
-                    <!-- Trip Type Switcher (Responsive) -->
-                    <div class="flex items-center gap-3 mb-6 px-1 overflow-x-auto hide-scroll pb-2">
-                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
-                            <input type="radio" name="trip" value="one" x-model="tripType" class="hidden">
-                            <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'one' ? 'border-brand-orange' : 'group-hover:border-white'">
-                                <div class="w-2 h-2 rounded-full bg-brand-orange transition-transform" :class="tripType === 'one' ? 'scale-100' : 'scale-0'"></div>
-                            </div>
-                            <span :class="tripType === 'one' ? 'text-white' : 'text-slate-400'">One-way</span>
-                        </label>
-                        <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
-                            <input type="radio" name="trip" value="round" x-model="tripType" class="hidden">
-                            <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'round' ? 'border-brand-orange' : 'group-hover:border-white'">
-                                <div class="w-2 h-2 rounded-full bg-brand-orange transition-transform" :class="tripType === 'round' ? 'scale-100' : 'scale-0'"></div>
-                            </div>
-                            <span :class="tripType === 'round' ? 'text-white' : 'text-slate-400'">Round-trip</span>
-                        </label>
+                    <!-- Segmented Trip Switcher (Apple Style) -->
+                    <div class="flex p-1 bg-black/40 rounded-xl border border-white/5 mb-8 w-full max-w-sm">
+                        <button type="button" @click="tripType = 'one'" :class="tripType === 'one' ? 'bg-white/10 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'" class="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">One-way</button>
+                        <button type="button" @click="tripType = 'round'" :class="tripType === 'round' ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/20' : 'text-slate-500 hover:text-slate-300'" class="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">Round-trip</button>
+                        <button type="button" @click="tripType = 'multi'" :class="tripType === 'multi' ? 'bg-white/10 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'" class="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">Multi-city</button>
+                    </div>
                         <label class="flex shrink-0 items-center gap-2 text-xs font-bold cursor-pointer group">
                             <input type="radio" name="trip" value="multi" x-model="tripType" class="hidden">
                             <div class="w-4 h-4 rounded-full border-2 border-slate-500 flex items-center justify-center transition-colors" :class="tripType === 'multi' ? 'border-brand-orange' : 'group-hover:border-white'">
@@ -1046,6 +1036,36 @@
                             <div class="flex items-center gap-3 mt-1.5">
                                 <i class="fa-solid fa-plane-arrival text-slate-500 text-sm group-focus-within:text-brand-orange"></i>
                                 <input type="text" name="destination" placeholder="London (LHR)" x-model="searchDest" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                            </div>
+                        </div>
+
+                        <!-- DATE PICKERS -->
+                        <div class="flex-1 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+                            <!-- Departure -->
+                            <div class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-pointer relative">
+                                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-brand-orange transition-colors">Departure</label>
+                                <div class="flex items-center gap-3 mt-1.5">
+                                    <i class="fa-solid fa-calendar-day text-slate-500 text-sm group-hover:text-brand-orange"></i>
+                                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Add Date" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                                </div>
+                            </div>
+                            <!-- Return (Hidden if One-way) -->
+                            <div x-show="tripType === 'round'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" class="flex-1 p-6 lg:py-5 lg:px-8 group cursor-pointer relative bg-orange-500/[0.02]">
+                                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-brand-orange transition-colors">Return</label>
+                                <div class="flex items-center gap-3 mt-1.5">
+                                    <i class="fa-solid fa-calendar-check text-slate-500 text-sm group-hover:text-brand-orange"></i>
+                                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Return Date" class="w-full bg-transparent outline-none text-white font-black text-lg placeholder-slate-700">
+                                </div>
+                            </div>
+                            <!-- Multi-City Leg Indicator (Mock for Multi-city state) -->
+                            <div x-show="tripType === 'multi'" class="flex-1 p-6 lg:py-5 lg:px-8 flex items-center gap-4 bg-indigo-500/5">
+                                <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+                                    <i class="fa-solid fa-layer-group text-indigo-400"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-xs font-bold text-white uppercase">Multi-City Leg 1</h5>
+                                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">3 Stops Linked</p>
+                                </div>
                             </div>
                         </div>
 
