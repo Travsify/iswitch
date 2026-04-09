@@ -47,6 +47,62 @@
             --secondary: #00C897;
         }
 
+        /* --- PERFECT MOBILE HARMONIZATION --- */
+        @media (max-width: 1023px) {
+            .mobile-only { display: block !important; }
+            .desktop-only { display: none !important; }
+            
+            main { padding-top: 120px !important; } /* Tighten hero space */
+            
+            .text-gradient, .text-gradient-orange { 
+                font-size: 2.75rem !important; 
+                line-height: 1 !important;
+                letter-spacing: -0.05em !important;
+            }
+
+            .mobile-service-grid {
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 8px !important;
+                padding: 0 10px !important;
+            }
+
+            .svc-tile {
+                padding: 12px 4px !important;
+                border-radius: 16px !important;
+            }
+
+            .svc-icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.8rem !important;
+                margin-bottom: 6px !important;
+            }
+
+            .svc-label {
+                font-size: 9px !important;
+                letter-spacing: 0 !important;
+            }
+
+            /* Fix Search Engine distortion */
+            #search-engine {
+                margin: 0 !important;
+                width: 100% !important;
+                border-radius: 2rem !important;
+                padding: 1.5rem 1rem !important;
+            }
+
+            .glass-widget {
+                backdrop-filter: blur(20px) !important;
+            }
+
+            .active-tab {
+                background: rgba(255, 125, 0, 0.1) !important;
+                border: 1px solid rgba(255, 125, 0, 0.3) !important;
+                box-shadow: 0 4px 15px rgba(255,125,0,0.1) !important;
+            }
+        }
+
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
@@ -910,18 +966,18 @@
     <!-- ULTRA PREMIUM HERO -->
     <main class="flex-grow flex flex-col items-center justify-center pt-40 md:pt-40 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto overflow-hidden">
         
-        <div class="text-center mb-10 lg:mb-16 w-full max-w-5xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md mb-8">
-                <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse shadow-[0_0_8px_#00c897]"></span>
-                <span class="text-xs font-bold text-slate-300 tracking-wide uppercase">The Future of Mobility is Live</span>
+        <div class="text-center mb-6 lg:mb-16 w-full max-w-5xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/30 border border-slate-700/30 backdrop-blur-md mb-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-emerald animate-pulse"></span>
+                <span class="text-[9px] font-black text-slate-400 tracking-widest uppercase">The Future of Mobility</span>
             </div>
             
-            <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-[6rem] font-black leading-[1.1] sm:leading-[1.05] tracking-tighter mb-6 break-words">
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-[6rem] font-black leading-none tracking-tighter mb-4">
                 <span class="text-gradient">Limitless Travel.</span><br class="hidden sm:block">
                 <span class="text-gradient-orange">Zero Friction.</span>
             </h1>
-            <p class="text-lg md:text-2xl text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
-                Connect flights, luxury stays, and secure visas perfectly in one place. No account required to explore the world.
+            <p class="text-sm md:text-2xl text-slate-400 max-w-xl mx-auto font-medium leading-relaxed opacity-80">
+                Connect flights, stays, and visas in one intelligent vault.
             </p>
         </div>
 
