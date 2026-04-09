@@ -185,6 +185,9 @@
             background: radial-gradient(circle, rgba(255,125,0,0.08) 0%, transparent 70%);
             border-radius: 50%; filter: blur(60px); z-index: -1; pointer-events: none;
         }
+        @media (max-width: 1023px) {
+            .ambient-glow { display: none !important; }
+        }
 
         /* Custom Scrollbar for pills */
         .hide-scroll::-webkit-scrollbar { display: none; }
@@ -209,10 +212,11 @@
         background: rgba(5,8,22,0.97);
         backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
         border-top: 1px solid rgba(255,255,255,0.06);
-        z-index: 9999; padding: 6px 0 12px;
+        z-index: 99999; padding: 6px 0 12px;
     }
     .mobile-bottom-nav .nav-items {
         display: flex; justify-content: space-around; align-items: flex-end; padding: 0 6px;
+        position: relative; z-index: 100;
     }
     .mobile-bottom-nav .nav-item {
         display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -248,20 +252,24 @@
 
     /* ═══════════ MOBILE OVERRIDES ═══════════ */
     @media (max-width: 1023px) {
+        button:active { opacity: 0.75; transform: scale(0.96); }
+        a:active { opacity: 0.75; }
+
         /* Hero: Compact */
-        .hero-compact-pt { padding-top: 120px !important; }
+        .hero-compact-pt { padding-top: 160px !important; }
         .hero-subtext { font-size: 14px !important; }
         .hero-badge { margin-bottom: 10px !important; }
 
         .mobile-service-grid {
             position: relative;
-            z-index: 60 !important;
+            z-index: 100 !important;
             pointer-events: auto !important;
             display: grid !important;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px !important;
+            gap: 6px !important;
             width: 100% !important;
             padding: 0 4px;
+            margin-top: 20px;
         }
         .mobile-bottom-nav { display: block; }
         body { padding-bottom: 90px; }
@@ -900,7 +908,7 @@
     </nav>
 
     <!-- ULTRA PREMIUM HERO -->
-    <main class="flex-grow flex flex-col items-center justify-center pt-32 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto overflow-hidden">
+    <main class="flex-grow flex flex-col items-center justify-center pt-40 md:pt-40 lg:pt-40 pb-20 px-4 sm:px-6 relative z-10 w-full max-w-[90rem] mx-auto overflow-hidden">
         
         <div class="text-center mb-10 lg:mb-16 w-full max-w-5xl mx-auto">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md mb-8">
@@ -1141,7 +1149,7 @@
                     </div>
 
                     <!-- Beautiful Content Grid -->
-                    <div class="mt-16">
+                    <div id="vault" class="mt-16">
                         <div class="flex justify-between items-end mb-6">
                             <h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-earth-americas text-brand-orange animate-pulse"></i> Handpicked Routes</h3>
                             <a @click="handleBottomNav('vault')" class="text-brand-orange font-semibold text-sm hover:underline cursor-pointer">Explore all <i class="fa-solid fa-arrow-right text-xs"></i></a>
@@ -2378,13 +2386,13 @@
             </button>
 
             <!-- EXPERT CONCIERGE: Center CTA — opens specialist modal -->
-            <div class="nav-center"
+            <button class="nav-center border-none bg-transparent"
                  @click="showLeadModal = true; leadContext = 'Expert Concierge'; leadMessage = 'I want to speak with an iSwitch expert regarding my upcoming travel, visas, and mobility blueprint.'">
-                <button class="center-btn text-white">
+                <div class="center-btn text-white">
                     <i class="fa-solid fa-headset"></i>
-                </button>
+                </div>
                 <div class="nav-label">Expert</div>
-            </div>
+            </button>
 
             <!-- DEALS: Scroll to Promotions / Tours section -->
             <button id="nav-deals" class="nav-item" onclick="handleBottomNav('deals', this)">
@@ -2412,7 +2420,8 @@
             if (target === 'home') {
                 window.scrollTo({top: 0, behavior: 'smooth'});
             } else if (target === 'vault') {
-                document.getElementById('features')?.scrollIntoView({behavior:'smooth'});
+                const el = document.getElementById('vault') || document.getElementById('features');
+                el?.scrollIntoView({behavior:'smooth'});
             } else if (target === 'deals') {
                 document.getElementById('search-engine')?.scrollIntoView({behavior:'smooth'});
             }
