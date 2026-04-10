@@ -2706,5 +2706,8 @@
         })();
     </script>
 
+    <!-- iSwitch Smart Assistant -->
+    @include('partials._chatbot')
+
 </body>
 </html>

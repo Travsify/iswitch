@@ -18,6 +18,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/v1/flights/search', [\App\Http\Controllers\TravelController::class, 'searchFlights']);
 Route::get('/v1/hotels/search', [\App\Http\Controllers\TravelController::class, 'searchHotels']);
 
+// iSwitch Smart Assistant (public)
+Route::post('/v1/chat', [\App\Http\Controllers\ChatbotController::class, 'handle']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v1/visa/check', [\App\Http\Controllers\TravelController::class, 'checkVisa']);
     Route::get('/v1/insurance/quote', [\App\Http\Controllers\TravelController::class, 'getInsurance']);
