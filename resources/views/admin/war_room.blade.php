@@ -39,6 +39,8 @@
     activeTab: 'summary',
     stats: { total_users: 0, pending_agents: 0, approved_agents: 0, total_balance: 0 },
     agents: [],
+    users: [],
+    leads: [],
     loading: true,
     
     async init() {
@@ -47,7 +49,7 @@
 
     async refreshAll() {
         this.loading = true;
-        await Promise.all([this.fetchStats(), this.fetchAgents()]);
+        await Promise.all([this.fetchStats(), this.fetchAgents(), this.fetchUsers(), this.fetchLeads()]);
         this.loading = false;
     },
 
@@ -59,6 +61,16 @@
     async fetchAgents() {
         const res = await fetch('/api/v1/admin/agents?status=pending', { headers: { 'Accept': 'application/json' } });
         this.agents = await res.json();
+    },
+
+    async fetchUsers() {
+        const res = await fetch('/api/v1/admin/users', { headers: { 'Accept': 'application/json' } });
+        this.users = await res.json();
+    },
+
+    async fetchLeads() {
+        const res = await fetch('/api/v1/admin/leads', { headers: { 'Accept': 'application/json' } });
+        this.leads = await res.json();
     },
 
     async approveAgent(id) {
@@ -239,20 +251,98 @@
 
             <!-- TAB: PEOPLE (Our People) -->
             <div x-show="activeTab === 'people'" x-transition x-cloak>
-                <div class="glass-card rounded-[40px] p-10 text-center py-32">
-                     <i class="fa-solid fa-users-viewfinder text-6xl text-slate-800 mb-8"></i>
-                     <h2 class="text-2xl font-black text-white">Managing Citizens</h2>
-                     <p class="text-slate-500 max-w-sm mx-auto mt-4 font-medium uppercase tracking-widest text-xs leading-loose">The population registry is currently being synchronized with the global node. Stand by.</p>
-                </div>
+                 <div class="glass-card rounded-[40px] p-10">
+                    <div class="flex items-center justify-between mb-10">
+                        <h3 class="text-2xl font-black text-white">Citizen Registry</h3>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest" x-text="users.length + ' Registered Users'"></p>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-600 border-b border-white/5">
+                                <tr>
+                                    <th class="pb-6">User</th>
+                                    <th class="pb-6">Role</th>
+                                    <th class="pb-6">Created</th>
+                                    <th class="pb-6 text-right">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="user in users" :key="user.id">
+                                    <tr class="group hover:bg-white/3 transition-all">
+                                        <td class="py-6">
+                                            <p class="text-white font-black text-sm" x-text="user.name"></p>
+                                            <p class="text-slate-500 font-bold text-[10px]" x-text="user.email"></p>
+                                        </td>
+                                        <td class="py-6">
+                                            <span class="bg-indigo-500/10 text-indigo-400 text-[10px] font-black px-3 py-1 rounded-full uppercase" x-text="user.role"></span>
+                                        </td>
+                                        <td class="py-6 text-slate-400 text-xs" x-text="new Date(user.created_at).toLocaleDateString()"></td>
+                                        <td class="py-6 text-right font-black text-white" x-text="'$' + parseFloat(user.balance || 0).toLocaleString()"></td>
+                                    </tr>
+                                </template>
+                                <tr x-show="users.length === 0">
+                                    <td colspan="4" class="py-20 text-center text-slate-600 font-bold uppercase tracking-widest text-xs">No users found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
             </div>
 
              <!-- TAB: VAULT (The Money Hub) -->
              <div x-show="activeTab === 'vault'" x-transition x-cloak>
-                <div class="glass-card rounded-[40px] p-10 text-center py-32">
-                     <i class="fa-solid fa-coins text-6xl text-brand-gold/50 mb-8"></i>
-                     <h2 class="text-2xl font-black text-white">The Money Hub</h2>
-                     <p class="text-slate-500 max-w-sm mx-auto mt-4 font-medium uppercase tracking-widest text-xs leading-loose">Detailed transaction auditing and payout logs are being indexed. Security protocol active.</p>
-                </div>
+                 <!-- Lead Telemetry -->
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                     <div class="glass-card rounded-[40px] p-8">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Total Leads Collected</p>
+                        <h4 class="text-3xl font-black text-white" x-text="stats.total_leads || 0">0</h4>
+                     </div>
+                     <div class="glass-card rounded-[40px] p-8">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Leads Today</p>
+                        <h4 class="text-3xl font-black text-brand-gold" x-text="stats.leads_today || 0">0</h4>
+                     </div>
+                 </div>
+
+                 <div class="glass-card rounded-[40px] p-10">
+                    <div class="flex items-center justify-between mb-10">
+                        <h3 class="text-2xl font-black text-white">Lead Pipeline</h3>
+                        <i class="fa-solid fa-bolt text-brand-gold"></i>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-600 border-b border-white/5">
+                                <tr>
+                                    <th class="pb-6">Lead</th>
+                                    <th class="pb-6">Interest</th>
+                                    <th class="pb-6">Metadata</th>
+                                    <th class="pb-6">Captured</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="lead in leads" :key="lead.id">
+                                    <tr class="group hover:bg-white/3 transition-all">
+                                        <td class="py-6">
+                                            <p class="text-white font-black text-sm" x-text="lead.name || 'Anonymous'"></p>
+                                            <p class="text-slate-500 font-bold text-[10px]" x-text="lead.email || lead.phone"></p>
+                                        </td>
+                                        <td class="py-6">
+                                            <span class="bg-amber-500/10 text-amber-500 text-[10px] font-black px-3 py-1 rounded-full uppercase" x-text="lead.service_interest || 'General'"></span>
+                                        </td>
+                                        <td class="py-6">
+                                            <p class="text-slate-400 text-[10px] truncate max-w-[200px]" x-text="lead.message || '-'"></p>
+                                        </td>
+                                        <td class="py-6 text-slate-500 text-[10px] font-bold" x-text="new Date(lead.created_at).toLocaleString()"></td>
+                                    </tr>
+                                </template>
+                                <tr x-show="leads.length === 0">
+                                    <td colspan="4" class="py-20 text-center text-slate-600 font-bold uppercase tracking-widest text-xs">The pipeline is quiet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
             </div>
 
         </main>
