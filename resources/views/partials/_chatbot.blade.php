@@ -1,6 +1,6 @@
 <!-- ═══════════════════════════════════════════════════════════════
      iSWITCH SMART ASSISTANT — Floating Chatbot Widget
-     Include this partial on any page: @include('partials._chatbot')
+     Include this partial on any page using the include directive.
      ═══════════════════════════════════════════════════════════════ -->
 
 <style>
@@ -35,7 +35,7 @@
         border: 2px solid #FF7D00;
         animation: isw-pulse 2s ease-out infinite;
     }
-    @keyframes isw-pulse {
+    @@keyframes isw-pulse {
         0% { transform: scale(1); opacity: 0.6; }
         100% { transform: scale(1.8); opacity: 0; }
     }
@@ -59,7 +59,7 @@
         transform-origin: bottom right;
         animation: isw-chat-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    @keyframes isw-chat-in {
+    @@keyframes isw-chat-in {
         0% { opacity: 0; transform: scale(0.9) translateY(20px); }
         100% { opacity: 1; transform: scale(1) translateY(0); }
     }
@@ -115,7 +115,7 @@
         display: inline-block;
         animation: isw-pulse-dot 1.5s ease-in-out infinite;
     }
-    @keyframes isw-pulse-dot {
+    @@keyframes isw-pulse-dot {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.4; }
     }
@@ -160,7 +160,7 @@
         word-wrap: break-word;
         animation: isw-msg-in 0.25s ease-out;
     }
-    @keyframes isw-msg-in {
+    @@keyframes isw-msg-in {
         0% { opacity: 0; transform: translateY(8px); }
         100% { opacity: 1; transform: translateY(0); }
     }
@@ -197,7 +197,7 @@
     }
     .isw-typing span:nth-child(2) { animation-delay: 0.15s; }
     .isw-typing span:nth-child(3) { animation-delay: 0.3s; }
-    @keyframes isw-bounce {
+    @@keyframes isw-bounce {
         0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
         30% { transform: translateY(-6px); opacity: 1; }
     }
@@ -293,7 +293,7 @@
 <div x-data="iSwitchChat()" x-cloak>
 
     <!-- Floating Action Button -->
-    <button class="isw-chat-fab" @click="toggle()" x-show="!open" x-transition>
+    <button class="isw-chat-fab" x-on:click="toggle()" x-show="!open" x-transition>
         <span class="pulse-ring"></span>
         <i class="fa-solid fa-comments"></i>
     </button>
@@ -312,7 +312,7 @@
                     <p>Powered by iSwitch Intelligence</p>
                 </div>
             </div>
-            <button class="isw-chat-close" @click="open = false"><i class="fa-solid fa-xmark"></i></button>
+            <button class="isw-chat-close" x-on:click="open = false"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <!-- Messages -->
@@ -327,12 +327,12 @@
 
         <!-- Quick Actions -->
         <div class="isw-quick-actions" x-show="messages.length <= 1">
-            <button class="isw-quick-btn" @click="send('Search flights')">✈️ Flights</button>
-            <button class="isw-quick-btn" @click="send('Find hotels')">🏨 Hotels</button>
-            <button class="isw-quick-btn" @click="send('Visa check')">📋 Visas</button>
-            <button class="isw-quick-btn" @click="send('Travel insurance')">🛡️ Insurance</button>
-            <button class="isw-quick-btn" @click="send('Tours')">🌍 Tours</button>
-            <button class="isw-quick-btn" @click="send('Speak to agent')">📞 Agent</button>
+            <button class="isw-quick-btn" x-on:click="send('Search flights')">✈️ Flights</button>
+            <button class="isw-quick-btn" x-on:click="send('Find hotels')">🏨 Hotels</button>
+            <button class="isw-quick-btn" x-on:click="send('Visa check')">📋 Visas</button>
+            <button class="isw-quick-btn" x-on:click="send('Travel insurance')">🛡️ Insurance</button>
+            <button class="isw-quick-btn" x-on:click="send('Tours')">🌍 Tours</button>
+            <button class="isw-quick-btn" x-on:click="send('Speak to agent')">📞 Agent</button>
         </div>
 
         <!-- Input -->
@@ -341,10 +341,10 @@
                    type="text"
                    placeholder="Ask about flights, hotels, visas..."
                    x-model="input"
-                   @keydown.enter="send()"
+                   x-on:keydown.enter="send()"
                    :disabled="typing"
                    x-ref="chatInput">
-            <button class="isw-chat-send" @click="send()" :disabled="typing || !input.trim()">
+            <button class="isw-chat-send" x-on:click="send()" :disabled="typing || !input.trim()">
                 <i class="fa-solid fa-paper-plane"></i>
             </button>
         </div>
