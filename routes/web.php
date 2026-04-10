@@ -22,6 +22,11 @@ Route::get('/agent/register', function () {
     return view('auth.agent_register');
 })->name('agent.register');
 
+// Partner signup = Agent signup (same page)
+Route::get('/partner/register', function () {
+    return view('auth.agent_register');
+})->name('partner.register');
+
 Route::get('/admin/login', function () {
     return view('admin.login');
 });
