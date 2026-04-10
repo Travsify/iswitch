@@ -45,7 +45,6 @@ class ChatbotController extends Controller
             default:
                 return response()->json($this->reply("I am ready to help with your travel needs! Try asking me:\n\n✈️ Flights — *\"Flights to London\"*\n🏨 Hotels — *\"Hotels in Paris\"*\n📋 Visas — *\"Visa for Canada\"*\n🛡️ Insurance — *\"Travel insurance plans\"*\n\nOr say **\"help\"** for a full menu of iSwitch services."));
         }
-        }
     }
 
     private function detectIntent(string $msg): string
