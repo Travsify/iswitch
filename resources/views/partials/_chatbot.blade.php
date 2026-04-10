@@ -304,10 +304,12 @@
         <!-- Header -->
         <div class="isw-chat-header">
             <div class="isw-chat-header-left">
-                <div class="isw-chat-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="isw-chat-avatar">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="w-6 h-auto">
+                </div>
                 <div class="isw-chat-header-text">
-                    <h4>iSwitch Assistant</h4>
-                    <p>Online — Ready to help</p>
+                    <h4>iSwitch Smart Guide</h4>
+                    <p>Powered by iSwitch Intelligence</p>
                 </div>
             </div>
             <button class="isw-chat-close" @click="open = false"><i class="fa-solid fa-xmark"></i></button>
@@ -358,7 +360,7 @@ function iSwitchChat() {
         messages: [
             {
                 from: 'bot',
-                text: "👋 Hi! I'm the **iSwitch Assistant**.\n\nI can help you with flights, hotels, visas, insurance, and tours. What can I do for you today?"
+                text: "✈️ Welcome to **iSwitch**!\n\nI am your global travel companion. I can search live flights, find boutique hotels, check visa requirements, and secure your travel insurance instantly.\n\nHow can I help you explore today?"
             }
         ],
 

@@ -19,7 +19,7 @@ class ChatbotController extends Controller
         $message = strtolower(trim($request->input('message', '')));
 
         if (empty($message)) {
-            return response()->json($this->reply("Hi! I'm the iSwitch Assistant. Ask me about flights, hotels, visas, insurance, or tours — I'm here to help. ✈️"));
+            return response()->json($this->reply("Welcome to iSwitch! 🌍 I can search flights, hotels, visas, insurance, and tours in real-time. How can I assist your journey today?"));
         }
 
         // Intent Detection via keyword analysis
@@ -43,7 +43,8 @@ class ChatbotController extends Controller
             case 'agent':
                 return response()->json($this->reply("I'll connect you with an iSwitch specialist right away.\n\n📧 Email: **contact@iswitchub.com**\n📧 Support: **info@iswitchub.com**\n\nOr click the **Expert** button at the bottom of the page to submit a consultation request. Our team typically responds within 2 hours. 🕐"));
             default:
-                return response()->json($this->reply("I'd love to help with that! Try asking me about:\n\n✈️ Flights — *\"Flights to London\"*\n🏨 Hotels — *\"Hotels in Paris\"*\n📋 Visas — *\"Visa for Canada\"*\n🛡️ Insurance — *\"Travel insurance\"*\n\nOr say **\"help\"** to see everything I can do."));
+                return response()->json($this->reply("I am ready to help with your travel needs! Try asking me:\n\n✈️ Flights — *\"Flights to London\"*\n🏨 Hotels — *\"Hotels in Paris\"*\n📋 Visas — *\"Visa for Canada\"*\n🛡️ Insurance — *\"Travel insurance plans\"*\n\nOr say **\"help\"** for a full menu of iSwitch services."));
+        }
         }
     }
 
