@@ -126,5 +126,7 @@
         </div>
     </div>
 
+    @include('partials._chatbot')
+
 </body>
 </html>
