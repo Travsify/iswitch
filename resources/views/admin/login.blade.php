@@ -95,62 +95,62 @@
                     <span class="text-2xl font-black tracking-tight text-white group-hover:text-brand-gold transition-colors">iSwitch</span>
                 </a>
                 <h2 class="text-4xl font-black text-white leading-tight mt-6">
-                    The Control <br><span class="text-brand-gold">Tower.</span>
+                    Your Mobility <br><span class="text-brand-gold">Hub.</span>
                 </h2>
                 <p class="text-slate-400 text-base mt-4 leading-relaxed max-w-sm">
-                    Full administrative oversight of the iSwitch global mobility ecosystem. One login to manage everything.
+                    Manage flights, hotels, visas, insurance, and partner agencies — all from one place.
                 </p>
             </div>
 
-            <!-- What Admin Carries: Feature Grid -->
+            <!-- What You Can Do Here -->
             <div class="space-y-3">
                 <div class="feature-pill rounded-2xl px-5 py-4 flex items-center gap-4 hover:border-brand-gold/30 transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
-                        <i class="fa-solid fa-handshake"></i>
+                        <i class="fa-solid fa-briefcase"></i>
                     </div>
                     <div>
-                        <p class="text-white font-bold text-sm">B2B Partner Governance</p>
-                        <p class="text-slate-500 text-xs">Approve or suspend travel agencies. Issue API keys.</p>
+                        <p class="text-white font-bold text-sm">Agency Desk</p>
+                        <p class="text-slate-500 text-xs">Welcome new travel agencies, review KYB docs, and issue partner keys.</p>
                     </div>
                 </div>
 
                 <div class="feature-pill rounded-2xl px-5 py-4 flex items-center gap-4 hover:border-brand-gold/30 transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0">
-                        <i class="fa-solid fa-users"></i>
+                        <i class="fa-solid fa-plane-departure"></i>
                     </div>
                     <div>
-                        <p class="text-white font-bold text-sm">User & Lead Management</p>
-                        <p class="text-slate-500 text-xs">Monitor signups, track leads, and manage all customers.</p>
-                    </div>
-                </div>
-
-                <div class="feature-pill rounded-2xl px-5 py-4 flex items-center gap-4 hover:border-brand-gold/30 transition-all group">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
-                        <i class="fa-solid fa-vault"></i>
-                    </div>
-                    <div>
-                        <p class="text-white font-bold text-sm">Financial Oversight</p>
-                        <p class="text-slate-500 text-xs">Global wallet balances, payouts, and transaction auditing.</p>
+                        <p class="text-white font-bold text-sm">Flights & Hotels</p>
+                        <p class="text-slate-500 text-xs">Track every booking from search to checkout across all routes.</p>
                     </div>
                 </div>
 
                 <div class="feature-pill rounded-2xl px-5 py-4 flex items-center gap-4 hover:border-brand-gold/30 transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 shrink-0">
-                        <i class="fa-solid fa-plane"></i>
+                        <i class="fa-solid fa-shield-heart"></i>
                     </div>
                     <div>
-                        <p class="text-white font-bold text-sm">Booking & Service Analytics</p>
-                        <p class="text-slate-500 text-xs">Flights, hotels, visas, insurance — full pipeline visibility.</p>
+                        <p class="text-white font-bold text-sm">Insurance & Visa Guard</p>
+                        <p class="text-slate-500 text-xs">Monitor travel insurance policies and visa application pipelines.</p>
+                    </div>
+                </div>
+
+                <div class="feature-pill rounded-2xl px-5 py-4 flex items-center gap-4 hover:border-brand-gold/30 transition-all group">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold text-sm">Travel Vault</p>
+                        <p class="text-slate-500 text-xs">View wallet balances, payouts, and currency swaps across your network.</p>
                     </div>
                 </div>
 
                 <div class="feature-pill rounded-2xl px-5 py-4 flex items-center gap-4 hover:border-brand-gold/30 transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
-                        <i class="fa-solid fa-key"></i>
+                        <i class="fa-solid fa-chart-line"></i>
                     </div>
                     <div>
-                        <p class="text-white font-bold text-sm">API Key Provisioning</p>
-                        <p class="text-slate-500 text-xs">Auto-generate secure master keys for verified partners.</p>
+                        <p class="text-white font-bold text-sm">Leads & Signups</p>
+                        <p class="text-slate-500 text-xs">See who's interested, where they came from, and what they need.</p>
                     </div>
                 </div>
             </div>
@@ -227,20 +227,20 @@
                 <!-- Quick Info (Mobile: What admin carries) -->
                 <div class="grid grid-cols-2 gap-3 lg:hidden" x-show="!success">
                     <div class="bg-white/3 rounded-xl p-3 text-center">
-                        <i class="fa-solid fa-handshake text-amber-500 text-lg mb-1"></i>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">B2B Partners</p>
+                        <i class="fa-solid fa-briefcase text-amber-500 text-lg mb-1"></i>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Agency Desk</p>
                     </div>
                     <div class="bg-white/3 rounded-xl p-3 text-center">
-                        <i class="fa-solid fa-users text-indigo-400 text-lg mb-1"></i>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Users & Leads</p>
+                        <i class="fa-solid fa-plane-departure text-indigo-400 text-lg mb-1"></i>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Flights & Hotels</p>
                     </div>
                     <div class="bg-white/3 rounded-xl p-3 text-center">
-                        <i class="fa-solid fa-vault text-emerald-400 text-lg mb-1"></i>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Finances</p>
+                        <i class="fa-solid fa-shield-heart text-pink-400 text-lg mb-1"></i>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Insurance</p>
                     </div>
                     <div class="bg-white/3 rounded-xl p-3 text-center">
-                        <i class="fa-solid fa-key text-cyan-400 text-lg mb-1"></i>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">API Keys</p>
+                        <i class="fa-solid fa-wallet text-emerald-400 text-lg mb-1"></i>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Travel Vault</p>
                     </div>
                 </div>
             </div>
@@ -248,7 +248,7 @@
             <!-- Footer -->
             <div class="flex items-center justify-between mt-6 px-2">
                 <p class="text-[9px] text-slate-600 uppercase tracking-widest font-bold">
-                    <i class="fa-solid fa-shield-halved mr-1 text-brand-gold/50"></i> Encrypted Session
+                    <i class="fa-solid fa-shield-heart mr-1 text-brand-gold/50"></i> Protected by iSwitch
                 </p>
                 <a href="/" class="text-[9px] text-slate-600 uppercase tracking-widest font-bold hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Back to iSwitch
