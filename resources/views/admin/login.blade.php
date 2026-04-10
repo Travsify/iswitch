@@ -91,7 +91,7 @@
         <div class="hidden lg:block">
             <div class="mb-10">
                 <a href="/" class="inline-flex items-center gap-3 group mb-8">
-                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitchub.com/iswitch_brand_logo.png'" class="h-10 w-auto">
                     <span class="text-2xl font-black tracking-tight text-white group-hover:text-brand-gold transition-colors">iSwitch</span>
                 </a>
                 <h2 class="text-4xl font-black text-white leading-tight mt-6">
@@ -161,7 +161,7 @@
             <!-- Mobile-only branding -->
             <div class="text-center mb-8 lg:hidden">
                 <a href="/" class="inline-flex items-center gap-3 group mb-4">
-                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitchub.com/iswitch_brand_logo.png'" class="h-10 w-auto">
                     <span class="text-2xl font-black tracking-tight text-white">iSwitch</span>
                 </a>
                 <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mt-2">Admin Control Tower</p>

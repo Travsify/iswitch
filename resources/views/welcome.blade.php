@@ -727,7 +727,7 @@
 
             <!-- Logo & Brand -->
             <div class="flex items-center gap-3 mb-6">
-                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null;this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-8 w-auto">
+                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null;this.src='https://iswitchub.com/iswitch_brand_logo.png'" class="h-8 w-auto">
                 <span class="font-black text-white text-lg">iSwitch</span>
             </div>
 
@@ -2494,7 +2494,7 @@
             <!-- Brand & CTA Col (Takes 2 columns) -->
             <div class="lg:col-span-2">
                 <a href="/" class="flex items-center gap-3 group relative z-50 mb-8 inline-flex">
-                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 sm:h-12 w-auto max-w-full transform group-hover:scale-110 transition-transform duration-500">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitchub.com/iswitch_brand_logo.png'" class="h-10 sm:h-12 w-auto max-w-full transform group-hover:scale-110 transition-transform duration-500">
                     <span class="text-3xl font-black tracking-tight text-white group-hover:text-brand-orange transition-colors">iSwitch</span>
                 </a>
                 <p class="text-slate-400 text-base leading-relaxed mb-10 max-w-sm">

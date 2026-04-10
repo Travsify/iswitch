@@ -305,7 +305,7 @@
         <div class="isw-chat-header">
             <div class="isw-chat-header-left">
                 <div class="isw-chat-avatar">
-                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="w-6 h-auto">
+                    <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitchub.com/iswitch_brand_logo.png'" class="w-6 h-auto">
                 </div>
                 <div class="isw-chat-header-text">
                     <h4>iSwitch Smart Guide</h4>

@@ -34,7 +34,7 @@
         
         <div class="relative z-10 flex flex-col h-full">
             <a href="/" class="flex items-center gap-3 group mb-20">
-                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitch.onrender.com/iswitch_brand_logo.png'" class="h-10 w-auto glow-orange">
+                <img src="/iswitch_brand_logo.png" onerror="this.onerror=null; this.src='https://iswitchub.com/iswitch_brand_logo.png'" class="h-10 w-auto glow-orange">
                 <span class="text-2xl font-black tracking-tight text-white">iSwitch</span>
             </a>
 
