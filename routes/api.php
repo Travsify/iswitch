@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/ancillary-services/{id}/book', [\App\Http\Controllers\AncillaryServiceController::class, 'book']);
 
     // iSwitch "God Mode" (Super Admin)
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard']);
         Route::get('/agents', [AdminController::class, 'listAgents']);
         Route::post('/agents/{id}/approve', [AdminController::class, 'approveAgent']);

@@ -12,18 +12,18 @@ use Illuminate\Support\Facades\Log;
 class IntegrationHub
 {
     /**
-     * Aviation Engine
+     * Aviation Engine (Duffel)
      * Search for live flight inventory via iSwitch Global Router.
      */
     public function searchFlights(array $params)
     {
         $token = config('services.iswitch_aviation.token');
-        if (!$token) return $this->mockFlights();
+        if (!$token || $token === '...') return $this->mockFlights();
 
         try {
-            // iSwitch Aviation Conduit
             $response = Http::withToken($token)
-                ->withHeaders(['Duffel-Version' => 'v1'])
+                ->timeout(60)
+                ->withHeaders(['Duffel-Version' => 'v2'])
                 ->post('https://api.duffel.com/air/offer_requests', [
                     'data' => [
                         'slices' => [[
@@ -36,7 +36,27 @@ class IntegrationHub
                     ]
                 ]);
 
-            return $response->json();
+            if ($response->failed()) {
+                Log::warning("iSwitch Aviation API Failure: " . $response->body());
+                return $this->mockFlights();
+            }
+
+            $data = $response->json()['data'] ?? null;
+            if (!$data || empty($data['offers'])) {
+                return $this->mockFlights();
+            }
+
+            // Standardize Duffel response to iSwitch format
+            return collect($data['offers'])->map(function ($offer) {
+                return [
+                    'id' => $offer['id'],
+                    'airline' => $offer['owner']['name'] ?? 'Unknown Airline',
+                    'price' => (float) ($offer['total_amount'] ?? 0),
+                    'currency' => $offer['total_currency'] ?? 'USD',
+                    'duration' => 'Varies', // Duffel duration is inside slices
+                    'logo' => $offer['owner']['logo_symbol_url'] ?? null,
+                ];
+            })->take(10)->toArray();
         } catch (\Exception $e) {
             Log::error("iSwitch Aviation Error: " . $e->getMessage());
             return $this->mockFlights();
@@ -44,77 +64,117 @@ class IntegrationHub
     }
 
     /**
-     * Hospitality & Safety Engine
+     * Hospitality & Safety Engine (liteAPI)
      * Search for luxury hotel inventory via iSwitch Property Mesh.
      */
-    public function searchHotels(string $cityCode)
+    public function searchHotels(array $params)
     {
         $apiKey = config('services.iswitch_property.key');
-        $apiSecret = config('services.iswitch_property.secret');
         
-        if (!$apiKey) return $this->mockHotels();
+        if (!$apiKey || $apiKey === '...') return $this->mockHotels();
 
-        // iSwitch Property Mesh Logic
-        return $this->mockHotels();
+        try {
+            $response = Http::withHeaders(['X-API-Key' => $apiKey])
+                ->post('https://api.liteapi.travel/v1/hotels/search', [
+                    'destination' => $params['destination'] ?? 'LON',
+                    'checkin' => $params['checkin'] ?? now()->addDays(7)->format('Y-m-d'),
+                    'checkout' => $params['checkout'] ?? now()->addDays(10)->format('Y-m-d'),
+                    'guests' => [['adults' => $params['adults'] ?? 1]],
+                    'currency' => 'USD'
+                ]);
+
+            return $response->json()['data'] ?? $this->mockHotels();
+        } catch (\Exception $e) {
+            Log::error("iSwitch Property Error: " . $e->getMessage());
+            return $this->mockHotels();
+        }
     }
 
     /**
-     * iSwitch Visa Intelligence & Autonomous Processing
+     * iSwitch Visa Intelligence & Autonomous Processing (Atlys)
      */
     public function checkVisaEligibility(string $passport, string $destination)
     {
-        // iSwitch Passport AI
-        return [
-            'eligible' => true,
-            'estimated_days' => 5,
-            'probability' => '98%',
-            'document_required' => ['Passport', 'Photo', 'Bank Statement']
-        ];
+        $apiKey = config('services.iswitch_visa.key');
+        if (!$apiKey || $apiKey === '...') {
+            return [
+                'eligible' => true,
+                'estimated_days' => 5,
+                'probability' => '98%',
+                'document_required' => ['Passport', 'Photo', 'Bank Statement']
+            ];
+        }
+
+        try {
+            $response = Http::withToken($apiKey)
+                ->get('https://api.atlys.com/v1/requirements', [
+                    'from' => $passport,
+                    'to' => $destination
+                ]);
+
+            return $response->json()['data'] ?? ['eligible' => 'Consulting iSwitch AI...'];
+        } catch (\Exception $e) {
+            return ['error' => 'Visa Intelligence Offline'];
+        }
     }
 
     /**
-     * iSwitch Experiences & Tours (Curated)
+     * iSwitch Experiences & Tours (GetYourGuide)
      */
     public function searchExperiences(string $query)
     {
         $apiKey = config('services.iswitch_experiences.key');
-        if (!$apiKey) return $this->mockTours();
+        if (!$apiKey || $apiKey === '...') return $this->mockTours();
 
-        // iSwitch Tour Logic...
-        return $this->mockTours();
+        try {
+            $response = Http::withHeaders(['X-Access-Token' => $apiKey])
+                ->get('https://api.getyourguide.com/1/activities', [
+                    'q' => $query
+                ]);
+
+            return $response->json()['data'] ?? $this->mockTours();
+        } catch (\Exception $e) {
+            return $this->mockTours();
+        }
     }
 
     /**
-     * iSwitch Logistics & Chauffeur Node
+     * iSwitch Logistics & Chauffeur Node (Mozio)
      */
     public function searchTransfers(array $params)
     {
         $apiKey = config('services.mozio.key');
-        if (!$apiKey) return $this->mockTransfers();
+        if (!$apiKey || $apiKey === '...') return $this->mockTransfers();
 
-        // iSwitch Logistics Node...
-        return $this->mockTransfers();
+        try {
+            $response = Http::withHeaders(['API-KEY' => $apiKey])
+                ->post('https://api.mozio.com/v2/search/', $params);
+
+            return $response->json();
+        } catch (\Exception $e) {
+            return $this->mockTransfers();
+        }
     }
 
     /**
-     * iSwitch Elite Insurance & Nomad Shield
+     * iSwitch Elite Insurance & Nomad Shield (SafetyWing)
      */
-    public function getInsuranceQuote(string $region = 'worldwide')
+    public function getInsuranceQuote(array $params)
     {
-        $apiId = config('services.safetywing.id');
-        if (!$apiId) return $this->mockInsurance($region);
+        $partnerId = config('services.safetywing.id');
+        if (!$partnerId || $partnerId === '...') return $this->mockInsurance('worldwide');
 
-        // iSwitch Shield Logic...
-        return $this->mockInsurance($region);
-    }
+        try {
+            $response = Http::get('https://api.safetywing.com/v1/quotes', [
+                'partnerId' => $partnerId,
+                'days' => $params['days'] ?? 30,
+                'age' => $params['age'] ?? 30
+            ]);
 
-    /**
-     * iSwitch Global Payment Conduit
-     */
-    public function createPaymentSession(float $amount, string $currency = 'usd')
-    {
-        // iSwitch Revenue Logic
-        return ['session_url' => 'https://checkout.iswitch.com/pay/session'];
+            return $response->json();
+        } catch (\Exception $e) {
+            return $this->mockInsurance('worldwide');
+        }
     }
 
     /**
@@ -135,14 +195,6 @@ class IntegrationHub
     }
 
     private function mockInsurance(string $region) {
-        if ($region === 'schengen') {
-            return [
-                'name' => 'iSwitch Elite Shield',
-                'price' => 45.00,
-                'coverage' => '€30,000 Medical Limit + Repatriation',
-                'compliance' => '100% Schengen Compliant'
-            ];
-        }
         return [
             'name' => 'iSwitch Nomad Guard',
             'price' => 56.40,

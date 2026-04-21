@@ -12,6 +12,7 @@ class Booking extends Model
 
     protected $fillable = [
         'user_id',
+        'agent_id',
         'service_type', // flight, hotel, tour
         'service_id',
         'amount',
@@ -19,6 +20,7 @@ class Booking extends Model
         'status', // pending, confirmed, failed
         'payment_method', // wallet, gateway
         'payment_reference',
+        'commission_amount',
     ];
 
     /**
@@ -27,5 +29,13 @@ class Booking extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the agent associated with the booking.
+     */
+    public function agent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'agent_id');
     }
 }

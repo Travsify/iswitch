@@ -21,6 +21,12 @@ class AdminController extends Controller
             'pending_agents' => User::where('role', 'agent')->where('is_approved', false)->count(),
             'approved_agents' => User::where('role', 'agent')->where('is_approved', true)->count(),
             'total_balance' => User::sum('balance'),
+            'platform_revenue' => [
+                'total' => \App\Models\Booking::where('status', 'confirmed')->sum('amount'),
+                'flights' => \App\Models\Booking::where('status', 'confirmed')->where('service_type', 'flight')->sum('amount'),
+                'hotels' => \App\Models\Booking::where('status', 'confirmed')->where('service_type', 'hotel')->sum('amount'),
+                'tours' => \App\Models\Booking::where('status', 'confirmed')->where('service_type', 'tour')->sum('amount'),
+            ],
             'total_leads' => DB::table('leads')->count(),
             'leads_today' => DB::table('leads')->whereDate('created_at', now()->toDateString())->count(),
             'recent_leads' => DB::table('leads')->latest()->limit(10)->get(),

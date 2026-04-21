@@ -24,14 +24,13 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
-    /* iSwitch Global Mobility Stack (Proprietary Namespace) */
+    /* iSwitch Global Mobility Stack (Integrated Suite) */
     'iswitch_aviation' => [
-        'token' => env('DUFFEL_TOKEN'),
+        'token' => env('DUFFEL_API_KEY'),
     ],
 
     'iswitch_property' => [
-        'key' => env('AMADEUS_API_KEY'),
-        'secret' => env('AMADEUS_API_SECRET'),
+        'key' => env('LITEAPI_API_KEY'),
     ],
 
     'iswitch_visa' => [
@@ -39,7 +38,15 @@ return [
     ],
 
     'iswitch_experiences' => [
-        'key' => env('VIATOR_API_KEY'),
+        'key' => env('GETYOURGUIDE_API_KEY'),
+    ],
+
+    'safetywing' => [
+        'id' => env('SAFETYWING_PARTNER_ID'),
+    ],
+
+    'mozio' => [
+        'key' => env('MOZIO_API_KEY'),
     ],
 
     'stripe' => [
