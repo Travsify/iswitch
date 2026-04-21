@@ -37,10 +37,11 @@
 </head>
 <body class="antialiased font-sans" x-data="{ 
     activeTab: 'summary',
-    stats: { total_users: 0, pending_agents: 0, approved_agents: 0, total_balance: 0 },
+    stats: { total_users: 0, pending_agents: 0, approved_agents: 0, total_balance: 0, platform_revenue: { total: 0, flights: 0, hotels: 0, tours: 0 } },
     agents: [],
     users: [],
     leads: [],
+    settings: [],
     loading: true,
     
     async init() {
@@ -49,13 +50,28 @@
 
     async refreshAll() {
         this.loading = true;
-        await Promise.all([this.fetchStats(), this.fetchAgents(), this.fetchUsers(), this.fetchLeads()]);
+        await Promise.all([this.fetchStats(), this.fetchAgents(), this.fetchUsers(), this.fetchLeads(), this.fetchSettings()]);
         this.loading = false;
     },
 
     async fetchStats() {
         const res = await fetch('/api/v1/admin/dashboard', { headers: { 'Accept': 'application/json' } });
         this.stats = await res.json();
+    },
+
+    async fetchSettings() {
+        const res = await fetch('/api/v1/admin/settings', { headers: { 'Accept': 'application/json' } });
+        this.settings = await res.json();
+    },
+
+    async updateSetting(key, value) {
+        const res = await fetch(`/api/v1/admin/settings/${key}`, { 
+            method: 'POST', 
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: JSON.stringify({ value })
+        });
+        if (res.ok) alert('Configuration updated!');
+        await this.fetchSettings();
     },
 
     async fetchAgents() {
@@ -116,6 +132,9 @@
                 <button @click="activeTab = 'vault'" :class="activeTab === 'vault' ? 'sidebar-item-active' : 'text-slate-500 hover:text-white'" class="w-full flex items-center gap-4 px-6 py-4 rounded-xl transition-all font-bold">
                     <i class="fa-solid fa-vault text-lg"></i> The Money Hub
                 </button>
+                <button @click="activeTab = 'settings'" :class="activeTab === 'settings' ? 'sidebar-item-active' : 'text-slate-500 hover:text-white'" class="w-full flex items-center gap-4 px-6 py-4 rounded-xl transition-all font-bold">
+                    <i class="fa-solid fa-sliders text-lg"></i> Global Config
+                </button>
             </nav>
 
             <div class="p-8 border-t border-white/5">
@@ -167,6 +186,26 @@
                         <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-600 mb-2">Users Enrolled</p>
                         <h3 class="text-4xl font-black text-white" x-text="stats.total_users">0</h3>
                         <p class="text-[10px] text-slate-500 mt-4 leading-relaxed font-bold uppercase tracking-widest">Citizens of iSwitch</p>
+                    </div>
+                </div>
+
+                <h3 class="text-[11px] font-black uppercase tracking-[0.4em] text-slate-600 mb-6 px-4">Platform Revenue Breakdown</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <div class="glass-card rounded-3xl p-6 border-emerald-500/10">
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-1">Flights</p>
+                        <h4 class="text-xl font-black text-white" x-text="'$' + (stats.platform_revenue?.flights || 0).toLocaleString()">$0</h4>
+                    </div>
+                    <div class="glass-card rounded-3xl p-6 border-amber-500/10">
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-1">Hotels</p>
+                        <h4 class="text-xl font-black text-white" x-text="'$' + (stats.platform_revenue?.hotels || 0).toLocaleString()">$0</h4>
+                    </div>
+                    <div class="glass-card rounded-3xl p-6 border-indigo-500/10">
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-1">Tours</p>
+                        <h4 class="text-xl font-black text-white" x-text="'$' + (stats.platform_revenue?.tours || 0).toLocaleString()">$0</h4>
+                    </div>
+                    <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-3xl p-6">
+                        <p class="text-[9px] font-black uppercase tracking-widest text-emerald-500/60 mb-1">Total Confirmed</p>
+                        <h4 class="text-xl font-black text-emerald-400" x-text="'$' + (stats.platform_revenue?.total || 0).toLocaleString()">$0</h4>
                     </div>
                 </div>
 
@@ -341,6 +380,31 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- TAB: SETTINGS (Global Config) -->
+            <div x-show="activeTab === 'settings'" x-transition x-cloak>
+                 <div class="glass-card rounded-[40px] p-10">
+                    <h3 class="text-2xl font-black text-white mb-8">Platform Configuration</h3>
+                    
+                    <div class="grid grid-cols-1 gap-8">
+                        <template x-for="setting in settings" :key="setting.id">
+                            <div class="flex items-center justify-between p-6 bg-white/3 rounded-3xl border border-white/5 group hover:border-brand-gold/30 transition-all">
+                                <div class="max-w-md">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-brand-gold mb-1" x-text="setting.group"></p>
+                                    <h4 class="text-white font-bold text-lg mb-1" x-text="setting.key.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')"></h4>
+                                    <p class="text-slate-500 text-xs" x-text="setting.description"></p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <input type="text" x-model="setting.value" class="bg-black border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-bold w-32 focus:border-brand-gold transition-all">
+                                    <button @click="updateSetting(setting.key, setting.value)" class="w-12 h-12 rounded-xl bg-brand-gold text-black flex items-center justify-center hover:scale-105 transition-all">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                  </div>
             </div>

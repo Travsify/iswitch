@@ -106,4 +106,29 @@ class AdminController extends Controller
         $leads = DB::table('leads')->latest()->limit(50)->get();
         return response()->json($leads);
     }
+
+    /**
+     * Platform Settings
+     */
+    public function getSettings()
+    {
+        return response()->json(\App\Models\Setting::all());
+    }
+
+    public function updateSetting(Request $request, $key)
+    {
+        $setting = \App\Models\Setting::where('key', $key)->firstOrFail();
+        $setting->update($request->only(['value']));
+        
+        return response()->json(['message' => 'Setting updated.', 'setting' => $setting]);
+    }
+
+    /**
+     * Detailed Agent Profile for KYC Review
+     */
+    public function agentProfile($id)
+    {
+        $agent = User::with('businessProfile')->where('role', 'agent')->findOrFail($id);
+        return response()->json($agent);
+    }
 }
