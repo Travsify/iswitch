@@ -71,4 +71,34 @@ class TravelController extends Controller
         $results = $this->hub->searchTransfers($request->all());
         return response()->json($results);
     }
+    /**
+     * Live Flight Booking (Order Creation)
+     */
+    public function bookFlight(Request $request)
+    {
+        $request->validate([
+            'offer_id' => 'required|string',
+            'passengers' => 'required|array',
+            'amount' => 'required|numeric',
+            'currency' => 'required|string',
+        ]);
+
+        $results = $this->hub->createFlightOrder($request->all());
+
+        if (isset($results['data']['id']) || (isset($results['status']) && $results['status'] === 'success')) {
+            // Save to database
+            \App\Models\Booking::create([
+                'user_id' => $request->user()->id,
+                'service_type' => 'flight',
+                'service_id' => 0, // Placeholder
+                'amount' => $request->input('amount'),
+                'currency' => $request->input('currency'),
+                'status' => 'confirmed',
+                'payment_method' => 'wallet',
+                'payment_reference' => $results['data']['id'] ?? $results['booking_id'],
+            ]);
+        }
+
+        return response()->json($results);
+    }
 }

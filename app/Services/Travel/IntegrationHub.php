@@ -139,6 +139,38 @@ class IntegrationHub
     }
 
     /**
+     * Duffel Order Creation (Live Booking)
+     */
+    public function createFlightOrder(array $params)
+    {
+        $apiKey = config('services.duffel.key');
+        if (!$apiKey || $apiKey === '...') {
+            return ['status' => 'success', 'booking_id' => 'ISW-' . strtoupper(Str::random(8)), 'message' => 'Simulated booking successful'];
+        }
+
+        try {
+            // In a real scenario, we'd pass passenger and offer info
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer $apiKey",
+                'Duffel-Version' => 'v2',
+                'Content-Type' => 'application/json',
+            ])->timeout(60)
+            ->post('https://api.duffel.com/air/orders', [
+                'data' => [
+                    'type' => 'instant',
+                    'selected_offers' => [$params['offer_id']],
+                    'passengers' => $params['passengers'],
+                    'payments' => [['type' => 'balance', 'currency' => $params['currency'], 'amount' => $params['amount']]],
+                ]
+            ]);
+
+            return $response->json();
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'message' => 'Booking failed: ' . $e->getMessage()];
+        }
+    }
+
+    /**
      * iSwitch Logistics & Chauffeur Node (Mozio)
      */
     public function searchTransfers(array $params)

@@ -9,10 +9,16 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    protected $hub;
+
+    public function __construct(\App\Services\Travel\IntegrationHub $hub)
+    {
+        $this->hub = $hub;
+    }
+
     /**
-     * Unified Semantic Search Mock
-     * In a real app, this would use an LLM or vector search.
-     * For Greenville, it intelligently bundles our services.
+     * Unified Semantic Search
+     * Now integrates with live global travel engines.
      */
     public function search(Request $request)
     {
@@ -28,23 +34,25 @@ class SearchController extends Controller
             'readiness_score' => 70,
         ];
 
-        // Simple Keyword-based "Semantic" logic
-        if (str_contains($query, 'paris')) {
-            $results['flight'] = Flight::where('arrival_airport', 'like', '%CDG%')->first();
-            $results['hotel'] = Hotel::where('location', 'like', '%Paris%')->first();
-            $results['visa_status'] = 'E-Visa Eligible';
-            $results['readiness_score'] = 90;
+        // Fetch live flight data if query seems to be a destination
+        $flights = $this->hub->searchFlights(['destination' => $query]);
+        if (count($flights) > 0) {
+            $results['flight'] = $flights[0]; // Take the top offer
+        }
+
+        // Fetch live hotel data
+        $hotels = $this->hub->searchHotels($query);
+        if (count($hotels) > 0) {
+            $results['hotel'] = $hotels[0];
+        }
+
+        // Simple Keyword-based Visa logic
+        if (str_contains($query, 'paris') || str_contains($query, 'france')) {
+            $results['visa_status'] = 'Schengen Visa Required';
+            $results['readiness_score'] = 85;
         } elseif (str_contains($query, 'kenya') || str_contains($query, 'safari')) {
-            $results['tour'] = Tour::where('location', 'like', '%Kenya%')->first();
-            $results['visa_status'] = 'Visa on Arrival';
-            $results['readiness_score'] = 50; 
-        } else {
-            // Default: just return some general list
-            return response()->json([
-                'type' => 'list',
-                'flights' => Flight::limit(2)->get(),
-                'hotels' => Hotel::limit(2)->get(),
-            ]);
+            $results['visa_status'] = 'E-Visa Available';
+            $results['readiness_score'] = 95; 
         }
 
         return response()->json($results);

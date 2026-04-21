@@ -15,17 +15,18 @@ Route::post('/v1/leads', [LeadController::class, 'store']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/v1/flights/search', [\App\Http\Controllers\TravelController::class, 'searchFlights']);
-Route::get('/v1/hotels/search', [\App\Http\Controllers\TravelController::class, 'searchHotels']);
+Route::get('/v1/flights/search', [\App\Http\Controllers\Api\TravelController::class, 'searchFlights']);
+Route::get('/v1/hotels/search', [\App\Http\Controllers\Api\TravelController::class, 'searchHotels']);
 
 // iSwitch Smart Assistant (public)
 Route::post('/v1/chat', [\App\Http\Controllers\ChatbotController::class, 'handle']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/v1/visa/check', [\App\Http\Controllers\TravelController::class, 'checkVisa']);
-    Route::get('/v1/insurance/quote', [\App\Http\Controllers\TravelController::class, 'getInsurance']);
-    Route::get('/v1/tours/search', [\App\Http\Controllers\TravelController::class, 'searchTours']);
-    Route::get('/v1/logistics/quote', [\App\Http\Controllers\TravelController::class, 'getTransfers']);
+    Route::get('/v1/visa/check', [\App\Http\Controllers\Api\TravelController::class, 'checkVisa']);
+    Route::get('/v1/insurance/quote', [\App\Http\Controllers\Api\TravelController::class, 'getInsurance']);
+    Route::get('/v1/tours/search', [\App\Http\Controllers\Api\TravelController::class, 'searchTours']);
+    Route::get('/v1/logistics/quote', [\App\Http\Controllers\Api\TravelController::class, 'getTransfers']);
+    Route::post('/v1/flights/book', [\App\Http\Controllers\Api\TravelController::class, 'bookFlight']);
 
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
